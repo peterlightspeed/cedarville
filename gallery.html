@@ -1,0 +1,642 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore Cedarville Schools' photo gallery showcasing our facilities, classrooms, activities, events, and happy children learning and playing in Lagos, Nigeria.">
+    <meta name="keywords" content="cedarville gallery, school photos, classroom pictures, school activities, cedarville students, Lagos school images">
+    <title>Gallery - Cedarville Private Schools | Photos & Videos</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/icons/favicon.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/gallery.css">
+    <link rel="stylesheet" href="css/chatbot.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+</head>
+<body>
+    
+    <!-- ===== NAVIGATION BAR ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <i class="fas fa-tree"></i>
+                <span class="logo-text">Cedarville</span>
+            </div>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="programs.html">Programs</a></li>
+                <li><a href="gallery.html" class="active">Gallery</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            
+            <div class="nav-actions">
+                <!-- Dark Mode Toggle -->
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                
+                <!-- WhatsApp CTA -->
+                <a href="https://wa.me/2348012345678?text=Hello%20Cedarville!%20I'm%20interested%20in%20enrollment." 
+                   target="_blank" 
+                   class="btn btn-primary btn-sm">
+                    <i class="fab fa-whatsapp"></i> Enroll Now
+                </a>
+                
+                <!-- Hamburger Menu -->
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== PAGE HEADER ===== -->
+    <div class="page-header">
+        <div class="container">
+            <h1>Our Gallery</h1>
+            <nav class="breadcrumb">
+                <a href="index.html">Home</a>
+                <span>></span>
+                <span>Gallery</span>
+            </nav>
+        </div>
+    </div>
+
+    <!-- ===== GALLERY HERO ===== -->
+    <section class="gallery-hero">
+        <div class="container">
+            <div class="gallery-hero-content text-center">
+                <span class="section-tag">Visual Journey</span>
+                <h2 class="section-title">Life at Cedarville</h2>
+                <p class="section-description">
+                    Take a visual tour through our vibrant learning environment, 
+                    joyful moments, and educational activities that make Cedarville special.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== GALLERY FILTERS ===== -->
+    <section class="gallery-filters">
+        <div class="container">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">
+                    <i class="fas fa-th"></i> All Photos
+                </button>
+                <button class="filter-btn" data-filter="classroom">
+                    <i class="fas fa-chalkboard-teacher"></i> Classroom
+                </button>
+                <button class="filter-btn" data-filter="activities">
+                    <i class="fas fa-running"></i> Activities
+                </button>
+                <button class="filter-btn" data-filter="events">
+                    <i class="fas fa-calendar-alt"></i> Events
+                </button>
+                <button class="filter-btn" data-filter="facilities">
+                    <i class="fas fa-school"></i> Facilities
+                </button>
+                <button class="filter-btn" data-filter="students">
+                    <i class="fas fa-child"></i> Our Students
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== GALLERY GRID ===== -->
+    <section class="gallery-section">
+        <div class="container">
+            <div class="gallery-grid">
+                
+                <!-- Classroom Photos -->
+                <div class="gallery-item" data-category="classroom">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80" 
+                             alt="Children learning in classroom">
+                        <div class="image-overlay">
+                            <div class="overlay-content">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Interactive Learning</h4>
+                                <p>Engaging classroom activities</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="classroom">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?w=600&q=80" 
+                             alt="Kindergarten classroom">
+                        <div class="image-overlay">
+                            <div class="overlay-content">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Modern Classrooms</h4>
+                                <p>State-of-the-art learning spaces</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="classroom">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1541333913895-d4b69c3585aa?w=600&q=80" 
+                             alt="Reading corner">
+                        <div class="image-overlay">
+                            <div class="overlay-content">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Reading Corner</h4>
+                                <p>Cozy space for story time</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Activities Photos -->
+                <div class="gallery-item" data-category="activities">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=600&q=80" 
+                             alt="Children playing">
+                        <div class="image-overlay">
+                            <div class="overlay-content">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Play Time</h4>
+                                <p>Learning through play</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="activities">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1516627145497-ae6968895b74?w=600&q=80" 
+                             alt="Art and craft activities">
+                        <div class="image-overlay">
+                            <div class="overlay-content">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Creative Arts</h4>
+                                <p>Expressing creativity</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="activities">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=600&q=80" 
+                             alt="Outdoor activities">
+                        <div class="image-overlay">
+                            <div class="overlay-content">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Outdoor Fun</h4>
+                                <p>Physical development activities</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="activities">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=600&q=80" 
+                             alt="Music class">
+                        <div class="image-overlay">
+                            <div class="overlay-content">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Music & Movement</h4>
+                                <p>Developing rhythm and coordination</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Events Photos -->
+                <div class="gallery-item" data-category="events">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&q=80" 
+                             alt="School graduation">
+                        <div class="image-overlay">
+                            <div class="overlay-content">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Graduation Day</h4>
+                                <p>Celebrating achievements</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="events">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&q=80" 
+                             alt="School celebration">
+                        <div class="image-overlay">
+                            <div class="overlay-content">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Cultural Day</h4>
+                                <p>Celebrating diversity</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="events">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=80" 
+                             alt="Sports day">
+                        <div class="image-overlay">
+                            <div class="overlay-content">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Sports Day</h4>
+                                <p>Building teamwork and fitness</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Facilities Photos -->
+                <div class="gallery-item" data-category="facilities">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&q=80" 
+                             alt="School building">
+                        <div class="image-overlay">
+                            <div class="overlay-content">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>School Building</h4>
+                                <p>Our beautiful campus</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="facilities">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1573497019940-1c00da094a0b?w=600&q=80" 
+                             alt="Playground">
+                        <div class="image-overlay">
+                            <div class="overlay-content">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Playground</h4>
+                                <p>Safe and fun outdoor space</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="facilities">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=600&q=80" 
+                             alt="Library">
+                        <div class="image-overlay">
+                            <div class="overlay-content">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Library</h4>
+                                <p>Resource center for learning</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="facilities">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=600&q=80" 
+                             alt="Computer lab">
+                        <div class="image-overlay">
+                            <div class="overlay-content">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Computer Lab</h4>
+                                <p>Technology-enhanced learning</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Students Photos -->
+                <div class="gallery-item" data-category="students">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=600&q=80" 
+                             alt="Happy students">
+                        <div class="image-overlay">
+                            <div class="overlay-content">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Happy Learners</h4>
+                                <p>Smiling faces of Cedarville</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="students">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1509228627152-72ae9ae6848d?w=600&q=80" 
+                             alt="Group activities">
+                        <div class="image-overlay">
+                            <div class="overlay-content">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Teamwork</h4>
+                                <p>Learning together</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="students">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1605745341112-85968b19335a?w=600&q=80" 
+                             alt="Students presentation">
+                        <div class="image-overlay">
+                            <div class="overlay-content">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Presentation Skills</h4>
+                                <p>Building confidence</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Load More Button -->
+            <div class="text-center" style="margin-top: 40px;">
+                <button class="btn btn-outline btn-lg" id="loadMoreBtn">
+                    <i class="fas fa-plus-circle"></i> Load More Photos
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== VIDEO SECTION ===== -->
+    <section class="video-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-tag">Video Gallery</span>
+                <h2 class="section-title">Watch Us in Action</h2>
+                <p class="section-description">Experience the vibrant atmosphere of Cedarville Schools</p>
+            </div>
+            
+            <div class="video-grid">
+                <div class="video-item">
+                    <div class="video-thumbnail">
+                        <img src="https://images.unsplash.com/photo-1596724682639-518825ee84a9?w=600&q=80" 
+                             alt="School tour video">
+                        <div class="play-button">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <h4>School Tour</h4>
+                    <p>Take a virtual tour of our campus</p>
+                </div>
+                
+                <div class="video-item">
+                    <div class="video-thumbnail">
+                        <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&q=80" 
+                             alt="Classroom activities video">
+                        <div class="play-button">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <h4>Classroom Activities</h4>
+                    <p>See our teaching methods in action</p>
+                </div>
+                
+                <div class="video-item">
+                    <div class="video-thumbnail">
+                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80" 
+                             alt="School events video">
+                        <div class="play-button">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <h4>Annual Events</h4>
+                    <p>Highlights from our celebrations</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SOCIAL MEDIA FEED ===== -->
+    <section class="social-feed">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-tag">Connect With Us</span>
+                <h2 class="section-title">Follow Our Journey</h2>
+                <p class="section-description">Stay updated with our latest activities and achievements</p>
+            </div>
+            
+            <div class="social-grid">
+                <div class="social-card">
+                    <div class="social-icon">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                    <h4>Instagram</h4>
+                    <p>Follow @cedarvilleschools for daily updates</p>
+                    <a href="#" class="btn btn-sm btn-outline">Follow Us</a>
+                </div>
+                
+                <div class="social-card">
+                    <div class="social-icon">
+                        <i class="fab fa-facebook"></i>
+                    </div>
+                    <h4>Facebook</h4>
+                    <p>Like our page for community updates</p>
+                    <a href="#" class="btn btn-sm btn-outline">Like Page</a>
+                </div>
+                
+                <div class="social-card">
+                    <div class="social-icon">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                    <h4>YouTube</h4>
+                    <p>Subscribe for educational content</p>
+                    <a href="#" class="btn btn-sm btn-outline">Subscribe</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <i class="fas fa-tree"></i>
+                        <span>Cedarville</span>
+                    </div>
+                    <p>Growing bright minds with care and love since 2010. Premier early childhood education in Lagos, Nigeria.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="programs.html">Our Programs</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Programs</h4>
+                    <ul>
+                        <li><a href="programs.html#creche">Creche (6mo-2yrs)</a></li>
+                        <li><a href="programs.html#nursery">Nursery (2-4yrs)</a></li>
+                        <li><a href="programs.html#kindergarten">Kindergarten (4-6yrs)</a></li>
+                        <li><a href="programs.html#summer">Summer Program</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Contact Info</h4>
+                    <ul class="contact-info">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Aguda, Surulere<br>Lagos, Nigeria</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:+2348039394759">+234 803 939 4759</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:info@cedarvilleschools.com">info@cedarvilleschools.com</a>
+                        </li>
+                        <li>
+                            <i class="far fa-clock"></i>
+                            <span>Mon - Fri: 7:00 AM - 5:00 PM</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2025 Cedarville Private Schools. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="admin/dashboard.html">Admin</a>
+                </div>
+            </div>
+            
+            <div class="developer-credit">
+                <p>Website crafted with <i class="fas fa-heart" style="color: #F49D37;"></i> by</p>
+                <a href="https://peterlight123.github.io/portfolio" target="_blank" rel="noopener noreferrer" class="developer-cta">
+                    <span>PeterLight Portfolio</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== BACK TO TOP BUTTON ===== -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- ===== CHATBOT WIDGET ===== -->
+    <div class="chatbot-trigger" id="chatbotTrigger">
+        <i class="fas fa-comments"></i>
+        <span class="chatbot-badge">1</span>
+    </div>
+
+    <div class="chatbot-window" id="chatbotWindow">
+        <div class="chatbot-header">
+            <div class="chatbot-avatar">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="chatbot-info">
+                <h4>Sunny Bot</h4>
+                <span class="chatbot-status">
+                    <i class="fas fa-circle"></i> Online
+                </span>
+            </div>
+            <button class="chatbot-close" id="chatbotClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="chatbot-messages" id="chatbotMessages">
+            <div class="chatbot-message bot-message">
+                <div class="message-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="message-bubble">
+                    <p>👋 Hello! I'm Sunny, Cedarville's virtual assistant. How can I help you today?</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="chatbot-quick-replies" id="chatbotQuickReplies">
+            <button class="quick-reply" data-question="hours">
+                <i class="far fa-clock"></i> School Hours
+            </button>
+            <button class="quick-reply" data-question="fees">
+                <i class="fas fa-money-bill-wave"></i> Tuition Fees
+            </button>
+            <button class="quick-reply" data-question="admission">
+                <i class="fas fa-clipboard-list"></i> Admission Process
+            </button>
+            <button class="quick-reply" data-question="programs">
+                <i class="fas fa-graduation-cap"></i> Our Programs
+            </button>
+        </div>
+        
+        <div class="chatbot-input-area">
+            <input type="text" 
+                   id="chatbotInput" 
+                   placeholder="Type your message..."
+                   autocomplete="off">
+            <button id="chatbotSend" aria-label="Send message">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+        
+        <div class="chatbot-footer">
+            <small>Powered by Cedarville AI</small>
+        </div>
+    </div>
+
+    <!-- ===== LIGHTBOX MODAL ===== -->
+    <div class="lightbox-modal" id="lightboxModal">
+        <div class="lightbox-content">
+            <button class="lightbox-close" id="lightboxClose">
+                <i class="fas fa-times"></i>
+            </button>
+            <img id="lightboxImage" src="" alt="">
+            <div class="lightbox-info">
+                <h3 id="lightboxTitle"></h3>
+                <p id="lightboxDescription"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== JAVASCRIPT FILES ===== -->
+    <script src="js/global.js"></script>
+    <script src="js/gallery.js"></script>
+    <script src="js/content.js"></script>
+    <script src="js/chatbot.js"></script>
+    <script src="js/dark-mode.js"></script>
+    <script src="js/back-to-top.js"></script>
+    
+</body>
+</html>

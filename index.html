@@ -1,0 +1,695 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cedarville Private Schools - Premier early childhood education in Aguda, Lagos. Nurturing young minds from Creche to Kindergarten.">
+    <meta name="keywords" content="private school Lagos, creche Nigeria, kindergarten Aguda, nursery school">
+    <title>Cedarville Private Schools | Premium Early Childhood Education in Lagos</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/icons/favicon.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/chatbot.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+</head>
+<body>
+    
+    <!-- ===== NAVIGATION BAR ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <i class="fas fa-tree"></i>
+                <span class="logo-text">Cedarville</span>
+            </div>
+             
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="programs.html">Programs</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            
+            <div class="nav-actions">
+                <!-- Dark Mode Toggle -->
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                
+                <!-- WhatsApp CTA -->
+                <a href="https://wa.me/2348012345678?text=Hello%20Cedarville!%20I'm%20interested%20in%20enrollment." 
+                   target="_blank" 
+                   class="btn btn-primary btn-sm">
+                    <i class="fab fa-whatsapp"></i> Enroll Now
+                </a>
+                
+                <!-- Hamburger Menu -->
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== HERO SECTION ===== -->
+    <section class="hero" id="home">
+        <!-- TODO: Replace with actual school exterior photo from Unsplash -->
+        <!-- Image URL: https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1600 -->
+        <div class="hero-background">
+            <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1600&q=80" 
+                 alt="Cedarville School Building" 
+                 class="hero-bg-image">
+            <div class="hero-overlay"></div>
+        </div>
+        
+        <div class="container hero-content">
+            <div class="hero-text animate-fade-in">
+                <h1 class="hero-title">
+                    Growing Bright Minds<br>
+                    <span class="text-gradient">With Care & Love</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Nurturing leaders through world-class quality education in a safe, comfortable and stimulating environment
+                </p>
+                <div class="hero-features">
+                    <div class="feature-badge">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Safe Environment</span>
+                    </div>
+                    <div class="feature-badge">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Qualified Teachers</span>
+                    </div>
+                    <div class="feature-badge">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Modern Curriculum</span>
+                    </div>
+                   <div class="feature-badge">
+                        <i class="fas fa-check-circle"></i>
+                        <span>24/7 CCTV Surveillance</span>
+                   </div>
+                </div>
+                <div class="hero-cta">
+                    <a href="https://wa.me/2348012345678?text=Hello!%20I%20want%20to%20schedule%20a%20tour." 
+                       target="_blank" 
+                       class="btn btn-primary btn-lg">
+                        <i class="fas fa-calendar-check"></i> Schedule a Tour
+                    </a>
+                    <a href="#programs" class="btn btn-secondary btn-lg">
+                        <i class="fas fa-graduation-cap"></i> View Programs
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <div class="stat-number" data-target="200">0</div>
+                    <div class="stat-label">Happy Students</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="15">0</div>
+                    <div class="stat-label">Years Experience</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="25">0</div>
+                    <div class="stat-label">Qualified Staff</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- ===== WELCOME SECTION ===== -->
+    <section class="welcome-section">
+        <div class="container">
+            <div class="welcome-grid">
+                <div class="welcome-image">
+                    <!-- TODO: Replace with happy children in classroom from Unsplash -->
+                    <!-- Image URL: https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800 -->
+                    <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800&q=80" 
+                         alt="Children learning at Cedarville" 
+                         class="img-rounded">
+                    <div class="image-badge">
+                        <i class="fas fa-award"></i>
+                        <span>Award Winning School</span>
+                    </div>
+                </div>
+                
+                <div class="welcome-content">
+                    <span class="section-tag">Welcome to Cedarville</span>
+                    <h2 class="section-title">Where Every Child Matters</h2>
+                    <p class="section-description">
+                        Since 2014, Cedarville Private Schools has been Lagos's premier choice for early childhood education. 
+                        We provide a nurturing, safe, and stimulating environment where children from 3 months to 11 years develop a lifelong love for learning through our British and Nigerian curriculum.
+                    </p>
+                    
+                    <div class="welcome-features">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h4>Expert Educators</h4>
+                                <p>Certified teachers with years of early childhood experience</p>
+                            </div>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h4>Safe & Secure</h4>
+                                <p>24/7 security, CCTV monitoring, and strict safety protocols</p>
+                            </div>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-palette"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h4>Creative Learning</h4>
+                                <p>Play-based curriculum that nurtures creativity and curiosity</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="about.html" class="btn btn-outline">
+                        Learn More About Us <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PROGRAMS SECTION ===== -->
+    <section class="programs-section" id="programs">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-tag">Our Programs</span>
+                <h2 class="section-title">Tailored Education for Every Age</h2>
+                <p class="section-description">
+                    From infants to kindergarteners, we offer age-appropriate programs designed to foster growth and development
+                </p>
+            </div>
+            
+            <div class="programs-grid">
+                <!-- Creche Program -->
+                <div class="program-card">
+                    <!-- TODO: Replace with baby/infant care image from Unsplash -->
+                    <!-- Image URL: https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=600 -->
+                    <div class="program-image">
+                        <img src="https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=600&q=80" 
+                             alt="Creche Program">
+                        <div class="program-badge">Ages 6mo-2yrs</div>
+                    </div>
+                    <div class="program-content">
+                        <div class="program-icon">
+                            <i class="fas fa-baby"></i>
+                        </div>
+                        <h3>Creche Program</h3>
+                        <p>Loving care for your littlest learners with individualized attention and developmental activities.</p>
+                        <ul class="program-highlights">
+                            <li><i class="fas fa-check"></i> Low child-to-caregiver ratio (4:1)</li>
+                            <li><i class="fas fa-check"></i> Daily photo updates to parents</li>
+                            <li><i class="fas fa-check"></i> Flexible feeding & nap schedules</li>
+                        </ul>
+                        <div class="program-footer">
+                            <span class="program-price">₦50,000<small>/month</small></span>
+                            <a href="programs.html#creche" class="btn btn-sm btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Nursery Program -->
+                <div class="program-card featured">
+                    <!-- TODO: Replace with toddlers learning/playing from Unsplash -->
+                    <!-- Image URL: https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=600 -->
+                    <div class="program-image">
+                        <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=600&q=80" 
+                             alt="Nursery Program">
+                        <div class="program-badge featured-badge">Most Popular</div>
+                        <div class="program-badge">Ages 2-4yrs</div>
+                    </div>
+                    <div class="program-content">
+                        <div class="program-icon">
+                            <i class="fas fa-child"></i>
+                        </div>
+                        <h3>Nursery Program</h3>
+                        <p>Where curiosity comes alive through creative play, social development, and early learning activities.</p>
+                        <ul class="program-highlights">
+                            <li><i class="fas fa-check"></i> Arts, music & movement</li>
+                            <li><i class="fas fa-check"></i> Early literacy & numeracy</li>
+                            <li><i class="fas fa-check"></i> Social skills development</li>
+                        </ul>
+                        <div class="program-footer">
+                            <span class="program-price">₦45,000<small>/month</small></span>
+                            <a href="programs.html#nursery" class="btn btn-sm btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Kindergarten Program -->
+                <div class="program-card">
+                    <!-- TODO: Replace with children in classroom learning from Unsplash -->
+                    <!-- Image URL: https://images.unsplash.com/photo-1577896851231-70ef18881754?w=600 -->
+                    <div class="program-image">
+                        <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?w=600&q=80" 
+                             alt="Kindergarten Program">
+                        <div class="program-badge">Ages 4-6yrs</div>
+                    </div>
+                    <div class="program-content">
+                        <div class="program-icon">
+                            <i class="fas fa-book-reader"></i>
+                        </div>
+                        <h3>Kindergarten Program</h3>
+                        <p>Preparing young scholars for primary school with structured learning and academic foundations.</p>
+                        <ul class="program-highlights">
+                            <li><i class="fas fa-check"></i> Reading & writing skills</li>
+                            <li><i class="fas fa-check"></i> Mathematics foundations</li>
+                            <li><i class="fas fa-check"></i> Science exploration</li>
+                        </ul>
+                        <div class="program-footer">
+                            <span class="program-price">₦40,000<small>/month</small></span>
+                            <a href="programs.html#kindergarten" class="btn btn-sm btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== WHY CHOOSE US ===== -->
+    <section class="why-choose-section">
+        <div class="container">
+            <div class="why-grid">
+                <div class="why-content">
+                    <span class="section-tag">Why Choose Cedarville</span>
+                    <h2 class="section-title">The Cedarville Difference</h2>
+                    <p class="section-description">
+                        We're not just a school—we're a family that nurtures, supports, and celebrates every child's unique journey.
+                    </p>
+                    
+                    <div class="why-features">
+                        <div class="why-item">
+                            <div class="why-number">01</div>
+                            <h4>Experienced Team</h4>
+                            <p>15+ years of excellence in early childhood education with certified, passionate educators</p>
+                        </div>
+                        
+                        <div class="why-item">
+                            <div class="why-number">02</div>
+                            <h4>Modern Facilities</h4>
+                            <p>State-of-the-art classrooms, playgrounds, and learning spaces designed for young learners</p>
+                        </div>
+                        
+                        <div class="why-item">
+                            <div class="why-number">03</div>
+                            <h4>Nutritious Meals</h4>
+                            <p>Fresh, balanced meals prepared daily with consideration for dietary needs and allergies</p>
+                        </div>
+                        
+                        <div class="why-item">
+                            <div class="why-number">04</div>
+                            <h4>Parent Partnership</h4>
+                            <p>Open communication, regular updates, and parent-teacher conferences keep you involved</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="why-image">
+                    <!-- TODO: Replace with school facilities or children with teacher from Unsplash -->
+                    <!-- Image URL: https://images.unsplash.com/photo-1516627145497-ae6968895b74?w=700 -->
+                    <img src="https://images.unsplash.com/photo-1516627145497-ae6968895b74?w=700&q=80" 
+                         alt="Cedarville Facilities">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TESTIMONIALS ===== -->
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-tag">Testimonials</span>
+                <h2 class="section-title">What Parents Say</h2>
+                <p class="section-description">Hear from families who trust us with their children's education</p>
+            </div>
+            
+            <div class="testimonials-slider" id="testimonialsSlider">
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "Cedarville has been a blessing to our family. The teachers genuinely care about each child's development, 
+                        and we've seen incredible growth in our daughter's confidence and social skills."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-info">
+                            <h4>Mrs. Adebayo Olamide</h4>
+                            <span>Parent of Nursery Student</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "The best decision we made was enrolling our twins at Cedarville. The small class sizes mean they get 
+                        individual attention, and the daily photo updates give us peace of mind while we're at work."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-info">
+                            <h4>Mr. & Mrs. Chukwu</h4>
+                            <span>Parents of Creche Students</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "My son started kindergarten at Cedarville and is now in primary 3. The foundation they gave him in reading 
+                        and math has made him excel in his current school. Thank you, Cedarville!"
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-info">
+                            <h4>Mrs. Fatima Ibrahim</h4>
+                            <span>Alumni Parent</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonials-nav">
+                <button class="testimonial-prev"><i class="fas fa-chevron-left"></i></button>
+                <button class="testimonial-next"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== LATEST BLOG POSTS ===== -->
+    <section class="blog-preview-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-tag">From Our Blog</span>
+                <h2 class="section-title">Latest News & Insights</h2>
+                <p class="section-description">Stay updated with tips, news, and stories from Cedarville</p>
+            </div>
+            
+            <div class="blog-grid">
+                <article class="blog-card">
+                    <!-- TODO: Replace with parenting/education related image from Unsplash -->
+                    <!-- Image URL: https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=500 -->
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=500&q=80" 
+                             alt="Blog post">
+                        <span class="blog-category">Parenting Tips</span>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Oct 20, 2025</span>
+                            <span><i class="far fa-clock"></i> 5 min read</span>
+                        </div>
+                        <h3>5 Ways to Prepare Your Child for Preschool</h3>
+                        <p>Starting preschool is a big milestone. Here are practical tips to help your child transition smoothly...</p>
+                        <a href="blog-single.html?id=1" class="blog-read-more">
+                            Read More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+                
+                <article class="blog-card">
+                    <!-- TODO: Replace image -->
+                    <!-- Image URL: https://images.unsplash.com/photo-1455849318743-b2233052fcff?w=500 -->
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1455849318743-b2233052fcff?w=500&q=80" 
+                             alt="Blog post">
+                        <span class="blog-category">School News</span>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Oct 15, 2025</span>
+                            <span><i class="far fa-clock"></i> 3 min read</span>
+                        </div>
+                        <h3>Cedarville Celebrates 15 Years of Excellence</h3>
+                        <p>We're proud to celebrate 15 years of nurturing young minds. Thank you to all our families...</p>
+                        <a href="blog-single.html?id=2" class="blog-read-more">
+                            Read More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+                
+                <article class="blog-card">
+                    <!-- TODO: Replace image -->
+                    <!-- Image URL: https://images.unsplash.com/photo-1509062522246-3755977927d7?w=500 -->
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=500&q=80" 
+                             alt="Blog post">
+                        <span class="blog-category">Education</span>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Oct 10, 2025</span>
+                            <span><i class="far fa-clock"></i> 7 min read</span>
+                        </div>
+                        <h3>The Importance of Play-Based Learning</h3>
+                        <p>Discover why play is essential for early childhood development and how we incorporate it...</p>
+                        <a href="blog-single.html?id=3" class="blog-read-more">
+                            Read More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+            </div>
+            
+            <div class="text-center" style="margin-top: 40px;">
+                <a href="blog.html" class="btn btn-outline">
+                    View All Posts <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CTA SECTION ===== -->
+    <section class="cta-section">
+        <!-- TODO: Replace with happy children or school environment from Unsplash -->
+        <!-- Image URL: https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=1600 -->
+        <div class="cta-background">
+            <img src="https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=1600&q=80" alt="Join Cedarville">
+            <div class="cta-overlay"></div>
+        </div>
+        <div class="container">
+            <div class="cta-content text-center">
+                <h2>Ready to Give Your Child the Best Start?</h2>
+                <p>Join hundreds of families who trust Cedarville with their children's early education</p>
+                <div class="cta-buttons">
+                    <a href="https://wa.me/2348012345678?text=Hello!%20I%20want%20to%20enroll%20my%20child." 
+                       target="_blank" 
+                       class="btn btn-primary btn-lg">
+                        <i class="fab fa-whatsapp"></i> Enroll Now on WhatsApp
+                    </a>
+                    <a href="contact.html" class="btn btn-secondary btn-lg">
+                        <i class="fas fa-phone-alt"></i> Contact Us
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <i class="fas fa-tree"></i>
+                        <span>Cedarville</span>
+                    </div>
+                    <p>Growing bright minds with care and love since 2014. Premier early childhood education in Lagos, Nigeria.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="programs.html">Our Programs</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Programs</h4>
+                    <ul>
+                        <li><a href="programs.html#creche">Creche (6mo-2yrs)</a></li>
+                        <li><a href="programs.html#nursery">Nursery (2-4yrs)</a></li>
+                        <li><a href="programs.html#kindergarten">Kindergarten (4-6yrs)</a></li>
+                        <li><a href="programs.html#summer">Summer Program</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Contact Info</h4>
+                    <ul class="contact-info">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Aguda, Surulere<br>Lagos, Nigeria</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:+2348039394759">+234 803 939 4759</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:info@cedarvilleschools.com">info@cedarvilleschools.com</a>
+                        </li>
+                        <li>
+                            <i class="far fa-clock"></i>
+                            <span>Mon - Fri: 7:00 AM - 5:00 PM</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2025 Cedarville Private Schools. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="admin/dashboard.html">Admin</a>
+                </div>
+            </div>
+            
+            <div class="developer-credit">
+                <p>Website crafted with <i class="fas fa-heart" style="color: #F49D37;"></i> by</p>
+                <a href="https://peterlight123.github.io/portfolio" target="_blank" rel="noopener noreferrer" class="developer-cta">
+                    <span>PeterLight Portfolio</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== BACK TO TOP BUTTON ===== -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- ===== CHATBOT WIDGET ===== -->
+    <div class="chatbot-trigger" id="chatbotTrigger">
+        <i class="fas fa-comments"></i>
+        <span class="chatbot-badge">1</span>
+    </div>
+
+    <div class="chatbot-window" id="chatbotWindow">
+        <div class="chatbot-header">
+            <div class="chatbot-avatar">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="chatbot-info">
+                <h4>Sunny Bot</h4>
+                <span class="chatbot-status">
+                    <i class="fas fa-circle"></i> Online
+                </span>
+            </div>
+            <button class="chatbot-close" id="chatbotClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="chatbot-messages" id="chatbotMessages">
+            <div class="chatbot-message bot-message">
+                <div class="message-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="message-bubble">
+                    <p>👋 Hello! I'm Sunny, Cedarville's virtual assistant. How can I help you today?</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="chatbot-quick-replies" id="chatbotQuickReplies">
+            <button class="quick-reply" data-question="hours">
+                <i class="far fa-clock"></i> School Hours
+            </button>
+            <button class="quick-reply" data-question="fees">
+                <i class="fas fa-money-bill-wave"></i> Tuition Fees
+            </button>
+            <button class="quick-reply" data-question="admission">
+                <i class="fas fa-clipboard-list"></i> Admission Process
+            </button>
+            <button class="quick-reply" data-question="programs">
+                <i class="fas fa-graduation-cap"></i> Our Programs
+            </button>
+        </div>
+        
+        <div class="chatbot-input-area">
+            <input type="text" 
+                   id="chatbotInput" 
+                   placeholder="Type your message..."
+                   autocomplete="off">
+            <button id="chatbotSend" aria-label="Send message">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+        
+        <div class="chatbot-footer">
+            <small>Powered by Cedarville AI</small>
+        </div>
+    </div>
+
+    <!-- ===== JAVASCRIPT FILES ===== -->
+    <script src="js/global.js"></script>
+    <script src="js/home.js"></script>
+    <script src="js/content.js"></script>
+    <script src="js/chatbot.js"></script>
+    <script src="js/dark-mode.js"></script>
+    <script src="js/back-to-top.js"></script>
+    
+</body>
+</html>
+

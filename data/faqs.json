@@ -1,0 +1,136 @@
+ {
+  "faqs": [
+    {
+      "id": 1,
+      "category": "Admission",
+      "question": "What is the admission process at Cedarville Schools?",
+      "answer": "Our admission process is simple and straightforward: 1) Schedule a school tour to visit our facilities, 2) Complete and submit the application form with required documents, 3) Attend a brief assessment and interview with your child, 4) Receive enrollment confirmation and complete registration. The entire process typically takes 1-2 weeks."
+    },
+    {
+      "id": 2,
+      "category": "Admission",
+      "question": "At what age can my child start at Cedarville?",
+      "answer": "We accept children from 6 months old in our Creche program. Our Nursery program is for children aged 2-4 years, and our Kindergarten program serves children aged 4-6 years. We also offer a summer program for children up to 8 years old."
+    },
+    {
+      "id": 3,
+      "category": "Fees & Payment",
+      "question": "What are the tuition fees for each program?",
+      "answer": "Our monthly tuition fees are: Creche (6 months - 2 years): \u20a650,000, Nursery (2-4 years): \u20a645,000, Kindergarten (4-6 years): \u20a640,000. We offer flexible payment plans (monthly, quarterly, or annually) and provide a 10% sibling discount for the second child and 15% for the third child."
+    },
+    {
+      "id": 4,
+      "category": "Fees & Payment",
+      "question": "Are there additional fees besides tuition?",
+      "answer": "Tuition covers all regular school activities, meals, and learning materials. Additional costs may include: Registration fee (one-time \u20a620,000), Uniform sets (\u20a615,000), Field trips (varies), After-school care (\u20a65,000/month), and Extracurricular activities (varies by activity). All additional fees are optional and clearly communicated."
+    },
+    {
+      "id": 5,
+      "category": "Curriculum & Programs",
+      "question": "What curriculum do you follow?",
+      "answer": "We follow a blended curriculum that combines Nigerian Educational Research Development Council (NERDC) standards with international best practices in early childhood education. Our approach emphasizes play-based learning, STEM activities, character development, and school readiness skills while maintaining cultural relevance."
+    },
+    {
+      "id": 6,
+      "category": "Curriculum & Programs",
+      "question": "What is the teacher-to-student ratio?",
+      "answer": "We maintain low teacher-to-student ratios to ensure personalized attention: Creche: 1 caregiver to 4 infants, Nursery: 1 teacher to 8 children, Kindergarten: 1 teacher to 12 children. Each class also has a teaching assistant to support learning activities."
+    },
+    {
+      "id": 7,
+      "category": "Daily Operations",
+      "question": "What are the school hours?",
+      "answer": "Our regular school hours are Monday to Friday, 7:00 AM - 5:00 PM. The Creche program offers extended hours until 6:00 PM for working parents. We also offer early drop-off starting at 6:30 AM for an additional fee."
+    },
+    {
+      "id": 8,
+      "category": "Daily Operations",
+      "question": "Do you provide meals for the children?",
+      "answer": "Yes, we provide nutritious meals including breakfast, lunch, and two snacks daily. All meals are prepared fresh in our on-site kitchen by qualified nutrition staff. We accommodate dietary restrictions and allergies with prior notification."
+    },
+    {
+      "id": 9,
+      "category": "Safety & Security",
+      "question": "What safety measures do you have in place?",
+      "answer": "Safety is our top priority. We have: 24/7 security personnel, CCTV monitoring in all areas, secure pick-up/drop-off system with ID verification, regular safety drills, first aid-trained staff, a sick bay with registered nurse, child-proof facilities, and comprehensive background checks for all staff."
+    },
+    {
+      "id": 10,
+      "category": "Safety & Security",
+      "question": "How do you handle medical emergencies?",
+      "answer": "We have a well-equipped sick bay staffed by a registered nurse during all school hours. For minor issues, we provide immediate first aid. For emergencies, we have protocols in place with nearby hospitals and will contact parents immediately. All staff are certified in pediatric first aid and CPR."
+    },
+    {
+      "id": 11,
+      "category": "Parent Communication",
+      "question": "How do you communicate with parents?",
+      "answer": "We maintain open communication through: Daily communication journals, weekly newsletters, monthly parent-teacher conferences, a parent mobile app for real-time updates, email updates, WhatsApp groups for each class, and regular progress reports. Parents also have 24/7 access to our administration for urgent matters."
+    },
+    {
+      "id": 12,
+      "category": "Parent Communication",
+      "question": "Can parents visit the school during the day?",
+      "answer": "We welcome parent involvement! Parents can schedule visits during designated observation hours. We also have regular open days, parent workshops, and family events throughout the year. For safety reasons, unscheduled visits during class hours are not permitted, but we're happy to arrange appointments at your convenience."
+    },
+    {
+      "id": 13,
+      "category": "Facilities & Resources",
+      "question": "What facilities do you have?",
+      "answer": "Our modern facilities include: Spacious, air-conditioned classrooms, Interactive learning centers, Library and reading corner, Computer lab with age-appropriate educational software, Music and art room, Indoor play area, Outdoor playground with safe equipment, Splash pad for water play, Sick bay, and Secure parking area."
+    },
+    {
+      "id": 14,
+      "category": "Facilities & Resources",
+      "question": "Do you have transportation services?",
+      "answer": "Yes, we offer safe, reliable transportation services with school buses equipped with: GPS tracking, seat belts for each child, trained drivers and conductors, First aid kits, and Air conditioning. Routes cover major areas in Lagos mainland. Transportation is an additional service priced at \u20a68,000 monthly."
+    },
+    {
+      "id": 15,
+      "category": "Staff & Teachers",
+      "question": "What are the qualifications of your teachers?",
+      "answer": "All our teachers hold minimum qualifications in Early Childhood Education, with many having bachelor's degrees in Education or Child Development. They have at least 5 years of teaching experience, undergo regular professional development, and are certified in first aid and child protection. All staff undergo comprehensive background checks."
+    },
+    {
+      "id": 16,
+      "category": "Staff & Teachers",
+      "question": "How do you ensure teacher quality and consistency?",
+      "answer": "We maintain teacher quality through: Rigorous recruitment process, Regular performance evaluations, Ongoing professional development programs, Monthly training workshops, Teacher mentorship programs, Competitive compensation to retain staff, and Regular feedback from parents and children."
+    },
+    {
+      "id": 17,
+      "category": "Special Programs",
+      "question": "Do you offer extracurricular activities?",
+      "answer": "Yes, we offer a variety of age-appropriate extracurricular activities including: Music lessons, Dance classes, Art and craft, Sports and physical education, Coding and robotics (for older children), Language clubs (French, Chinese), and Chess club. Activities are scheduled after school hours and have separate fees."
+    },
+    {
+      "id": 18,
+      "category": "Special Programs",
+      "question": "Do you have a summer program?",
+      "answer": "Yes, our summer camp runs during August holidays for children aged 2-8 years. It includes fun learning activities, field trips, swimming lessons, arts and crafts, music and dance, sports activities, and academic reinforcement. The program runs Monday to Friday, 8 AM - 2 PM, with flexible attendance options."
+    },
+    {
+      "id": 19,
+      "category": "Technology",
+      "question": "How do you incorporate technology in learning?",
+      "answer": "We use age-appropriate educational technology including: Interactive whiteboards, Educational tablets with learning apps, Computer-based learning activities, Coding basics for kindergarten, Educational video content, Digital storybooks, and Parent communication apps. Screen time is limited and balanced with hands-on activities."
+    },
+    {
+      "id": 20,
+      "category": "Technology",
+      "question": "Do you have online learning options?",
+      "answer": "While we believe in-person interaction is best for young children, we have contingency plans for online learning if needed. This includes: Virtual classroom access, Digital learning resources, Online parent-teacher conferences, Educational activity packets for home, and Regular online check-ins with teachers during extended closures."
+    }
+  ],
+  "categories": [
+    "Admission",
+    "Fees & Payment", 
+    "Curriculum & Programs",
+    "Daily Operations",
+    "Safety & Security",
+    "Parent Communication",
+    "Facilities & Resources",
+    "Staff & Teachers",
+    "Special Programs",
+    "Technology"
+  ]
+}

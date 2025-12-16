@@ -1,0 +1,246 @@
+ /* ========================================
+   DARK MODE SPECIFIC STYLES
+   ======================================== */
+
+/* ===== DARK MODE IMAGE ADJUSTMENTS ===== */
+[data-theme="dark"] .hero-bg-image,
+[data-theme="dark"] .cta-background img {
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+[data-theme="dark"] .hero-overlay,
+[data-theme="dark"] .cta-overlay {
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(46, 46, 46, 0.85) 100%);
+}
+
+/* ===== DARK MODE CARD ADJUSTMENTS ===== */
+[data-theme="dark"] .program-card,
+[data-theme="dark"] .blog-card,
+[data-theme="dark"] .testimonial-card {
+    background: var(--bg-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .stat-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ===== DARK MODE BUTTON ADJUSTMENTS ===== */
+[data-theme="dark"] .btn-outline {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+[data-theme="dark"] .btn-outline:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* ===== DARK MODE INPUT ADJUSTMENTS ===== */
+[data-theme="dark"] input,
+[data-theme="dark"] textarea {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ===== DARK MODE SCROLLBAR ===== */
+[data-theme="dark"] ::-webkit-scrollbar {
+    width: 10px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background: var(--text-light);
+    border-radius: 10px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
+}
+
+/* ===== DARK MODE NAVIGATION ===== */
+[data-theme="dark"] .navbar {
+    background: rgba(26, 26, 26, 0.95);
+    backdrop-filter: blur(10px);
+}
+
+[data-theme="dark"] .nav-menu {
+    background: var(--bg-primary);
+}
+
+/* ===== DARK MODE FOOTER ===== */
+[data-theme="dark"] .footer {
+    background: var(--bg-secondary);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ===== DARK MODE SECTIONS ===== */
+[data-theme="dark"] .welcome-section,
+[data-theme="dark"] .testimonials-section {
+    background: var(--bg-tertiary);
+}
+
+[data-theme="dark"] .why-choose-section,
+[data-theme="dark"] .blog-preview-section {
+    background: var(--bg-primary);
+}
+
+/* ===== DARK MODE FORM ELEMENTS ===== */
+[data-theme="dark"] form {
+    background: var(--bg-secondary);
+}
+
+[data-theme="dark"] input:focus,
+[data-theme="dark"] textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+/* ===== DARK MODE HOVER EFFECTS ===== */
+[data-theme="dark"] .program-card:hover,
+[data-theme="dark"] .blog-card:hover,
+[data-theme="dark"] .testimonial-card:hover {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border-color: rgba(74, 144, 226, 0.3);
+}
+
+/* ===== DARK MODE BADGES AND TAGS ===== */
+[data-theme="dark"] .section-tag {
+    background: rgba(74, 144, 226, 0.2);
+    color: var(--primary-color);
+}
+
+[data-theme="dark"] .program-badge {
+    background: var(--primary-color);
+    color: white;
+}
+
+[data-theme="dark"] .featured-badge {
+    background: var(--secondary-color);
+    color: white;
+}
+
+/* ===== DARK MODE TESTIMONIALS ===== */
+[data-theme="dark"] .testimonial-text {
+    color: var(--text-secondary);
+}
+
+[data-theme="dark"] .testimonial-card {
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ===== DARK MODE HERO SECTION ===== */
+[data-theme="dark"] .hero {
+    background: var(--bg-primary);
+}
+
+[data-theme="dark"] .feature-badge {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+[data-theme="dark"] .stat-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+}
+
+/* ===== DARK MODE BLOG ELEMENTS ===== */
+[data-theme="dark"] .blog-category {
+    background: var(--primary-color);
+    color: white;
+}
+
+[data-theme="dark"] .blog-meta {
+    color: var(--text-light);
+}
+
+/* ===== DARK MODE WHY SECTION ===== */
+[data-theme="dark"] .why-item {
+    background: var(--bg-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .why-item:hover {
+    background: var(--bg-tertiary);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* ===== DARK MODE WELCOME SECTION ===== */
+[data-theme="dark"] .feature-icon {
+    background: var(--primary-color);
+    color: white;
+}
+
+[data-theme="dark"] .image-badge {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* ===== DARK MODE PROGRAM CARDS ===== */
+[data-theme="dark"] .program-icon {
+    background: rgba(74, 144, 226, 0.2);
+    color: var(--primary-color);
+}
+
+[data-theme="dark"] .program-footer {
+    border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ===== DARK MODE ANIMATIONS ===== */
+[data-theme="dark"] .animate-fade-in,
+[data-theme="dark"] .animate-slide-left,
+[data-theme="dark"] .animate-slide-right {
+    animation-duration: 0.6s;
+}
+
+/* ===== DARK MODE ACCESSIBILITY ===== */
+[data-theme="dark"] a:focus,
+[data-theme="dark"] button:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* ===== DARK MODE LOADING STATES ===== */
+[data-theme="dark"] .loading {
+    opacity: 0.7;
+}
+
+/* ===== DARK MODE ERROR STATES ===== */
+[data-theme="dark"] .error {
+    color: var(--danger-color);
+    border-color: var(--danger-color);
+}
+
+/* ===== DARK MODE SUCCESS STATES ===== */
+[data-theme="dark"] .success {
+    color: var(--success-color);
+    border-color: var(--success-color);
+}
+
+/* ===== DARK MODE NOTIFICATIONS ===== */
+[data-theme="dark"] .notification {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .notification-success {
+    background: var(--success-color);
+    color: white;
+}
+
+[data-theme="dark"] .notification-error {
+    background: var(--danger-color);
+    color: white;
+}
+
+[data-theme="dark"] .notification-info {
+    background: var(--primary-color);
+    color: white;
+}

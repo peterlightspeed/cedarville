@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Cedarville Schools</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="admin-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-tree"></i>
+                <h2>Cedarville</h2>
+            </div>
+            
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#dashboard" class="nav-link active" data-section="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a></li>
+                    <li><a href="#blog" class="nav-link" data-section="blog">
+                        <i class="fas fa-blog"></i>
+                        <span>Blog Posts</span>
+                    </a></li>
+                    <li><a href="#chatbot" class="nav-link" data-section="chatbot">
+                        <i class="fas fa-robot"></i>
+                        <span>Chatbot</span>
+                    </a></li>
+                    <li><a href="#gallery" class="nav-link" data-section="gallery">
+                        <i class="fas fa-images"></i>
+                        <span>Gallery</span>
+                    </a></li>
+                    <li><a href="#settings" class="nav-link" data-section="settings">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a></li>
+                    <li><a href="#users" class="nav-link" data-section="users">
+                        <i class="fas fa-users"></i>
+                        <span>User Management</span>
+                    </a></li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <main class="main-content">
+            <div class="top-bar">
+                <div class="welcome">
+                    <h1>Welcome back, <span id="adminUsername">Admin</span>!</h1>
+                    <p>Manage your school website content</p>
+                </div>
+                
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <button class="btn-logout" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+            
+            <section id="dashboard" class="content-section active">
+                <h2>Dashboard Overview</h2>
+                <div class="cards">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon blue">
+                                <i class="fas fa-blog"></i>
+                            </div>
+                        </div>
+                        <div class="card-number" id="blogCount">0</div>
+                        <div class="card-label">Blog Posts</div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon green">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                        </div>
+                        <div class="card-number" id="chatbotCount">0</div>
+                        <div class="card-label">Chatbot Responses</div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon orange">
+                                <i class="fas fa-images"></i>
+                            </div>
+                        </div>
+                        <div class="card-number" id="galleryCount">0</div>
+                        <div class="card-label">Gallery Images</div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="blog" class="content-section">
+                <div class="section-header">
+                    <h2>Blog Posts</h2>
+                    <button class="btn btn-success" onclick="showAddBlogModal()">
+                        <i class="fas fa-plus"></i> Add New Post
+                    </button>
+                </div>
+                <table id="blogTable">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Author</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+            
+            <section id="chatbot" class="content-section">
+                <div class="section-header">
+                    <h2>Chatbot Responses</h2>
+                    <button class="btn btn-success" onclick="showAddChatbotModal()">
+                        <i class="fas fa-plus"></i> Add Response
+                    </button>
+                </div>
+                <table id="chatbotTable">
+                    <thead>
+                        <tr>
+                            <th>Keywords</th>
+                            <th>Response</th>
+                            <th>Category</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+            
+            <section id="gallery" class="content-section">
+                <div class="section-header">
+                    <h2>Gallery Images</h2>
+                    <button class="btn btn-success" onclick="showAddGalleryModal()">
+                        <i class="fas fa-plus"></i> Add Image
+                    </button>
+                </div>
+                <div id="galleryGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px;"></div>
+            </section>
+
+            <section id="settings" class="content-section">
+                <h2>Website Settings</h2>
+                
+                <div class="settings-grid">
+                    <div class="settings-card">
+                        <h3><i class="fas fa-palette"></i> Theme Colors</h3>
+                        <p>Customize the website's color scheme</p>
+                        <form id="themeSettingsForm" class="settings-form">
+                            <div class="form-group">
+                                <label>Primary Color</label>
+                                <div class="color-input-group">
+                                    <input type="color" name="primary_color" id="primary_color" value="#1E3A8A">
+                                    <input type="text" class="color-text" id="primary_color_text" value="#1E3A8A">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Secondary Color</label>
+                                <div class="color-input-group">
+                                    <input type="color" name="secondary_color" id="secondary_color" value="#F49D37">
+                                    <input type="text" class="color-text" id="secondary_color_text" value="#F49D37">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Accent Color</label>
+                                <div class="color-input-group">
+                                    <input type="color" name="accent_color" id="accent_color" value="#3B82F6">
+                                    <input type="text" class="color-text" id="accent_color_text" value="#3B82F6">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success">Save Colors</button>
+                        </form>
+                    </div>
+
+                    <div class="settings-card">
+                        <h3><i class="fas fa-school"></i> School Information</h3>
+                        <p>Update school contact details</p>
+                        <form id="contactSettingsForm" class="settings-form">
+                            <div class="form-group">
+                                <label>School Name</label>
+                                <input type="text" name="school_name" id="school_name" value="Cedarville Private Schools">
+                            </div>
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input type="tel" name="school_phone" id="school_phone" value="+234 801 234 5678">
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" name="school_email" id="school_email" value="info@cedarvilleschools.com">
+                            </div>
+                            <div class="form-group">
+                                <label>Address</label>
+                                <textarea name="school_address" id="school_address" rows="2">15 Ogunlana Drive, Surulere, Lagos</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>WhatsApp Number</label>
+                                <input type="tel" name="whatsapp_number" id="whatsapp_number" value="+2348012345678">
+                            </div>
+                            <button type="submit" class="btn btn-success">Save Information</button>
+                        </form>
+                    </div>
+
+                    <div class="settings-card">
+                        <h3><i class="fas fa-robot"></i> Chatbot API Key</h3>
+                        <p>Add an AI API key for advanced chatbot responses (optional)</p>
+                        <form id="apiKeyForm" class="settings-form">
+                            <div class="form-group">
+                                <label>API Key (e.g., OpenAI, Claude)</label>
+                                <input type="password" name="api_key" id="chatbot_api_key" placeholder="sk-...">
+                                <small style="color: #666;">Leave empty to use FAQ-based responses</small>
+                            </div>
+                            <button type="submit" class="btn btn-success">Save API Key</button>
+                        </form>
+                    </div>
+
+                    <div class="settings-card">
+                        <h3><i class="fas fa-key"></i> Change Password</h3>
+                        <p>Update your admin account password</p>
+                        <form id="passwordForm" class="settings-form">
+                            <div class="form-group">
+                                <label>Current Password</label>
+                                <input type="password" name="currentPassword" id="currentPassword" required>
+                            </div>
+                            <div class="form-group">
+                                <label>New Password</label>
+                                <input type="password" name="newPassword" id="newPassword" required minlength="6">
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm New Password</label>
+                                <input type="password" name="confirmPassword" id="confirmPassword" required minlength="6">
+                            </div>
+                            <button type="submit" class="btn btn-success">Change Password</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <section id="users" class="content-section">
+                <div class="section-header">
+                    <h2>User Management</h2>
+                    <button class="btn btn-success" onclick="showAddUserModal()">
+                        <i class="fas fa-plus"></i> Add User
+                    </button>
+                </div>
+                <table id="usersTable">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Display Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Last Login</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+    <div class="modal" id="addBlogModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('addBlogModal')">&times;</span>
+            <div class="modal-header">
+                <h2 id="blogModalTitle"><i class="fas fa-plus-circle"></i> Add Blog Post</h2>
+            </div>
+            <form id="blogForm">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label>Excerpt</label>
+                    <textarea name="excerpt" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Content</label>
+                    <textarea name="content" rows="6" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Author</label>
+                    <input type="text" name="author" required>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <input type="text" name="category">
+                </div>
+                <div class="form-group">
+                    <label>Read Time</label>
+                    <input type="text" name="readTime" placeholder="5 min read">
+                </div>
+                <div class="form-group">
+                    <label>Image URL</label>
+                    <input type="url" name="imageUrl">
+                </div>
+                <div class="form-group">
+                    <label>Tags (comma separated)</label>
+                    <input type="text" name="tags">
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="featured"> Featured Post
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-success">Save Post</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="addChatbotModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('addChatbotModal')">&times;</span>
+            <div class="modal-header">
+                <h2 id="chatbotModalTitle"><i class="fas fa-plus-circle"></i> Add Chatbot Response</h2>
+            </div>
+            <form id="chatbotForm">
+                <div class="form-group">
+                    <label>Keywords (comma separated)</label>
+                    <input type="text" name="keywords" required placeholder="hello, hi, hey">
+                </div>
+                <div class="form-group">
+                    <label>Response</label>
+                    <textarea name="response" rows="5" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <input type="text" name="category">
+                </div>
+                <div class="form-group">
+                    <label>Priority (higher = more important)</label>
+                    <input type="number" name="priority" value="10">
+                </div>
+                <button type="submit" class="btn btn-success">Save Response</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="addGalleryModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('addGalleryModal')">&times;</span>
+            <div class="modal-header">
+                <h2 id="galleryModalTitle"><i class="fas fa-plus-circle"></i> Add Gallery Image</h2>
+            </div>
+            <form id="galleryForm">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="description" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Image URL</label>
+                    <input type="url" name="imageUrl" required>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <input type="text" name="category">
+                </div>
+                <button type="submit" class="btn btn-success">Save Image</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="addUserModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('addUserModal')">&times;</span>
+            <div class="modal-header">
+                <h2 id="userModalTitle">Add User</h2>
+            </div>
+            <form id="userForm">
+                <input type="hidden" name="userId" id="userId">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" name="username" id="userUsername" required minlength="3">
+                </div>
+                <div class="form-group">
+                    <label>Display Name</label>
+                    <input type="text" name="displayName" id="userDisplayName">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" name="email" id="userEmail">
+                </div>
+                <div class="form-group">
+                    <label>Role</label>
+                    <select name="role" id="userRole">
+                        <option value="teacher">Staff/Teacher</option>
+                        <option value="admin">Administrator</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label id="passwordLabel">Password</label>
+                    <input type="password" name="password" id="userPassword" minlength="6">
+                    <small id="passwordHint" style="color: #666;">Leave blank to keep current password (when editing)</small>
+                </div>
+                <button type="submit" class="btn btn-success">Save User</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/auth.js"></script>
+    <script src="../js/content.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

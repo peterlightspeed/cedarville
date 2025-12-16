@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Portal - Cedarville Private Schools</title>
+    <link rel="stylesheet" href="css/staff.css">
+    <!-- TODO: Replace favicon with official school logo -->
+    <link rel="icon" href="../images/logo.png" type="image/png">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <!-- TODO: Replace with official Cedarville logo -->
+            <div class="logo">
+                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#1E3A8A" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+            </div>
+            <h1>Staff Portal</h1>
+            <p class="subtitle">Cedarville Private Schools</p>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required autofocus>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <div id="errorMessage" class="error-message"></div>
+                
+                <button type="submit" class="login-btn">Login to Staff Portal</button>
+            </form>
+            
+            <p class="help-text">
+                For technical support, contact the admin office.
+            </p>
+        </div>
+    </div>
+    
+    <script src="../js/auth.js"></script>
+    <script src="js/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+ {
+  "responses": {
+    "greetings": [
+      "Hello! Welcome to Cedarville Schools! How can I help you today?",
+      "Hi there! I'm here to answer your questions about our programs.",
+      "Greetings! Feel free to ask me anything about Cedarville Schools."
+    ],
+    "hours": "Our school hours are Monday to Friday, 7:00 AM - 5:00 PM. The creche program has extended hours until 6:00 PM.",
+    "fees": "Our monthly tuition fees are:\
+\u2022 Creche (6mo-2yrs): \u20a650,000\
+\u2022 Nursery (2-4yrs): \u20a645,000\
+\u2022 Kindergarten (4-6yrs): \u20a640,000\
+\
+We offer flexible payment plans and sibling discounts!",
+    "admission": "Our admission process is simple:\
+1. Schedule a school tour\
+2. Submit application form\
+3. Assessment and interview\
+4. Enrollment confirmation\
+\
+Would you like to schedule a tour?",
+    "programs": "We offer three main programs:\
+\u2022 \ud83c\udf7c Creche: 6 months - 2 years\
+\u2022 \ud83e\uddf8 Nursery: 2 - 4 years\
+\u2022 \ud83d\udcda Kindergarten: 4 - 6 years\
+\
+Each program is designed to meet the developmental needs of your child.",
+    "curriculum": "We follow a blended curriculum that combines Nigerian educational standards with international best practices, focusing on play-based learning, STEM activities, and character development.",
+    "facilities": "Our facilities include:\
+\u2022 Spacious, air-conditioned classrooms\
+\u2022 Outdoor playground\
+\u2022 Indoor play area\
+\u2022 Library and reading corner\
+\u2022 Sick bay with registered nurse\
+\u2022 CCTV monitoring\
+\u2022 Nutritious meal service",
+    "teachers": "All our teachers are certified early childhood educators with minimum 5 years experience. They undergo regular training and background checks.",
+    "location": "We're located in Aguda, Surulere, Lagos. We're easily accessible and have safe drop-off/pick-up zones.",
+    "contact": "You can reach us at:\
+\ud83d\udcde +234 803 939 4759\
+\ud83d\udce7 info@cedarvilleschools.com\
+\ud83d\udccd Aguda, Surulere, Lagos",
+    "whatsapp": "Click here to chat with us on WhatsApp: https://wa.me/2348012345678",
+    "tour": "I'd be happy to help you schedule a tour! Please call us at +234 803 939 4759 or use the WhatsApp button to arrange a convenient time.",
+    "default": [
+      "I'm not sure how to answer that. Can you ask about our programs, fees, admission process, or facilities?",
+      "Let me help you better. You can ask me about school hours, tuition fees, programs, or how to enroll.",
+      "I'd be happy to assist! Try asking about our creche, nursery, or kindergarten programs."
+    ]
+  },
+  "keywords": {
+    "hello": ["greetings"],
+    "hi": ["greetings"],
+    "hey": ["greetings"],
+    "hours": ["hours"],
+    "time": ["hours"],
+    "open": ["hours"],
+    "fees": ["fees"],
+    "fee": ["fees"],
+    "price": ["fees"],
+    "cost": ["fees"],
+    "tuition": ["fees"],
+    "admission": ["admission"],
+    "enroll": ["admission"],
+    "register": ["admission"],
+    "apply": ["admission"],
+    "program": ["programs"],
+    "programs": ["programs"],
+    "curriculum": ["curriculum"],
+    "facilities": ["facilities"],
+    "facility": ["facilities"],
+    "building": ["facilities"],
+    "equipment": ["facilities"],
+    "teacher": ["teachers"],
+    "teachers": ["teachers"],
+    "staff": ["teachers"],
+    "educator": ["teachers"],
+    "location": ["location"],
+    "address": ["location"],
+    "where": ["location"],
+    "contact": ["contact"],
+    "call": ["contact"],
+    "phone": ["contact"],
+    "email": ["contact"],
+    "whatsapp": ["whatsapp"],
+    "chat": ["whatsapp"],
+    "tour": ["tour"],
+    "visit": ["tour"],
+    "see": ["tour"]
+  }
+}
