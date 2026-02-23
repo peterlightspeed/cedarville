@@ -1,353 +1,353 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Latest news, parenting tips, and insights from Cedarville Private Schools Lagos">
-    <title>Blog - Cedarville Private Schools | News & Insights</title>
-    
-    <link rel="icon" type="image/png" href="assets/icons/favicon.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/chatbot.css">
-    <link rel="stylesheet" href="css/dark-mode.css">
-    <style>
-        .blog-header {
-            background: var(--gradient-primary);
-            padding: 120px 0 80px;
-            text-align: center;
-            color: white;
-        }
-        
-        .blog-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: var(--spacing-2xl) var(--spacing-md);
-        }
-        
-        .blog-filters {
-            display: flex;
-            justify-content: center;
-            gap: var(--spacing-sm);
-            flex-wrap: wrap;
-            margin-bottom: var(--spacing-xl);
-        }
-        
-        .filter-btn {
-            padding: 12px 24px;
-            background: var(--bg-secondary);
-            border: 2px solid var(--primary-color);
-            border-radius: var(--radius-full);
-            color: var(--primary-color);
-            cursor: pointer;
-            transition: all var(--transition-base);
-        }
-        
-        .filter-btn:hover, .filter-btn.active {
-            background: var(--primary-color);
-            color: white;
-        }
-        
-        .blog-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: var(--spacing-lg);
-            margin-bottom: var(--spacing-xl);
-        }
-        
-        .blog-card {
-            background: var(--bg-primary);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            box-shadow: var(--shadow-md);
-            transition: all var(--transition-base);
-        }
-        
-        .blog-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-        }
-        
-        .blog-image {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-        }
-        
-        .blog-content {
-            padding: var(--spacing-lg);
-        }
-        
-        .blog-category {
-            display: inline-block;
-            padding: 6px 12px;
-            background: var(--primary-color);
-            color: white;
-            border-radius: var(--radius-sm);
-            font-size: 0.875rem;
-            margin-bottom: var(--spacing-sm);
-        }
-        
-        .blog-title {
-            font-size: 1.5rem;
-            margin-bottom: var(--spacing-sm);
-            color: var(--text-primary);
-        }
-        
-        .blog-excerpt {
-            color: var(--text-secondary);
-            margin-bottom: var(--spacing-md);
-            line-height: 1.6;
-        }
-        
-        .blog-meta {
-            display: flex;
-            gap: var(--spacing-md);
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            margin-bottom: var(--spacing-md);
-        }
-        
-        .blog-meta span {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .blog-tags {
-            display: flex;
-            gap: var(--spacing-xs);
-            flex-wrap: wrap;
-            margin-bottom: var(--spacing-md);
-        }
-        
-        .blog-tag {
-            padding: 4px 10px;
-            background: var(--bg-secondary);
-            border-radius: var(--radius-sm);
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-        
-        .loading {
-            text-align: center;
-            padding: var(--spacing-2xl);
-            color: var(--text-secondary);
-        }
-        
-        @media (max-width: 768px) {
-            .blog-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .blog-header {
-                padding: 100px 0 60px;
-            }
-        }
-    </style>
-</head>
-<body>
-    
-    <nav class="navbar" id="navbar">
-        <div class="container nav-container">
-            <div class="logo">
-                <i class="fas fa-tree"></i>
-                <span class="logo-text">Cedarville</span>
-            </div>
-            
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="programs.html">Programs</a></li>
-                <li><a href="gallery.html">Gallery</a></li>
-                <li><a href="blog.html" class="active">Blog</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-            
-            <div class="nav-actions">
-                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
-                    <i class="fas fa-moon"></i>
-                </button>
-                
-                <a href="https://wa.me/2348012345678?text=Hello%20Cedarville!%20I'm%20interested%20in%20enrollment." 
-                   target="_blank" 
-                   class="btn btn-primary btn-sm">
-                    <i class="fab fa-whatsapp"></i> Enroll Now
-                </a>
-                
-                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </div>
-        </div>
-    </nav>
 
-    <div class="blog-header">
-        <div class="container">
-            <h1>Our Blog</h1>
-            <p>Latest news, parenting tips, and insights from Cedarville Schools</p>
-        </div>
-    </div>
 
-    <div class="blog-container">
-        <div class="blog-filters" id="blogFilters">
-            <button class="filter-btn active" data-category="all">All Posts</button>
-        </div>
-        
-        <div class="blog-grid" id="blogGrid">
-            <div class="loading">
-                <i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i>
-                <p>Loading blog posts...</p>
-            </div>
-        </div>
-    </div>
 
-    <div class="chatbot-trigger" id="chatbotTrigger">
-        <i class="fas fa-comments"></i>
-        <span class="chatbot-badge">0</span>
-    </div>
 
-    <div class="chatbot-window" id="chatbotWindow">
-        <div class="chatbot-header">
-            <div class="chatbot-header-info">
-                <i class="fas fa-robot"></i>
-                <div>
-                    <h4>Cedarville Assistant</h4>
-                    <span class="chatbot-status">Online</span>
-                </div>
-            </div>
-            <button class="chatbot-close" id="chatbotClose">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        
-        <div class="chatbot-messages" id="chatbotMessages"></div>
-        
-        <div class="chatbot-quick-replies" id="chatbotQuickReplies">
-            <button class="quick-reply">Fees</button>
-            <button class="quick-reply">Programs</button>
-            <button class="quick-reply">Admission</button>
-            <button class="quick-reply">Location</button>
-        </div>
-        
-        <div class="chatbot-input-area">
-            <input type="text" id="chatbotInput" placeholder="Ask me anything...">
-            <button id="chatbotSend">
-                <i class="fas fa-paper-plane"></i>
-            </button>
-        </div>
-    </div>
 
-    <script src="js/global.js"></script>
-    <script src="js/content.js"></script>
-    <script src="js/chatbot.js"></script>
-    <script src="js/dark-mode.js"></script>
-    <script src="js/back-to-top.js"></script>
-    <script>
-        let allPosts = [];
-        let currentCategory = 'all';
-        
-        async function loadBlogPosts() {
-            try {
-                const response = await fetch('/api/blog/posts?limit=50');
-                allPosts = await response.json();
-                
-                loadCategories();
-                displayPosts(allPosts);
-            } catch (error) {
-                console.error('Error loading blog posts:', error);
-                document.getElementById('blogGrid').innerHTML = '<p class="loading">Failed to load blog posts. Please try again later.</p>';
-            }
-        }
-        
-        async function loadCategories() {
-            try {
-                const response = await fetch('/api/blog/categories');
-                const categories = await response.json();
-                
-                const filtersContainer = document.getElementById('blogFilters');
-                filtersContainer.innerHTML = '<button class="filter-btn active" data-category="all">All Posts</button>';
-                
-                categories.forEach(category => {
-                    if (category) {
-                        const btn = document.createElement('button');
-                        btn.className = 'filter-btn';
-                        btn.setAttribute('data-category', category);
-                        btn.textContent = category;
-                        filtersContainer.appendChild(btn);
-                    }
-                });
-                
-                document.querySelectorAll('.filter-btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                        this.classList.add('active');
-                        
-                        const category = this.getAttribute('data-category');
-                        currentCategory = category;
-                        
-                        if (category === 'all') {
-                            displayPosts(allPosts);
-                        } else {
-                            const filtered = allPosts.filter(post => post.category === category);
-                            displayPosts(filtered);
-                        }
-                    });
-                });
-            } catch (error) {
-                console.error('Error loading categories:', error);
-            }
-        }
-        
-        function displayPosts(posts) {
-            const grid = document.getElementById('blogGrid');
-            
-            if (posts.length === 0) {
-                grid.innerHTML = '<p class="loading">No blog posts found.</p>';
-                return;
-            }
-            
-            grid.innerHTML = posts.map(post => `
-                <article class="blog-card">
-                    <img src="${post.image_url || 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800'}" 
-                         alt="${post.title}" 
-                         class="blog-image">
-                    <div class="blog-content">
-                        <span class="blog-category">${post.category || 'General'}</span>
-                        <h3 class="blog-title">${post.title}</h3>
-                        <p class="blog-excerpt">${post.excerpt || ''}</p>
-                        
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> ${new Date(post.created_at).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'})}</span>
-                            <span><i class="far fa-clock"></i> ${post.read_time || '5 min read'}</span>
-                            <span><i class="far fa-user"></i> ${post.author}</span>
-                        </div>
-                        
-                        ${post.tags && post.tags.length > 0 ? `
-                            <div class="blog-tags">
-                                ${post.tags.map(tag => `<span class="blog-tag">#${tag}</span>`).join('')}
-                            </div>
-                        ` : ''}
-                        
-                        <a href="#post-${post.id}" class="btn btn-outline btn-sm" onclick="viewPost(${post.id})">
-                            Read More <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-                </article>
-            `).join('');
-        }
-        
-        function viewPost(postId) {
-            alert('Blog post detail page coming soon! Post ID: ' + postId);
-        }
-        
-        loadBlogPosts();
-    </script>
-</body>
-</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,497 +1,497 @@
- /* ========================================
-   PROGRAMS PAGE SPECIFIC STYLES
-   ======================================== */
-
-/* ===== PAGE HEADER ===== */
-.page-header {
-    background: var(--gradient-primary);
-    color: white;
-    padding: 120px 0 80px;
-    margin-top: 70px;
-    text-align: center;
-}
-
-.page-header h1 {
-    color: white;
-    margin-bottom: var(--spacing-sm);
-}
-
-.breadcrumb {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    font-size: 0.938rem;
-    margin-top: var(--spacing-sm);
-}
-
-.breadcrumb a {
-    color: rgba(255, 255, 255, 0.8);
-}
-
-.breadcrumb a:hover {
-    color: white;
-}
-
-.breadcrumb span {
-    color: rgba(255, 255, 255, 0.6);
-}
-
-/* ===== PROGRAMS OVERVIEW ===== */
-.programs-overview {
-    background: var(--bg-secondary);
-    padding: var(--spacing-2xl) 0;
-}
-
-.age-tabs {
-    display: flex;
-    justify-content: center;
-    gap: var(--spacing-sm);
-    margin-top: var(--spacing-lg);
-    flex-wrap: wrap;
-}
-
-.age-tab {
-    padding: 12px 24px;
-    background: var(--bg-primary);
-    border: 2px solid var(--bg-tertiary);
-    border-radius: var(--radius-full);
-    font-weight: 600;
-    cursor: pointer;
-    transition: all var(--transition-base);
-}
-
-.age-tab:hover,
-.age-tab.active {
-    background: var(--primary-color);
-    color: white;
-    border-color: var(--primary-color);
-    transform: translateY(-2px);
-}
-
-/* ===== PROGRAM DETAIL SECTIONS ===== */
-.program-detail {
-    padding: var(--spacing-2xl) 0;
-}
-
-.program-detail:nth-child(even) {
-    background: var(--bg-secondary);
-}
-
-.program-detail-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: var(--spacing-xl);
-    align-items: center;
-}
-
-.program-detail-grid.reverse {
-    direction: rtl;
-}
-
-.program-detail-grid.reverse > * {
-    direction: ltr;
-}
-
-/* ===== PROGRAM CONTENT STYLES ===== */
-.program-detail-content {
-    padding: var(--spacing-lg);
-}
-
-.program-features {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: var(--spacing-md);
-    margin: var(--spacing-lg) 0;
-}
-
-.feature-item {
-    text-align: center;
-    padding: var(--spacing-md);
-    background: var(--bg-secondary);
-    border-radius: var(--radius-lg);
-    transition: all var(--transition-base);
-}
-
-.feature-item:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-md);
-}
-
-.feature-item i {
-    font-size: 2rem;
-    color: var(--primary-color);
-    margin-bottom: var(--spacing-sm);
-}
-
-.feature-item h4 {
-    font-size: 1.125rem;
-    margin-bottom: var(--spacing-xs);
-}
-
-.feature-item p {
-    margin: 0;
-    color: var(--text-secondary);
-}
-
-/* ===== PROGRAM CURRICULUM ===== */
-.program-curriculum {
-    margin: var(--spacing-xl) 0;
-}
-
-.program-curriculum h3 {
-    margin-bottom: var(--spacing-md);
-    color: var(--primary-color);
-}
-
-.program-curriculum ul {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: var(--spacing-sm);
-}
-
-.program-curriculum li {
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    padding: 8px 0;
-}
-
-.program-curriculum i {
-    color: var(--success-color);
-    margin-top: 2px;
-    flex-shrink: 0;
-}
-
-/* ===== DAILY SCHEDULE ===== */
-.program-daily {
-    margin: var(--spacing-xl) 0;
-}
-
-.program-daily h3 {
-    margin-bottom: var(--spacing-md);
-    color: var(--primary-color);
-}
-
-.schedule-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-sm);
-}
-
-.schedule-item {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-    padding: var(--spacing-sm);
-    background: var(--bg-secondary);
-    border-radius: var(--radius-md);
-    transition: all var(--transition-base);
-}
-
-.schedule-item:hover {
-    transform: translateX(10px);
-    box-shadow: var(--shadow-sm);
-}
-
-.schedule-item .time {
-    font-weight: 700;
-    color: var(--primary-color);
-    min-width: 120px;
-}
-
-.schedule-item .activity {
-    flex: 1;
-}
-
-/* ===== PROGRAM PRICING ===== */
-.program-pricing {
-    margin-top: var(--spacing-xl);
-}
-
-.price-card {
-    background: var(--gradient-primary);
-    color: white;
-    padding: var(--spacing-xl);
-    border-radius: var(--radius-xl);
-    position: relative;
-    overflow: hidden;
-    transition: all var(--transition-base);
-}
-
-.price-card:hover {
-    transform: translateY(-10px);
-    box-shadow: var(--shadow-xl);
-}
-
-.price-card.featured {
-    border: 3px solid var(--secondary-color);
-}
-
-.featured-badge {
-    position: absolute;
-    top: 20px;
-    right: -30px;
-    background: var(--secondary-color);
-    color: white;
-    padding: 8px 40px;
-    transform: rotate(45deg);
-    font-weight: 700;
-    font-size: 0.875rem;
-}
-
-.price-card h4 {
-    color: white;
-    margin-bottom: var(--spacing-sm);
-    font-size: 1.5rem;
-}
-
-.price {
-    font-size: 2.5rem;
-    font-weight: 800;
-    margin: var(--spacing-md) 0;
-}
-
-.price span {
-    font-size: 1rem;
-    opacity: 0.8;
-}
-
-.price-includes {
-    list-style: none;
-    margin: var(--spacing-lg) 0;
-}
-
-.price-includes li {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: var(--spacing-sm);
-    font-size: 1rem;
-}
-
-.price-includes i {
-    color: var(--success-color);
-}
-
-/* ===== PROGRAM IMAGES ===== */
-.program-detail-image {
-    position: relative;
-    border-radius: var(--radius-xl);
-    overflow: hidden;
-    box-shadow: var(--shadow-lg);
-}
-
-.program-detail-image img {
-    width: 100%;
-    height: 500px;
-    object-fit: cover;
-    transition: transform var(--transition-slow);
-}
-
-.program-detail-image:hover img {
-    transform: scale(1.05);
-}
-
-.image-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-    padding: var(--spacing-xl);
-    color: white;
-    text-align: center;
-}
-
-.overlay-content i {
-    font-size: 3rem;
-    margin-bottom: var(--spacing-sm);
-    color: var(--secondary-color);
-}
-
-.overlay-content h4 {
-    font-size: 1.75rem;
-    margin-bottom: var(--spacing-xs);
-}
-
-.overlay-content p {
-    font-size: 1.125rem;
-    opacity: 0.9;
-}
-
-/* ===== SUMMER PROGRAM ===== */
-.summer-program {
-    background: var(--bg-primary);
-    padding: var(--spacing-2xl) 0;
-}
-
-.summer-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: var(--spacing-xl);
-    align-items: center;
-}
-
-.summer-image img {
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-lg);
-}
-
-.summer-highlights {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: var(--spacing-md);
-    margin: var(--spacing-lg) 0;
-}
-
-.highlight-item {
-    text-align: center;
-    padding: var(--spacing-md);
-}
-
-.highlight-item i {
-    font-size: 2.5rem;
-    color: var(--primary-color);
-    margin-bottom: var(--spacing-sm);
-}
-
-.highlight-item h4 {
-    margin-bottom: var(--spacing-xs);
-    color: var(--primary-color);
-}
-
-.summer-cta {
-    text-align: center;
-    margin-top: var(--spacing-lg);
-}
-
-.price-info {
-    display: block;
-    margin-top: var(--spacing-sm);
-    font-size: 1.125rem;
-    color: var(--text-secondary);
-}
-
-/* ===== ENROLLMENT CTA ===== */
-.enrollment-cta {
-    background: var(--gradient-secondary);
-    padding: var(--spacing-2xl) 0;
-    color: white;
-}
-
-.enrollment-cta h2 {
-    color: white;
-    margin-bottom: var(--spacing-sm);
-}
-
-.enrollment-cta p {
-    color: rgba(255, 255, 255, 0.9);
-    margin-bottom: var(--spacing-lg);
-}
-
-.cta-buttons {
-    display: flex;
-    justify-content: center;
-    gap: var(--spacing-sm);
-    flex-wrap: wrap;
-}
-
-/* ===== RESPONSIVE DESIGN ===== */
-@media (max-width: 968px) {
-    .program-detail-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .program-detail-grid.reverse {
-        direction: ltr;
-    }
-    
-    .program-features {
-        grid-template-columns: 1fr;
-    }
-    
-    .program-curriculum ul {
-        grid-template-columns: 1fr;
-    }
-    
-    .age-tabs {
-        flex-direction: column;
-        align-items: stretch;
-    }
-}
-
-@media (max-width: 768px) {
-    .page-header {
-        padding: 100px 0 60px;
-    }
-    
-    .schedule-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--spacing-xs);
-    }
-    
-    .schedule-item .time {
-        min-width: auto;
-        font-weight: 600;
-    }
-    
-    .summer-content {
-        grid-template-columns: 1fr;
-    }
-    
-    .cta-buttons {
-        flex-direction: column;
-    }
-    
-    .price-card {
-        padding: var(--spacing-lg);
-    }
-    
-    .price {
-        font-size: 2rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .program-detail-image img {
-        height: 300px;
-    }
-    
-    .image-overlay {
-        padding: var(--spacing-md);
-    }
-    
-    .overlay-content i {
-        font-size: 2rem;
-    }
-    
-    .overlay-content h4 {
-        font-size: 1.5rem;
-    }
-}
-
-/* ===== DARK MODE ADJUSTMENTS ===== */
-[data-theme="dark"] .programs-overview,
-[data-theme="dark"] .program-detail:nth-child(even),
-[data-theme="dark"] .summer-program {
-    background: var(--bg-tertiary);
-}
-
-[data-theme="dark"] .program-detail {
-    background: var(--bg-primary);
-}
-
-[data-theme="dark"] .feature-item,
-[data-theme="dark"] .schedule-item {
-    background: var(--bg-secondary);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-[data-theme="dark"] .price-card {
-    background: var(--gradient-primary);
-}
-
-[data-theme="dark"] .image-overlay {
-    background: linear-gradient(to top, rgba(26, 26, 26, 0.9), transparent);
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

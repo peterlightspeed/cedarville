@@ -1,255 +1,255 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Staff Portal - Cedarville Schools</title>
-    <!-- TODO: Replace favicon with official school logo -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/dashboard.css">
-</head>
-<body>
-    <div class="admin-container">
-        <aside class="sidebar">
-            <!-- TODO: Replace tree icon with official Cedarville logo -->
-            <div class="sidebar-header">
-                <i class="fas fa-tree"></i>
-                <h2>Cedarville Staff</h2>
-            </div>
-            
-            <nav>
-                <ul class="nav-menu">
-                    <li><a href="#dashboard" class="nav-link active" data-section="dashboard">
-                        <i class="fas fa-tachometer-alt"></i>
-                        <span>Dashboard</span>
-                    </a></li>
-                    <li><a href="#blog" class="nav-link" data-section="blog">
-                        <i class="fas fa-blog"></i>
-                        <span>Blog Posts</span>
-                    </a></li>
-                    <li><a href="#chatbot" class="nav-link" data-section="chatbot">
-                        <i class="fas fa-robot"></i>
-                        <span>Chatbot</span>
-                    </a></li>
-                    <li><a href="#gallery" class="nav-link" data-section="gallery">
-                        <i class="fas fa-images"></i>
-                        <span>Gallery</span>
-                    </a></li>
-                </ul>
-            </nav>
-        </aside>
-        
-        <main class="main-content">
-            <div class="top-bar">
-                <div class="welcome">
-                    <h1>Welcome, <span id="adminUsername">Teacher</span>!</h1>
-                    <p>Manage blog posts, gallery, and chatbot responses</p>
-                </div>
-                
-                <div class="user-info">
-                    <div class="user-avatar">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <button class="btn-logout" id="logoutBtn">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </button>
-                </div>
-            </div>
-            
-            <section id="dashboard" class="content-section active">
-                <h2>Dashboard Overview</h2>
-                <div class="cards">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-icon blue">
-                                <i class="fas fa-blog"></i>
-                            </div>
-                        </div>
-                        <div class="card-number" id="blogCount">0</div>
-                        <div class="card-label">Blog Posts</div>
-                    </div>
-                    
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-icon green">
-                                <i class="fas fa-robot"></i>
-                            </div>
-                        </div>
-                        <div class="card-number" id="chatbotCount">0</div>
-                        <div class="card-label">Chatbot Responses</div>
-                    </div>
-                    
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-icon orange">
-                                <i class="fas fa-images"></i>
-                            </div>
-                        </div>
-                        <div class="card-number" id="galleryCount">0</div>
-                        <div class="card-label">Gallery Images</div>
-                    </div>
-                </div>
-            </section>
-            
-            <section id="blog" class="content-section">
-                <div class="section-header">
-                    <h2>Blog Posts</h2>
-                    <button class="btn btn-success" onclick="showAddBlogModal()">
-                        <i class="fas fa-plus"></i> Add New Post
-                    </button>
-                </div>
-                <table id="blogTable">
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Category</th>
-                            <th>Author</th>
-                            <th>Date</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </section>
-            
-            <section id="chatbot" class="content-section">
-                <div class="section-header">
-                    <h2>Chatbot Responses</h2>
-                    <button class="btn btn-success" onclick="showAddChatbotModal()">
-                        <i class="fas fa-plus"></i> Add Response
-                    </button>
-                </div>
-                <table id="chatbotTable">
-                    <thead>
-                        <tr>
-                            <th>Keywords</th>
-                            <th>Response</th>
-                            <th>Category</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </section>
-            
-            <section id="gallery" class="content-section">
-                <div class="section-header">
-                    <h2>Gallery Images</h2>
-                    <button class="btn btn-success" onclick="showAddGalleryModal()">
-                        <i class="fas fa-plus"></i> Add Image
-                    </button>
-                </div>
-                <div id="galleryGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px;"></div>
-            </section>
-        </main>
-    </div>
 
-    <div class="modal" id="addBlogModal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('addBlogModal')">&times;</span>
-            <div class="modal-header">
-                <h2>Add Blog Post</h2>
-            </div>
-            <form id="blogForm">
-                <div class="form-group">
-                    <label>Title</label>
-                    <input type="text" name="title" required>
-                </div>
-                <div class="form-group">
-                    <label>Excerpt</label>
-                    <textarea name="excerpt" rows="3" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Content</label>
-                    <textarea name="content" rows="6" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Author</label>
-                    <input type="text" name="author" required>
-                </div>
-                <div class="form-group">
-                    <label>Category</label>
-                    <input type="text" name="category">
-                </div>
-                <div class="form-group">
-                    <label>Read Time</label>
-                    <input type="text" name="readTime" placeholder="5 min read">
-                </div>
-                <div class="form-group">
-                    <label>Image URL</label>
-                    <input type="url" name="imageUrl">
-                </div>
-                <div class="form-group">
-                    <label>Tags (comma separated)</label>
-                    <input type="text" name="tags">
-                </div>
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" name="featured"> Featured Post
-                    </label>
-                </div>
-                <button type="submit" class="btn btn-success">Save Post</button>
-            </form>
-        </div>
-    </div>
 
-    <div class="modal" id="addChatbotModal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('addChatbotModal')">&times;</span>
-            <div class="modal-header">
-                <h2>Add Chatbot Response</h2>
-            </div>
-            <form id="chatbotForm">
-                <div class="form-group">
-                    <label>Keywords (comma separated)</label>
-                    <input type="text" name="keywords" required placeholder="hello, hi, hey">
-                </div>
-                <div class="form-group">
-                    <label>Response</label>
-                    <textarea name="response" rows="5" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Category</label>
-                    <input type="text" name="category">
-                </div>
-                <div class="form-group">
-                    <label>Priority (higher = more important)</label>
-                    <input type="number" name="priority" value="10">
-                </div>
-                <button type="submit" class="btn btn-success">Save Response</button>
-            </form>
-        </div>
-    </div>
 
-    <div class="modal" id="addGalleryModal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('addGalleryModal')">&times;</span>
-            <div class="modal-header">
-                <h2>Add Gallery Image</h2>
-            </div>
-            <form id="galleryForm">
-                <div class="form-group">
-                    <label>Title</label>
-                    <input type="text" name="title" required>
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea name="description" rows="3"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Image URL</label>
-                    <input type="url" name="imageUrl" required>
-                </div>
-                <div class="form-group">
-                    <label>Category</label>
-                    <input type="text" name="category">
-                </div>
-                <button type="submit" class="btn btn-success">Save Image</button>
-            </form>
-        </div>
-    </div>
 
-    <script src="../js/auth.js"></script>
-    <script src="js/dashboard.js"></script>
-</body>
-</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
