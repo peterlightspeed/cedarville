@@ -6,12 +6,7 @@
       "Greetings! Feel free to ask me anything about Cedarville Schools."
     ],
     "hours": "Our school hours are Monday to Friday, 7:00 AM - 5:00 PM. The creche program has extended hours until 6:00 PM.",
-    "fees": "Our monthly tuition fees are:\
-\u2022 Creche (6mo-2yrs): \u20a650,000\
-\u2022 Nursery (2-4yrs): \u20a645,000\
-\u2022 Kindergarten (4-6yrs): \u20a640,000\
-\
-We offer flexible payment plans and sibling discounts!",
+    "fees": "Contact us for more details: +234 813 745 1764",
     "admission": "Our admission process is simple:\
 1. Schedule a school tour\
 2. Submit application form\
@@ -20,9 +15,9 @@ We offer flexible payment plans and sibling discounts!",
 \
 Would you like to schedule a tour?",
     "programs": "We offer three main programs:\
-\u2022 \ud83c\udf7c Creche: 6 months - 2 years\
-\u2022 \ud83e\uddf8 Nursery: 2 - 4 years\
-\u2022 \ud83d\udcda Kindergarten: 4 - 6 years\
+\u2022 \ud83c\udf7c Creche: 5 months - 2 years\
+\u2022 \ud83e\uddf8 Nursery: 2 - 5 years\
+\u2022 \ud83d\udcda Primary: 6 - 11 years\
 \
 Each program is designed to meet the developmental needs of your child.",
     "curriculum": "We follow a blended curriculum that combines Nigerian educational standards with international best practices, focusing on play-based learning, STEM activities, and character development.",
@@ -37,15 +32,15 @@ Each program is designed to meet the developmental needs of your child.",
     "teachers": "All our teachers are certified early childhood educators with minimum 5 years experience. They undergo regular training and background checks.",
     "location": "We're located in Aguda, Surulere, Lagos. We're easily accessible and have safe drop-off/pick-up zones.",
     "contact": "You can reach us at:\
-\ud83d\udcde +234 803 939 4759\
-\ud83d\udce7 info@cedarvilleschools.com\
+\ud83d\udcde +234 813 745 1764\
+\ud83d\udce7 cedarvilleprivate@gmail.com\
 \ud83d\udccd Aguda, Surulere, Lagos",
-    "whatsapp": "Click here to chat with us on WhatsApp: https://wa.me/2348012345678",
-    "tour": "I'd be happy to help you schedule a tour! Please call us at +234 803 939 4759 or use the WhatsApp button to arrange a convenient time.",
+    "whatsapp": "Click here to chat with us on WhatsApp: https://wa.me/+234 813 745 1764",
+    "tour": "I'd be happy to help you schedule a tour! Please call us at +234 813 745 1764 or use the WhatsApp button to arrange a convenient time.",
     "default": [
       "I'm not sure how to answer that. Can you ask about our programs, fees, admission process, or facilities?",
       "Let me help you better. You can ask me about school hours, tuition fees, programs, or how to enroll.",
-      "I'd be happy to assist! Try asking about our creche, nursery, or kindergarten programs."
+      "I'd be happy to assist! Try asking about our creche, nursery, or Primary programs."
     ]
   },
   "keywords": {
