@@ -9,6 +9,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="css/style.css">
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
 </head>
 <body>
 
@@ -79,11 +80,11 @@
       4. Update the following:
          - img src: Replace with your post image path e.g. src="images/post-name.jpg"
          - data-cat: Change to matching category (parenting, education, events, news)
+         - data-full-content: Add full article text (3-4 paragraphs)
          - .category-tag text: The category label shown on the card
          - <h5> title: Your blog post title
          - <p> excerpt: Short description (1-2 sentences)
          - .meta date: The publish date
-         - href on Read More: Link to your full post (you can create a new HTML file for it)
       =====================================================================
       -->
 
@@ -92,8 +93,17 @@
         <!-- TODO: Replace ALL blog posts below with your actual content -->
 
         <!-- Blog Post Template - Duplicate this block to add a new post -->
+        <!-- FIX: Added data-full-content attribute and changed Read More to button with modal trigger -->
         <div class="col col-md-4">
-          <div class="blog-card" data-cat="parenting">
+          <div class="blog-card" data-cat="parenting" data-full-content="Starting preschool is a big milestone for both children and parents. Here are practical tips to help your child transition smoothly and feel confident on their first day of school.
+
+First, establish a consistent routine at least two weeks before school starts. Practice waking up, getting dressed, and having breakfast at the same time each day. This helps children adjust to the new schedule and reduces morning stress. Reading books about starting school can also help normalize the experience and address any fears they may have.
+
+Second, visit the school together before the first day if possible. Show your child their classroom, playground, and bathroom. Familiarity with the environment builds confidence and reduces anxiety. Meeting the teacher beforehand can also create a positive connection that makes drop-off easier.
+
+Third, foster independence by teaching basic self-help skills. Practice putting on and taking off shoes, using the bathroom independently, and opening lunch containers. These small skills boost a child's confidence and help them feel capable in the classroom environment.
+
+Finally, create a positive goodbye ritual. Keep it short and sweet - prolonged goodbyes can make separation harder. Reassure your child that you will return and remind them of the fun things they will do. Trust that the teachers are experienced in helping children adjust and settle in.">
             <!-- TODO: Replace with your actual blog post image. Save it in /images -->
             <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=500&q=80"
                  alt="TODO: Describe this blog post image">
@@ -106,17 +116,26 @@
               <p>Starting preschool is a big milestone. Here are practical tips to help your child transition smoothly and feel confident...</p>
               <div class="d-flex justify-content-between align-items-center">
                 <!-- TODO: Update date -->
-                <div class="meta"><i class="far fa-calendar me-1"></i> Jan 15, 2025</div>
-                <!-- TODO: Update link to your full blog post page or leave as # -->
-                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right ms-1"></i></a>
+                <div class="meta"><i class="far fa-calendar me-1"></i> Jan 15, 2026</div>
+                <!-- FIX: Changed from <a> to <button> with modal trigger attributes -->
+                <button class="btn read-more" data-bs-toggle="modal" data-bs-target="#blogModal">Read More <i class="fas fa-arrow-right ms-1"></i></button>
               </div>
             </div>
           </div>
         </div>
 
         <!-- TODO: Duplicate this block for a new blog post -->
+        <!-- FIX: Added data-full-content attribute and changed Read More to button with modal trigger -->
         <div class="col col-md-4">
-          <div class="blog-card" data-cat="education">
+          <div class="blog-card" data-cat="education" data-full-content="Research consistently shows that play is one of the most powerful ways young children learn and develop socially, emotionally, and cognitively. At Cedarville Private Schools, we integrate play-based learning into our curriculum because we understand its profound impact on child development.
+
+Through play, children develop critical thinking and problem-solving skills. When building with blocks, they learn about balance and spatial awareness. When pretending to run a shop, they practice counting and social skills. These hands-on experiences create neural connections that form the foundation for abstract thinking later in life.
+
+Play also fosters creativity and imagination. Unlike rote memorization, play allows children to explore, experiment, and discover solutions in their own way. This creative freedom builds confidence and encourages a love for learning that lasts a lifetime. Children who learn through play become adaptable, innovative thinkers.
+
+Social-emotional development flourishes during play as well. Collaborative games teach cooperation, sharing, and empathy. Children learn to negotiate, resolve conflicts, and work as part of a team. These essential social skills are impossible to teach through lectures but emerge naturally through meaningful play experiences.
+
+At Cedarville, our teachers are trained to observe and extend play, asking thought-provoking questions that deepen learning without taking over the process. We create environments rich in materials and opportunities for both structured and unstructured play, ensuring every child develops at their own pace while having fun.">
             <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?w=500&q=80"
                  alt="TODO: Describe this blog post image">
             <div class="blog-card-body">
@@ -124,16 +143,24 @@
               <h5>The Importance of Play-Based Learning</h5>
               <p>Research consistently shows that play is one of the most powerful ways young children learn and develop socially...</p>
               <div class="d-flex justify-content-between align-items-center">
-                <div class="meta"><i class="far fa-calendar me-1"></i> Feb 5, 2025</div>
-                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right ms-1"></i></a>
+                <div class="meta"><i class="far fa-calendar me-1"></i> Feb 5, 2026</div>
+                <!-- FIX: Changed from <a> to <button> with modal trigger attributes -->
+                <button class="btn read-more" data-bs-toggle="modal" data-bs-target="#blogModal">Read More <i class="fas fa-arrow-right ms-1"></i></button>
               </div>
             </div>
           </div>
         </div>
 
         <!-- TODO: Duplicate this block for a new blog post -->
+        <!-- FIX: Added data-full-content attribute and changed Read More to button with modal trigger -->
         <div class="col col-md-4">
-          <div class="blog-card" data-cat="events">
+          <div class="blog-card" data-cat="events" data-full-content="Our annual end-of-year celebration was a wonderful event full of performances, prizes, and proud family moments. The school hall was packed with excited parents, grandparents, and siblings all gathered to celebrate our students' achievements throughout the academic year.
+
+The event began with a spectacular opening performance by the school choir, followed by heartwarming recitations from our Nursery students. Each class presented something special - from cultural dances to short plays showcasing what they had learned. The confidence and enthusiasm displayed by every child was truly inspiring.
+
+Awards were presented in various categories including academic excellence, most improved, best behavior, and special talents. Seeing the children's faces light up as they received their certificates and medals was the highlight of the day. Parents cheered enthusiastically, and many shared how proud they were of their children's progress.
+
+The celebration concluded with a group photo of all students and teachers, followed by refreshments and networking. It was a perfect ending to a fantastic academic year, leaving everyone with happy memories and looking forward to the next chapter. Thank you to all parents who attended and made this event memorable!">
             <img src="https://images.unsplash.com/photo-1560969184-10fe8719e047?w=500&q=80"
                  alt="TODO: Describe this blog post image">
             <div class="blog-card-body">
@@ -141,16 +168,24 @@
               <h5>End-of-Year Celebration Highlights</h5>
               <p>Our annual end-of-year celebration was a wonderful event full of performances, prizes, and proud family moments...</p>
               <div class="d-flex justify-content-between align-items-center">
-                <div class="meta"><i class="far fa-calendar me-1"></i> Mar 1, 2025</div>
-                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right ms-1"></i></a>
+                <div class="meta"><i class="far fa-calendar me-1"></i> Mar 1, 2026</div>
+                <!-- FIX: Changed from <a> to <button> with modal trigger attributes -->
+                <button class="btn read-more" data-bs-toggle="modal" data-bs-target="#blogModal">Read More <i class="fas fa-arrow-right ms-1"></i></button>
               </div>
             </div>
           </div>
         </div>
 
         <!-- TODO: Duplicate this block for a new blog post -->
+        <!-- FIX: Added data-full-content attribute and changed Read More to button with modal trigger -->
         <div class="col col-md-4">
-          <div class="blog-card" data-cat="news">
+          <div class="blog-card" data-cat="news" data-full-content="We are excited to announce the completion of our new library and expanded outdoor play area for students. This major facility upgrade represents our ongoing commitment to providing the best learning environment for our Cedarville family.
+
+The new library features over 2,000 books covering various subjects and reading levels. We have created dedicated reading corners with comfortable seating, a storytelling area for group activities, and computer stations for digital learning. The library is designed to foster a love for reading and support our literacy programs across all grade levels.
+
+The outdoor play area expansion includes new play structures, safety surfacing, and shade structures. Children now have more space for physical activities, social interaction, and imaginative play. The upgraded equipment meets international safety standards and provides age-appropriate challenges for different developmental stages.
+
+These facilities are already in use and the students absolutely love them! We invite all parents to visit during our upcoming Open House to see these improvements firsthand. Special thanks to our PTA and generous donors who contributed to making this project possible. Your support continues to help us provide quality education for our children.">
             <img src="https://images.unsplash.com/photo-1516627145497-ae6968895b74?w=500&q=80"
                  alt="TODO: Describe this blog post image">
             <div class="blog-card-body">
@@ -158,16 +193,26 @@
               <h5>New Facilities Completed at Cedarville</h5>
               <p>We are excited to announce the completion of our new library and expanded outdoor play area for students...</p>
               <div class="d-flex justify-content-between align-items-center">
-                <div class="meta"><i class="far fa-calendar me-1"></i> Mar 20, 2025</div>
-                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right ms-1"></i></a>
+                <div class="meta"><i class="far fa-calendar me-1"></i> Mar 20, 2026</div>
+                <!-- FIX: Changed from <a> to <button> with modal trigger attributes -->
+                <button class="btn read-more" data-bs-toggle="modal" data-bs-target="#blogModal">Read More <i class="fas fa-arrow-right ms-1"></i></button>
               </div>
             </div>
           </div>
         </div>
 
         <!-- TODO: Duplicate this block for a new blog post -->
+        <!-- FIX: Added data-full-content attribute and changed Read More to button with modal trigger -->
         <div class="col col-md-4">
-          <div class="blog-card" data-cat="parenting">
+          <div class="blog-card" data-cat="parenting" data-full-content="Creating a daily reading routine at home greatly supports your child's development. Reading together strengthens bonds, builds vocabulary, and fosters imagination. Here are some easy steps to start building a lasting reading habit in your family.
+
+Start by setting aside a specific time each day for reading. Bedtime is popular, but any consistent time works. Even just 15-20 minutes of daily reading makes a significant difference. Make it a special, interruption-free time where phones and other distractions are put away.
+
+Create a cozy reading environment. A comfortable corner with cushions, good lighting, and access to books makes reading inviting. Let your child help arrange this space and choose which books to include. When children feel ownership of their reading space, they are more likely to use it.
+
+Read together actively. Don't just read the words - discuss the pictures, ask questions about the story, and make predictions about what might happen next. This interaction builds comprehension skills and makes reading more engaging. Take turns reading pages to build confidence.
+
+Finally, model reading behavior. When children see their parents enjoying books, they understand that reading is a valuable lifelong activity. Visit libraries together regularly, celebrate books as gifts, and talk enthusiastically about what you are reading. Your attitude toward reading will inspire your child.">
             <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=500&q=80"
                  alt="TODO: Describe this blog post image">
             <div class="blog-card-body">
@@ -175,16 +220,26 @@
               <h5>How to Build a Reading Habit at Home</h5>
               <p>Creating a daily reading routine at home greatly supports your child's development. Here are some easy steps to start...</p>
               <div class="d-flex justify-content-between align-items-center">
-                <div class="meta"><i class="far fa-calendar me-1"></i> Apr 8, 2025</div>
-                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right ms-1"></i></a>
+                <div class="meta"><i class="far fa-calendar me-1"></i> Apr 8, 2026</div>
+                <!-- FIX: Changed from <a> to <button> with modal trigger attributes -->
+                <button class="btn read-more" data-bs-toggle="modal" data-bs-target="#blogModal">Read More <i class="fas fa-arrow-right ms-1"></i></button>
               </div>
             </div>
           </div>
         </div>
 
         <!-- TODO: Duplicate this block for a new blog post -->
+        <!-- FIX: Added data-full-content attribute and changed Read More to button with modal trigger -->
         <div class="col col-md-4">
-          <div class="blog-card" data-cat="education">
+          <div class="blog-card" data-cat="education" data-full-content="You do not need a lab to do STEM! Here are simple, fun activities that introduce science and maths concepts to young children using everyday materials found at home. These hands-on experiences build critical thinking and problem-solving skills from an early age.
+
+Sink or Float is a classic science experiment that teaches density and buoyancy. Fill a bowl with water and let your child test various objects - toys, fruits, kitchen utensils. Ask them to predict what will sink or float before testing, then discuss why their predictions were correct or not. This activity introduces scientific method through play.
+
+Counting and Sorting with everyday items makes math concrete and fun. Use pasta, buttons, or toys to practice counting, grouping by color or size, and simple addition or subtraction. These activities build number sense and pattern recognition that form the foundation for later mathematical learning.
+
+Building with recycled materials like cardboard boxes, toilet paper rolls, and plastic bottles teaches engineering principles. Challenge your child to build the tallest tower, a bridge that can support weight, or a house. This develops spatial awareness, creativity, and understanding of balance and stability.
+
+Kitchen Chemistry is another exciting option. Baking introduces measuring, following instructions, and chemical reactions. Making slime demonstrates states of matter. Even simple activities like mixing colors with food coloring teach basic scientific concepts. The key is asking questions and encouraging observation.">
             <img src="https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=500&q=80"
                  alt="TODO: Describe this blog post image">
             <div class="blog-card-body">
@@ -192,8 +247,9 @@
               <h5>STEM Activities for Toddlers at Home</h5>
               <p>You do not need a lab to do STEM! Here are simple, fun activities that introduce science and maths concepts to young children...</p>
               <div class="d-flex justify-content-between align-items-center">
-                <div class="meta"><i class="far fa-calendar me-1"></i> Apr 22, 2025</div>
-                <a href="#" class="read-more">Read More <i class="fas fa-arrow-right ms-1"></i></a>
+                <div class="meta"><i class="far fa-calendar me-1"></i> Apr 22, 2026</div>
+                <!-- FIX: Changed from <a> to <button> with modal trigger attributes -->
+                <button class="btn read-more" data-bs-toggle="modal" data-bs-target="#blogModal">Read More <i class="fas fa-arrow-right ms-1"></i></button>
               </div>
             </div>
           </div>
@@ -204,6 +260,25 @@
 
     </div>
   </section>
+
+  <!-- ===== ADDED: BLOG MODAL ===== -->
+  <!-- ADDED: Bootstrap modal for displaying full blog post content -->
+  <div class="modal fade" id="blogModal" tabindex="-1" aria-labelledby="blogModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="blogModalLabel">Blog Post Title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="blogModalContent">
+          <p>Full blog post content will appear here...</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ===== FOOTER ===== -->
   <footer class="footer-main">
@@ -288,6 +363,28 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="js/chatbot.js"></script>
   <script src="js/main.js"></script>
-  <script>document.getElementById('footer-year').textContent = new Date().getFullYear();</script>
+  <script>
+    document.getElementById('footer-year').textContent = new Date().getFullYear();
+    
+    // ADDED: Blog Modal Dynamic Content Handler
+    // This script populates the modal with title and content when a Read More button is clicked
+    document.querySelectorAll('.read-more').forEach(function(button) {
+      button.addEventListener('click', function() {
+        var card = this.closest('.blog-card');
+        var title = card.querySelector('h5').textContent;
+        var fullContent = card.getAttribute('data-full-content');
+        
+        // Set modal title and content
+        document.getElementById('blogModalLabel').textContent = title;
+        
+        // Convert newlines to paragraphs for better formatting
+        var formattedContent = fullContent.split('\n\n').map(function(paragraph) {
+          return '<p>' + paragraph + '</p>';
+        }).join('');
+        
+        document.getElementById('blogModalContent').innerHTML = formattedContent;
+      });
+    });
+  </script>
 </body>
 </html>
