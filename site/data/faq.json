@@ -1,0 +1,55 @@
+{
+  "_comment": "EDIT ME: single source of truth for every FAQ on the site. admissions.html shows the first 6; faq.html shows all, grouped by category. The chatbot also uses these answers. Add 'category' to control grouping on the FAQ page.",
+  "faqs": [
+    {
+      "category": "Admissions",
+      "question": "What age does my child need to be to enroll?",
+      "answer": "We accept children from 6 months of age for our Creche program, up to 11 years for Primary."
+    },
+    {
+      "category": "Admissions",
+      "question": "Are admissions open throughout the year?",
+      "answer": "Yes, we accept new students throughout the year, subject to availability of spaces in each class."
+    },
+    {
+      "category": "Admissions",
+      "question": "Do you offer a trial period or visiting day?",
+      "answer": "Yes! We encourage families to schedule a school tour before enrolling so you can see our environment and meet our team."
+    },
+    {
+      "category": "Admissions",
+      "question": "Are there sibling discounts available?",
+      "answer": "Yes, we offer sibling discounts. Please contact our administrative office for the current discount structure."
+    },
+    {
+      "category": "Fees & Payments",
+      "question": "How much are the school fees?",
+      "answer": "Fees vary by program and are reviewed each academic session. Please contact the school office on +234 813 745 1764 or WhatsApp for the current fee schedule. Flexible payment plans and sibling discounts are available."
+    },
+    {
+      "category": "School Life",
+      "question": "Do pupils have to wear a uniform?",
+      "answer": "Yes, all pupils wear the Cedarville uniform on regular school days, with a house-colour outfit on designated activity days. Uniforms can be purchased through the school office."
+    },
+    {
+      "category": "School Life",
+      "question": "What are the school's operating hours?",
+      "answer": "We are open Monday to Friday, 7:00 AM - 6:00 PM. The Creche program runs on extended hours until 6:00 PM to support working parents."
+    },
+    {
+      "category": "Academics",
+      "question": "What curriculum does Cedarville follow?",
+      "answer": "We blend the British and Nigerian curricula, with Cambridge accreditation. Learning is play-based and child-centred in the early years, becoming more structured through Nursery and Primary."
+    },
+    {
+      "category": "School Life",
+      "question": "Do you provide meals for pupils?",
+      "answer": "Yes, a supervised meal service is available during the school day. Parents can discuss dietary needs and meal arrangements with the school office."
+    },
+    {
+      "category": "Academics",
+      "question": "How do you keep parents updated on progress?",
+      "answer": "Teachers share regular feedback through report cards, parent-teacher conferences and direct communication. Parents are always welcome to book a meeting with their child's teacher."
+    }
+  ]
+}
