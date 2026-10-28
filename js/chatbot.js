@@ -35,16 +35,40 @@ function pickResponse(value) {
   return value;
 }
 
+function escapeRegExp(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+// Match on whole words/phrases instead of raw substrings. The old version used
+// input.includes(word), so "hi" matched "this"/"which", "fee" matched "feedback",
+// and the first category in the file always won regardless of specificity.
 function matchResponse(userInput) {
-  const input = userInput.toLowerCase().trim();
+  const input = userInput.toLowerCase().replace(/\s+/g, ' ').trim();
   if (!chatbotData) return "One moment, still loading...";
+
+  let bestCategory = null;
+  let bestScore = 0;
 
   for (const [category, words] of Object.entries(chatbotData.keywords)) {
     for (const word of words) {
-      if (input.includes(word)) {
-        return pickResponse(chatbotData.responses[category] || chatbotData.responses.fallback);
+      const phrase = word.toLowerCase().trim();
+      if (!phrase) continue;
+      // \b works for alphanumeric edges; phrases are matched with flexible whitespace.
+      const pattern = new RegExp(`(^|[^a-z0-9])${escapeRegExp(phrase).replace(/\\ /g, '\\s+')}([^a-z0-9]|$)`, 'i');
+      if (pattern.test(input)) {
+        // Longer, more specific keywords win ("school fees" over "fee",
+        // "new branch" over "new school").
+        const score = phrase.length;
+        if (score > bestScore) {
+          bestScore = score;
+          bestCategory = category;
+        }
       }
     }
+  }
+
+  if (bestCategory) {
+    return pickResponse(chatbotData.responses[bestCategory] || chatbotData.responses.fallback);
   }
   return pickResponse(chatbotData.responses.fallback);
 }

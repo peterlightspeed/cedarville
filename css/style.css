@@ -57,7 +57,6 @@ img { max-width: 100%; height: auto; }
 .hero-section h1 { font-size: 3rem; font-weight: 800; line-height: 1.2; }
 .hero-section p { font-size: 1.15rem; opacity: 0.92; margin: 1.2rem 0 2rem; }
 .hero-badges .badge { background: rgba(255,255,255,0.18); color: var(--white); font-size: 0.85rem; font-weight: 500; padding: 6px 14px; border-radius: 50px; margin: 0 6px 8px 0; display: inline-block; }
-/* TODO: Replace hero background image when available */
 .hero-img-wrapper { position: relative; }
 .hero-img-wrapper img { border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
 .hero-stat-card { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 18px 24px; text-align: center; }
@@ -246,4 +245,179 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   .stat-item .stat-number { font-size: 2rem; }
   #splash-screen img { width: 72px; height: 72px; }
   .event-date-badge { left: 18px; }
+}
+
+/* ----- Back to top button (previously referenced in HTML but never styled) ----- */
+.back-to-top-btn {
+  position: fixed;
+  right: 24px;
+  bottom: 100px; /* stacked above the chatbot launcher */
+  z-index: 1040;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--white);
+  font-size: 1rem;
+  box-shadow: 0 6px 18px rgba(26, 86, 219, 0.35);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.back-to-top-btn:hover { background: var(--primary-dark); transform: translateY(-3px); box-shadow: 0 10px 24px rgba(26, 86, 219, 0.45); }
+.back-to-top-btn:focus-visible { outline: 3px solid var(--primary-dark); outline-offset: 3px; }
+@media (max-width: 576px) { .back-to-top-btn { right: 18px; bottom: 86px; width: 42px; height: 42px; } }
+
+/* ----- Homepage: Why choose us / highlights ----- */
+.why-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; height: 100%; transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; }
+.why-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(26, 86, 219, 0.14); border-color: rgba(26, 86, 219, 0.25); }
+.why-card h5 { font-size: 1.05rem; font-weight: 700; margin: 14px 0 8px; }
+.why-card p { color: var(--text-muted); font-size: 0.93rem; margin: 0; }
+.highlight-item { display: flex; gap: 14px; align-items: flex-start; padding: 16px 0; border-bottom: 1px solid var(--border); }
+.highlight-item:last-child { border-bottom: 0; }
+.highlight-item i { color: var(--primary); margin-top: 3px; }
+.highlight-item h6 { font-weight: 700; margin: 0 0 3px; font-size: 0.98rem; }
+.highlight-item p { margin: 0; color: var(--text-muted); font-size: 0.9rem; }
+.highlight-image { border-radius: 14px; box-shadow: 0 14px 40px rgba(26, 86, 219, 0.18); }
+
+/* ----- Contact CTA band ----- */
+.contact-cta { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: var(--white); border-radius: 16px; padding: 48px; position: relative; overflow: hidden; }
+.contact-cta::after { content: ''; position: absolute; right: -60px; top: -60px; width: 220px; height: 220px; background: rgba(255,255,255,0.07); border-radius: 50%; }
+.contact-cta h2 { font-size: 1.9rem; font-weight: 800; }
+.contact-cta p { opacity: 0.9; margin-bottom: 0; }
+@media (max-width: 576px) { .contact-cta { padding: 32px 24px; } .contact-cta h2 { font-size: 1.5rem; } }
+
+/* ----- FAQ page ----- */
+.faq-search { max-width: 560px; margin: 0 auto 2rem; }
+.faq-category-title { font-size: 1.15rem; font-weight: 700; margin: 2rem 0 1rem; color: var(--primary-dark); }
+.faq-accordion .accordion-item { border: 1px solid var(--border); border-radius: var(--radius) !important; margin-bottom: 12px; overflow: hidden; }
+.faq-accordion .accordion-button { font-weight: 600; color: var(--text-dark); background: var(--white); box-shadow: none; }
+.faq-accordion .accordion-button:not(.collapsed) { background: var(--primary-light); color: var(--primary-dark); }
+.faq-accordion .accordion-button:focus { box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.2); }
+.faq-accordion .accordion-body { color: var(--text-muted); font-size: 0.95rem; }
+.faq-empty { display: none; text-align: center; color: var(--text-muted); padding: 2rem 0; }
+
+/* ----- Learning hub / quiz placeholder ----- */
+.learning-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; height: 100%; transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.learning-card:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(26, 86, 219, 0.13); }
+.learning-card .learning-icon { width: 52px; height: 52px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: var(--primary-light); color: var(--primary); font-size: 1.3rem; }
+.quiz-placeholder { border: 2px dashed rgba(26, 86, 219, 0.35); border-radius: 14px; padding: 40px 24px; text-align: center; background: rgba(232, 240, 254, 0.45); }
+.quiz-placeholder i { font-size: 2rem; color: var(--primary); margin-bottom: 12px; }
+
+/* ----- Filter buttons (gallery/blog, incl. CMS-rendered) ----- */
+.gallery-filter-btn, .blog-filter-btn { border: 1px solid var(--border); background: var(--white); color: var(--text-dark); border-radius: 50px; padding: 7px 18px; font-size: 0.88rem; font-weight: 600; margin: 0 8px 10px 0; transition: all 0.2s ease; }
+.gallery-filter-btn:hover, .blog-filter-btn:hover { border-color: var(--primary); color: var(--primary); }
+.gallery-filter-btn.active, .blog-filter-btn.active { background: var(--primary); border-color: var(--primary); color: var(--white); }
+
+/* ----- Print ----- */
+/* =========================================================
+   MOBILE & SMALL-SCREEN REFINEMENTS
+   Fixes horizontal overflow caused by Bootstrap gutters,
+   improves touch ergonomics, mobile navigation and spacing.
+   ========================================================= */
+
+/* Never allow sideways scrolling on any device. */
+html, body { overflow-x: hidden; }
+
+/* Smooth in-page jumps, and stop the fixed navbar covering the target. */
+html { scroll-behavior: smooth; }
+[id] { scroll-margin-top: 88px; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+/* iOS Safari auto-zooms when a focused input is smaller than 16px. */
+@media (max-width: 991.98px) {
+  .form-control, .form-select, textarea.form-control,
+  #chatbot-input-field, #faq-search { font-size: 16px; }
+}
+
+/* ---------- Tablets and below (<= 991.98px) ---------- */
+@media (max-width: 991.98px) {
+  /* Collapsed navigation needs a solid panel so links stay readable. */
+  .navbar-cedarville .navbar-collapse {
+    background: var(--primary-dark);
+    margin-top: 10px;
+    padding: 6px 0 18px;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.22);
+  }
+  .navbar-cedarville .nav-link {
+    padding: 15px 6px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .navbar-cedarville .nav-link.active::after { display: none; }
+  .navbar-cedarville .btn-enroll {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin: 16px 0 0;
+    padding: 13px 18px;
+  }
+
+  /* Comfortable touch targets (WCAG 2.5.8 target size). */
+  .footer-links li { margin-bottom: 0; }
+  .footer-links a { display: inline-block; padding: 10px 0; font-size: 0.95rem; }
+  .footer-social a { width: 44px; height: 44px; font-size: 1.05rem; margin-right: 10px; }
+  .gallery-filter-btn, .blog-filter-btn { min-height: 44px; padding: 10px 18px; }
+  .blog-card .read-more { display: inline-block; min-height: 44px; padding: 11px 0; }
+  .breadcrumb a { display: inline-block; padding: 6px 0; }
+  /* Inline text links get vertical padding so they are easy to tap. */
+  .learning-card a,
+  .footer-bottom a,
+  p.text-center > a,
+  [data-cms-href="tel"],
+  [data-cms-href="email"] { display: inline-block; padding: 8px 0; }
+}
+
+/* ---------- Phones (<= 575.98px) ---------- */
+@media (max-width: 575.98px) {
+  /* Bootstrap's 3rem gutters (-1.5rem row margins) are wider than the
+     container padding, which pushed the page ~13px sideways. */
+  .container, .container-fluid { padding-left: 1.25rem; padding-right: 1.25rem; }
+  .row.g-5, .row.g-4, .row.g-3 { --bs-gutter-x: 1.5rem; }
+
+  .page-header { padding: 76px 0 40px; }
+  .page-header h1 { font-size: 1.85rem; }
+  .page-header p { font-size: 0.98rem; }
+
+  .hero-section { padding: 84px 0 52px; }
+  .hero-section h1 { font-size: 1.65rem; }
+  .hero-section p { font-size: 1rem; margin: 1rem 0 1.6rem; }
+
+  .section-title { font-size: 1.45rem; }
+  .section-padding { padding: 48px 0; }
+
+  /* Full-width, stacked CTAs are far easier to tap on a phone. */
+  .hero-section .d-flex.flex-wrap.gap-3 { flex-direction: column; align-items: stretch; }
+  .hero-section .d-flex.flex-wrap.gap-3 .btn { width: 100%; }
+  .contact-cta .btn { display: block; width: 100%; margin-left: 0 !important; }
+
+  .blog-card img, .gallery-item img { height: 180px; }
+
+  /* Chatbot becomes a bottom sheet rather than a floating panel. */
+  #chatbot-window {
+    left: 12px;
+    right: 12px;
+    bottom: 86px;
+    width: auto;
+    max-height: 68vh;
+    border-radius: 14px;
+  }
+  #chatbot-btn { bottom: 20px; right: 18px; width: 54px; height: 54px; }
+  /* Keep "back to top" clear of the chatbot launcher. */
+  .back-to-top-btn { right: 18px; bottom: 86px; }
+}
+
+@media print {
+  .navbar-cedarville, .back-to-top-btn, #chatbot-widget, #chatbot-window, .footer-main, .footer-bottom, #splash-screen, .contact-cta .btn { display: none !important; }
+  body { color: #000; }
+  .page-header, .hero-section, .contact-cta { background: #fff !important; color: #000 !important; }
+  a { color: #000; text-decoration: underline; }
+  .section-padding { padding: 24px 0; }
 }

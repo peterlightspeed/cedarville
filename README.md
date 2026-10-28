@@ -1,40 +1,69 @@
-# Cedarville
+# Cedarville Private Schools — Website
 
-Responsive school website for Cedarville Private Schools, covering admissions, academics, and events.
+A fast, static, multi-page school website for **Cedarville Private Schools**, Aguda, Surulere, Lagos. Content is editable through plain JSON files, with no build step and no database.
 
-## Overview
+## Stack
 
-A modern website built for Cedarville Private Schools to help prospective families learn about the school's admissions process, academic programs, and upcoming events.
+- **HTML5 + CSS3 + vanilla JavaScript** — no framework, no bundler
+- **Bootstrap 5.3.3** and **Font Awesome 6.5.1** via CDN
+- **Node.js + Express** static server (`server.js`)
 
-## Features
+## Run locally
 
-- Admissions information and process overview
-- Academics section detailing programs offered
-- School events listing
-- Fully responsive design for all devices
+```bash
+npm install
+npm start
+# http://localhost:5000
+```
 
-## Tech Stack
+You can also open `index.html` directly, but JSON content loads more reliably through the server (browsers block `fetch()` on `file://`).
 
-- HTML
-- CSS
-- Bootstrap
+## Pages
 
-## Getting Started
+| Page | File | Clean URL |
+|---|---|---|
+| Home | `index.html` | `/` |
+| About | `about.html` | `/about` |
+| Academics | `academics.html` | `/academics` |
+| Admissions | `admissions.html` | `/admissions` |
+| Gallery | `gallery.html` | `/gallery` |
+| Blog | `blog.html` | `/blog` |
+| Contact | `contact.html` | `/contact` |
+| FAQ | `faq.html` | `/faq` |
+| Learning Hub | `learning.html` | `/learning` |
+| Not found | `404.html` | any unknown route |
 
-1. Clone the repository
-   ```bash
-   git clone https://github.com/peterlightspeed/cedarville.git
-   cd cedarville
-   ```
-2. Open `index.html` in your browser, or serve locally:
-   ```bash
-   npx serve .
-   ```
+## Project structure
 
-## Topics
+```
+├── css/style.css          # all site styles
+├── js/
+│   ├── main.js            # splash, scroll reveal, counters, nav, forms
+│   ├── cms.js             # renders JSON content into the pages
+│   └── chatbot.js         # rule-based assistant
+├── data/                  # editable content (JSON)
+│   ├── site.json          # school info, contact details, homepage copy
+│   ├── testimonials.json
+│   ├── events.json
+│   ├── blog-posts.json
+│   ├── gallery.json
+│   ├── faq.json
+│   └── chatbot-responses.json
+├── images/                # optimised photos
+└── server.js              # Express static server + clean URLs
+```
 
-`css` `html` `bootstrap` `education` `website` `school` `responsive`
+## Editing content
 
-## License
+All day-to-day content lives in `data/*.json`. Change the JSON, refresh the page — no rebuild required. Key rules:
 
-No license specified yet. Contact the repository owner for usage terms.
+- Keep the JSON valid (no trailing commas, double quotes).
+- Image paths are relative to the site root, e.g. `images/blog/my-photo.jpg`.
+- `faq.json` is the single source of truth for both the FAQ page and the Admissions preview.
+- `site.json` drives the footer, contact details and homepage copy across every page.
+
+## Notes
+
+- The contact form posts to Formspree (`https://formspree.io/f/xnjraqzj`).
+- The chatbot answers from `data/chatbot-responses.json` using keyword matching.
+- To point the site at an API instead of local JSON, set `window.CEDARVILLE_DATA_BASE = '/api'` before `cms.js` loads, or add `data-api-base="/api"` to the `<html>` tag.

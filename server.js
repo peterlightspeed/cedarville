@@ -1,18 +1,31 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 app.use(express.static(path.join(__dirname)));
 
-// Serve all static HTML pages
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
-app.get('/about', (req, res) => res.sendFile(path.join(__dirname, 'about.html')));
-app.get('/admissions', (req, res) => res.sendFile(path.join(__dirname, 'admissions.html')));
-app.get('/academics', (req, res) => res.sendFile(path.join(__dirname, 'academics.html')));
-app.get('/gallery', (req, res) => res.sendFile(path.join(__dirname, 'gallery.html')));
-app.get('/blog', (req, res) => res.sendFile(path.join(__dirname, 'blog.html')));
-app.get('/contact', (req, res) => res.sendFile(path.join(__dirname, 'contact.html')));
+// Clean URLs for every page. Add new pages here (and to sitemap.xml).
+const pages = {
+  '/': 'index.html',
+  '/about': 'about.html',
+  '/admissions': 'admissions.html',
+  '/academics': 'academics.html',
+  '/gallery': 'gallery.html',
+  '/blog': 'blog.html',
+  '/faq': 'faq.html',
+  '/learning': 'learning.html',
+  '/contact': 'contact.html'
+};
+
+Object.entries(pages).forEach(([route, file]) => {
+  app.get(route, (req, res) => res.sendFile(path.join(__dirname, file)));
+});
+
+// Friendly 404 instead of Express's default stack trace page.
+app.use((req, res) => {
+  res.status(404).sendFile(path.join(__dirname, '404.html'));
+});
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Cedarville Schools website running on http://0.0.0.0:${PORT}`);

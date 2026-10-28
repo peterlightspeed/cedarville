@@ -8,6 +8,17 @@
 (function () {
   'use strict';
 
+  /**
+   * Data source for all CMS content.
+   * Today this points at the static /data folder. When a Python backend exists,
+   * set window.CEDARVILLE_DATA_BASE = '/api' before cms.js loads (or add
+   * data-api-base="/api" to <html>) and every endpoint keeps the same shape:
+   *   GET /api/site.json, /api/testimonials.json, /api/blog-posts.json, ...
+   */
+  const DATA_BASE = (window.CEDARVILLE_DATA_BASE
+    || document.documentElement.getAttribute('data-api-base')
+    || 'data').replace(/\/$/, '');
+
   /** Small fetch helper with graceful failure (keeps static fallback markup if a fetch fails, e.g. opened via file://) */
   async function loadJSON(path) {
     try {
@@ -218,6 +229,14 @@
     const grid = document.getElementById('blogGrid');
     if (!grid || !data) return;
     (data.categories || []).forEach((c) => { blogCategoryLabels[c.key] = c.label; });
+    // Filter buttons come from the same JSON as the posts, so they can never drift.
+    const filterWrap = document.getElementById('blogFilters');
+    if (filterWrap && data.categories) {
+      filterWrap.innerHTML = data.categories.map((c) => `
+        <button type="button" class="blog-filter-btn${c.key === 'all' ? ' active' : ''}" data-filter="${escapeHTML(c.key)}">${escapeHTML(c.label)}</button>
+      `).join('');
+    }
+
     const posts = [...data.posts].sort((a, b) => new Date(b.date) - new Date(a.date));
     grid.innerHTML = posts.map((p) => blogCardHTML(p, true)).join('');
 
@@ -248,9 +267,8 @@
     const blogCards = document.querySelectorAll('.blog-card[data-cat]');
     filterBtns.forEach((btn) => {
       btn.addEventListener('click', function () {
-        filterBtns.forEach((b) => { b.classList.remove('active', 'btn-blue'); b.classList.add('btn-outline-blue'); });
-        this.classList.add('active', 'btn-blue');
-        this.classList.remove('btn-outline-blue');
+        filterBtns.forEach((b) => b.classList.remove('active'));
+        this.classList.add('active');
         const filter = this.dataset.filter;
         blogCards.forEach((card) => {
           const wrapper = card.closest('.col, .col-md-4');
@@ -279,7 +297,7 @@
     const filterWrap = document.getElementById('galleryFilters');
     if (filterWrap && data.categories) {
       filterWrap.innerHTML = data.categories.map((c, i) => `
-        <button class="btn ${i === 0 ? 'btn-blue active' : 'btn-outline-blue'} gallery-filter-btn" data-filter="${c.key}">${escapeHTML(c.label)}</button>
+        <button type="button" class="gallery-filter-btn${i === 0 ? ' active' : ''}" data-filter="${escapeHTML(c.key)}">${escapeHTML(c.label)}</button>
       `).join('');
     }
 
@@ -292,9 +310,8 @@
     const galleryItems = document.querySelectorAll('.gallery-item[data-cat]');
     filterBtns.forEach((btn) => {
       btn.addEventListener('click', function () {
-        filterBtns.forEach((b) => { b.classList.remove('active', 'btn-blue'); b.classList.add('btn-outline-blue'); });
-        this.classList.add('active', 'btn-blue');
-        this.classList.remove('btn-outline-blue');
+        filterBtns.forEach((b) => b.classList.remove('active'));
+        this.classList.add('active');
         const filter = this.dataset.filter;
         galleryItems.forEach((item) => {
           const wrapper = item.closest('.col-md-4, .col-6');
@@ -325,6 +342,86 @@
   }
 
   /* -------------------------------------------------------
+     FAQ (data/faq.json)
+     Renders any [data-cms-faq] accordion. Used on admissions.html
+     and faq.html so there is a single source of truth.
+     ------------------------------------------------------- */
+  function renderFaq(faq) {
+    if (!faq || !Array.isArray(faq.faqs)) return;
+    document.querySelectorAll('[data-cms-faq]').forEach((container) => {
+      const limit = parseInt(container.getAttribute('data-cms-faq-limit'), 10);
+      const items = isNaN(limit) ? faq.faqs : faq.faqs.slice(0, limit);
+      const parentId = container.id || 'faqAccordion';
+      const grouped = container.getAttribute('data-cms-faq') === 'grouped';
+
+      const itemHTML = (item, i) => {
+        const id = `${parentId}-item-${i}`;
+        const open = i === 0 ? ' show' : '';
+        const collapsed = i === 0 ? '' : ' collapsed';
+        return `
+          <div class="accordion-item" data-faq-text="${escapeHTML((item.question + ' ' + item.answer).toLowerCase())}">
+            <h2 class="accordion-header">
+              <button class="accordion-button${collapsed}" type="button" data-bs-toggle="collapse" data-bs-target="#${id}" aria-expanded="${i === 0}" aria-controls="${id}">
+                ${escapeHTML(item.question)}
+              </button>
+            </h2>
+            <div id="${id}" class="accordion-collapse collapse${open}" data-bs-parent="#${parentId}">
+              <div class="accordion-body">${escapeHTML(item.answer)}</div>
+            </div>
+          </div>`;
+      };
+
+      if (grouped) {
+        const groups = [];
+        items.forEach((item) => {
+          const cat = item.category || 'General';
+          let group = groups.find((g) => g.name === cat);
+          if (!group) { group = { name: cat, items: [] }; groups.push(group); }
+          group.items.push(item);
+        });
+        let counter = 0;
+        container.innerHTML = groups.map((group) => `
+          <h3 class="faq-category-title">${escapeHTML(group.name)}</h3>
+          ${group.items.map((item) => itemHTML(item, counter++)).join('')}
+        `).join('');
+      } else {
+        container.innerHTML = items.map(itemHTML).join('');
+      }
+    });
+  }
+
+  /* -------------------------------------------------------
+     FAQ live search (faq.html)
+     ------------------------------------------------------- */
+  function initFaqSearch() {
+    const input = document.getElementById('faq-search');
+    if (!input) return;
+    const empty = document.getElementById('faq-empty');
+    const container = document.querySelector('[data-cms-faq]');
+    if (!container) return;
+
+    input.addEventListener('input', function () {
+      const q = this.value.toLowerCase().trim();
+      let visible = 0;
+      container.querySelectorAll('.accordion-item').forEach((item) => {
+        const match = !q || (item.getAttribute('data-faq-text') || '').includes(q);
+        item.style.display = match ? '' : 'none';
+        if (match) visible++;
+      });
+      container.querySelectorAll('.faq-category-title').forEach((heading) => {
+        let el = heading.nextElementSibling;
+        let any = false;
+        while (el && !el.classList.contains('faq-category-title')) {
+          if (el.classList.contains('accordion-item') && el.style.display !== 'none') any = true;
+          el = el.nextElementSibling;
+        }
+        heading.style.display = any ? '' : 'none';
+      });
+      if (empty) empty.style.display = visible ? 'none' : 'block';
+    });
+  }
+
+  /* -------------------------------------------------------
      Scroll-reveal animation (progressive enhancement)
      ------------------------------------------------------- */
   let revealObserver;
@@ -352,12 +449,13 @@
      Boot
      ------------------------------------------------------- */
   document.addEventListener('DOMContentLoaded', async function () {
-    const [site, testimonials, events, blog, gallery] = await Promise.all([
-      loadJSON('data/site.json'),
-      document.getElementById('testimonialsGrid') ? loadJSON('data/testimonials.json') : null,
-      document.getElementById('eventsGrid') ? loadJSON('data/events.json') : null,
-      (document.getElementById('blogPreviewGrid') || document.getElementById('blogGrid')) ? loadJSON('data/blog-posts.json') : null,
-      document.getElementById('galleryGrid') ? loadJSON('data/gallery.json') : null
+    const [site, testimonials, events, blog, gallery, faq] = await Promise.all([
+      loadJSON(`${DATA_BASE}/site.json`),
+      document.getElementById('testimonialsGrid') ? loadJSON(`${DATA_BASE}/testimonials.json`) : null,
+      document.getElementById('eventsGrid') ? loadJSON(`${DATA_BASE}/events.json`) : null,
+      (document.getElementById('blogPreviewGrid') || document.getElementById('blogGrid')) ? loadJSON(`${DATA_BASE}/blog-posts.json`) : null,
+      document.getElementById('galleryGrid') ? loadJSON(`${DATA_BASE}/gallery.json`) : null,
+      document.querySelector('[data-cms-faq]') ? loadJSON(`${DATA_BASE}/faq.json`) : null
     ]);
 
     if (blog && blog.categories) blog.categories.forEach((c) => { blogCategoryLabels[c.key] = c.label; });
@@ -369,10 +467,12 @@
     renderBlogPreview(blog);
     renderBlogFull(blog);
     renderGallery(gallery);
+    renderFaq(faq);
+    initFaqSearch();
 
     // Reveal any static (non-CMS-rendered) sections marked with .reveal already in the DOM
     initReveal();
 
-    window.CedarvilleCMS = { site, testimonials, events, blog, gallery };
+    window.CedarvilleCMS = { site, testimonials, events, blog, gallery, faq };
   });
 })();

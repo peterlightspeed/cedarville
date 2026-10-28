@@ -37,19 +37,20 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  // ----- Button ripple effect -----
-  document.querySelectorAll('.btn-blue, .btn-outline-blue, .btn-white, .btn-enroll').forEach((btn) => {
-    btn.addEventListener('click', function (e) {
-      const rect = this.getBoundingClientRect();
-      const ripple = document.createElement('span');
-      const size = Math.max(rect.width, rect.height);
-      ripple.className = 'ripple';
-      ripple.style.width = ripple.style.height = size + 'px';
-      ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
-      ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
-      this.appendChild(ripple);
-      setTimeout(() => ripple.remove(), 600);
-    });
+  // ----- Button ripple effect (delegated so CMS-rendered buttons get it too) -----
+  const RIPPLE_SELECTOR = '.btn-blue, .btn-outline-blue, .btn-white, .btn-enroll';
+  document.addEventListener('click', function (e) {
+    const btn = e.target.closest(RIPPLE_SELECTOR);
+    if (!btn) return;
+    const rect = btn.getBoundingClientRect();
+    const ripple = document.createElement('span');
+    const size = Math.max(rect.width, rect.height);
+    ripple.className = 'ripple';
+    ripple.style.width = ripple.style.height = size + 'px';
+    ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+    ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+    btn.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
   });
 
   // ----- Back to Top Button -----

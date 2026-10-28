@@ -1,11 +1,26 @@
 {
   "_comment": "EDIT ME: add a new post by adding an object to the array below. category must be one of: parenting, education, events, news. date format YYYY-MM-DD. Duplicate an existing object as a template.",
   "categories": [
-    { "key": "all", "label": "All Posts" },
-    { "key": "parenting", "label": "Parenting Tips" },
-    { "key": "education", "label": "Education" },
-    { "key": "events", "label": "School Events" },
-    { "key": "news", "label": "School News" }
+    {
+      "key": "all",
+      "label": "All Posts"
+    },
+    {
+      "key": "parenting",
+      "label": "Parenting Tips"
+    },
+    {
+      "key": "education",
+      "label": "Education"
+    },
+    {
+      "key": "events",
+      "label": "School Events"
+    },
+    {
+      "key": "news",
+      "label": "School News"
+    }
   ],
   "posts": [
     {
@@ -17,9 +32,14 @@
       "date": "2026-08-24",
       "category": "news",
       "readTime": "4 min read",
-      "image": "images/school_building.png",
+      "image": "images/school_building.jpg",
       "featured": true,
-      "tags": ["new branch", "expansion", "announcement", "enrollment"]
+      "tags": [
+        "new branch",
+        "expansion",
+        "announcement",
+        "enrollment"
+      ]
     },
     {
       "id": "back-to-school-tips",
@@ -32,7 +52,12 @@
       "readTime": "5 min read",
       "image": "images/school gallery/class_with_children2.jpg",
       "featured": true,
-      "tags": ["back to school", "resumption", "parenting", "routine"]
+      "tags": [
+        "back to school",
+        "resumption",
+        "parenting",
+        "routine"
+      ]
     },
     {
       "id": "good-study-habits",
@@ -45,7 +70,12 @@
       "readTime": "6 min read",
       "image": "images/school gallery/class_with_children3.jpg",
       "featured": false,
-      "tags": ["study habits", "homework", "education", "child development"]
+      "tags": [
+        "study habits",
+        "homework",
+        "education",
+        "child development"
+      ]
     },
     {
       "id": "why-reading-matters",
@@ -58,7 +88,12 @@
       "readTime": "5 min read",
       "image": "images/school gallery/class_with_children5.jpg",
       "featured": false,
-      "tags": ["reading", "literacy", "early childhood", "education"]
+      "tags": [
+        "reading",
+        "literacy",
+        "early childhood",
+        "education"
+      ]
     },
     {
       "id": "preparing-new-term",
@@ -71,7 +106,12 @@
       "readTime": "4 min read",
       "image": "images/welcome-image.jpeg",
       "featured": false,
-      "tags": ["new term", "checklist", "preparation", "parenting"]
+      "tags": [
+        "new term",
+        "checklist",
+        "preparation",
+        "parenting"
+      ]
     },
     {
       "id": "healthy-lunch-ideas",
@@ -84,7 +124,12 @@
       "readTime": "5 min read",
       "image": "images/students.jpeg",
       "featured": false,
-      "tags": ["nutrition", "lunch box", "healthy eating", "parenting"]
+      "tags": [
+        "nutrition",
+        "lunch box",
+        "healthy eating",
+        "parenting"
+      ]
     },
     {
       "id": "digital-safety-for-children",
@@ -95,9 +140,14 @@
       "date": "2026-08-03",
       "category": "parenting",
       "readTime": "6 min read",
-      "image": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&q=80",
+      "image": "images/blog/digital-safety.jpg",
       "featured": false,
-      "tags": ["digital safety", "screen time", "parenting", "online safety"]
+      "tags": [
+        "digital safety",
+        "screen time",
+        "parenting",
+        "online safety"
+      ]
     },
     {
       "id": "supporting-learning-at-home",
@@ -108,9 +158,14 @@
       "date": "2026-07-30",
       "category": "education",
       "readTime": "5 min read",
-      "image": "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&q=80",
+      "image": "images/blog/learning-at-home.jpg",
       "featured": false,
-      "tags": ["learning at home", "parent involvement", "education", "homework"]
+      "tags": [
+        "learning at home",
+        "parent involvement",
+        "education",
+        "homework"
+      ]
     },
     {
       "id": "school-news-activities-recap",
@@ -123,7 +178,12 @@
       "readTime": "4 min read",
       "image": "images/school gallery/022.jpeg",
       "featured": false,
-      "tags": ["school news", "farmers market day", "events", "student life"]
+      "tags": [
+        "school news",
+        "farmers market day",
+        "events",
+        "student life"
+      ]
     }
   ]
 }
