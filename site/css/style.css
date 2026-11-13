@@ -421,3 +421,19 @@ html { scroll-behavior: smooth; }
   a { color: #000; text-decoration: underline; }
   .section-padding { padding: 24px 0; }
 }
+
+/* ===== Learning Portal button + "More" menu ===== */
+.navbar-cedarville .nav-link.nav-portal { background: #ffcf3f; color: #3d2e00 !important; border-radius: 999px; padding: .5rem 1rem !important; margin: 0 .5rem; font-weight: 700; box-shadow: 0 3px 0 #e0a800; transition: transform .1s, box-shadow .1s; }
+.navbar-cedarville .nav-link.nav-portal:hover { transform: translateY(-1px); box-shadow: 0 4px 0 #e0a800; color: #3d2e00 !important; }
+.navbar-cedarville .nav-link.dropdown-toggle::after { vertical-align: .15em; }
+.navbar-cedarville .dropdown-menu { border: 0; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.18); padding: .5rem; margin-top: .25rem; }
+.navbar-cedarville .dropdown-item { border-radius: 8px; padding: .55rem .9rem; font-weight: 500; }
+.navbar-cedarville .dropdown-item:hover, .navbar-cedarville .dropdown-item:focus { background: var(--primary-light); color: var(--primary-dark); }
+.navbar-cedarville .dropdown-item.active { background: var(--primary); color: #fff; }
+@media (max-width: 991.98px) {
+  .navbar-cedarville .nav-link.nav-portal { display: inline-block; margin: .4rem 1rem; }
+  .navbar-cedarville .dropdown-menu { background: rgba(255,255,255,.1); box-shadow: none; margin: 0 1rem .5rem; }
+  .navbar-cedarville .dropdown-item { color: #fff; }
+  .navbar-cedarville .dropdown-item:hover, .navbar-cedarville .dropdown-item:focus { background: rgba(255,255,255,.18); color: #fff; }
+  .navbar-cedarville .dropdown-divider { border-color: rgba(255,255,255,.3); }
+}

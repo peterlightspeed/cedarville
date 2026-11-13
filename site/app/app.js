@@ -221,7 +221,7 @@ function welcome(mode = 'signup') {
       </form>
       ${mode === 'login' ? '<p class="muted center" style="font-size:.9rem;margin:14px 0 0">Forgot your password? Email <a href="mailto:cedarvilleprivate@gmail.com">cedarvilleprivate@gmail.com</a> and we will help.</p>' : ''}
     </div>
-    <p class="center">${installBtn()}</p>
+    <p class="center">${installBtn()} <a class="btn ghost small" href="#/install">How to install</a></p>
     <p class="center"><a href="${SITE}index.html"${native ? ' target="_blank" rel="noopener"' : ''}>← Cedarville Schools website</a></p>`, { bar: false });
 
   $$('[data-mode]').forEach((b) => b.addEventListener('click', () => welcome(b.dataset.mode)));
@@ -547,6 +547,21 @@ function stars() {
   if (got) { sfx.good(); }
 }
 
+function installPage() {
+  const standalone = window.matchMedia && window.matchMedia('(display-mode: standalone)').matches;
+  render(`
+    <div class="center">${owl('happy').replace('class="owl"', 'class="owl big"')}<h1>Install Cedarville Learning 📲</h1>
+      <p class="muted">Put the app on your phone's home screen. It opens full-screen, just like any other app.</p></div>
+    ${standalone ? '<div class="ok">✅ You are already using the installed app.</div>' : ''}
+    <div class="card"><h3>🤖 Android (Chrome)</h3>
+      ${S.installEvt ? '<button class="btn sun block" data-act="install">📲 Install now</button><p></p>' : ''}
+      <ol style="padding-left:20px;margin:0"><li>Open this page in <b>Chrome</b>.</li><li>Tap the <b>⋮ menu</b> (top right).</li><li>Tap <b>Install app</b> or <b>Add to Home screen</b>.</li></ol></div>
+    <div class="card"><h3>🍎 iPhone / iPad (Safari)</h3>
+      <ol style="padding-left:20px;margin:0"><li>Open this page in <b>Safari</b>.</li><li>Tap the <b>Share</b> button (square with an arrow).</li><li>Scroll and tap <b>Add to Home Screen</b>, then <b>Add</b>.</li></ol></div>
+    <div class="card"><h3>🛒 Google Play Store</h3><p class="muted" style="margin:0">The Play Store version is coming soon. Until then, the steps above give you the same app.</p></div>
+    <a class="btn block" href="#/${S.token ? 'home' : 'welcome'}">${S.token ? 'Back to learning' : 'Back to sign in'}</a>`, { bar: false });
+}
+
 // ---------------------------------------------------------------- grown-ups area
 function gate(next) {
   if (Date.now() < S.gateUntil) return next();
@@ -607,7 +622,7 @@ async function grownups(query = '') {
     </div>
     ${S.user.is_admin ? adminCard() : ''}
     <div class="card"><h2>Account & safety</h2><div id="amsg2"></div>
-      ${installBtn()}
+      ${installBtn()} <a class="btn ghost small" href="#/install">How to install</a>
       <details style="margin-top:12px"><summary><b>Change password</b></summary>
         <label for="cp1">Current password</label><input id="cp1" type="password" autocomplete="current-password">
         <label for="cp2">New password</label><input id="cp2" type="password" autocomplete="new-password" minlength="8">
@@ -666,6 +681,11 @@ function progressCard(c, p) {
 
 function adminCard() {
   return `<div class="card"><h2>🛠 Teacher tools</h2>
+    <h3>Setup check</h3>
+    <p class="muted">Confirms the database, payments and AI helper are connected.</p>
+    <button class="btn small mint" id="diag">✅ Run setup check</button><div id="diagout" style="margin-top:10px"></div>
+    <hr style="border:0;border-top:2px solid #eef3fc;margin:18px 0">
+    <h3>Add a video</h3>
     <p class="muted">Add a video you have watched and checked is suitable. Paste a YouTube link.</p>
     <div id="amsg"></div>
     <label for="vurl">YouTube link</label><input id="vurl" type="url" placeholder="https://www.youtube.com/watch?v=…">
@@ -675,6 +695,15 @@ function adminCard() {
     <button class="btn small" id="vadd">Add video</button></div>`;
 }
 function wireAdmin() {
+  $('#diag').addEventListener('click', async () => {
+    const out = $('#diagout'); out.innerHTML = '<div class="spinner" style="margin:10px auto;width:34px;height:34px;border-width:5px"></div>';
+    try {
+      const r = await api('/admin/diagnostics');
+      out.innerHTML = (r.all_ok ? toast('ok', 'Everything is connected! 🎉') : toast('err', 'Some things still need setting up:')) +
+        r.checks.map((c) => `<div style="padding:8px 0;border-top:1px solid #eef3fc"><b>${c.ok ? '✅' : '❌'} ${esc(c.name)}</b><br><span class="muted">${esc(c.detail)}</span>${c.ok || !c.fix ? '' : `<br><span style="font-size:.9rem">👉 ${esc(c.fix)}</span>`}</div>`).join('') +
+        `<p class="muted" style="font-size:.85rem;margin-top:10px">${esc(r.webhook_reminder)}</p>`;
+    } catch (e) { out.innerHTML = toast('err', e.message); }
+  });
   $('#vadd').addEventListener('click', async () => {
     const m = $('#amsg');
     try {
@@ -690,7 +719,7 @@ async function route() {
   const [name, query] = raw.split('?');
   const page = name || '';
 
-  // Returning from Paystack: ?reference=... lives in the real query string.
+  if (page === 'install') return installPage();
   if (!S.token) { if (page !== 'welcome') { location.hash = '#/welcome'; return; } return welcome(); }
   if (!S.user) {
     loading();

@@ -382,3 +382,32 @@ def test_tampered_token_rejected(client):
     bad = {"Authorization": h["Authorization"][:-3] + "abc"}
     assert client.get("/api/auth/me", headers=bad).status_code == 401
     assert client.get("/api/auth/me", headers={"Authorization": "Bearer not.a.jwt"}).status_code == 401
+
+
+def test_diagnostics_admin_only_and_honest(client, auth, admin, monkeypatch):
+    assert client.get("/api/admin/diagnostics", headers=auth).status_code == 403
+    r = client.get("/api/admin/diagnostics", headers=admin).json()
+    by = {c["name"]: c for c in r["checks"]}
+    assert r["all_ok"] is False
+    assert by["Database (Neon / Postgres)"]["ok"] is False and "local file" in by["Database (Neon / Postgres)"]["detail"]  # SQLite in tests
+    assert by["AI helper (Cedar)"]["ok"] is False
+    assert by["SECRET_KEY"]["ok"] is True
+    blob = json.dumps(r)
+    assert "sk_test_dummy" not in blob and "test-secret-key" not in blob  # secrets never leak
+
+    # Paystack key accepted / rejected
+    from app.api import admin as admin_api
+    class Resp:
+        def __init__(self, code): self.status_code = code
+    class FakeClient:
+        code = 200
+        def __init__(self, *a, **k): pass
+        async def __aenter__(self): return self
+        async def __aexit__(self, *a): pass
+        async def get(self, url, headers=None): return Resp(FakeClient.code)
+    monkeypatch.setattr(admin_api.httpx, "AsyncClient", FakeClient)
+    ok = {c["name"]: c for c in client.get("/api/admin/diagnostics", headers=admin).json()["checks"]}["Paystack payments"]
+    assert ok["ok"] is True and "test mode" in ok["detail"]
+    FakeClient.code = 401
+    bad = {c["name"]: c for c in client.get("/api/admin/diagnostics", headers=admin).json()["checks"]}["Paystack payments"]
+    assert bad["ok"] is False and "401" in bad["detail"]

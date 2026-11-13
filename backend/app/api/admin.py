@@ -4,12 +4,16 @@ from __future__ import annotations
 import json
 import re
 
+import httpx
+from sqlalchemy import text
+
 from fastapi import APIRouter, Depends, HTTPException, Response
 from pydantic import BaseModel, Field
 from sqlmodel import Session, select
 
 from app.ai_client import ai_enabled, complete
-from app.database import get_session
+from app.config import settings
+from app.database import engine, get_session
 from app.deps import require_admin
 from app.models import LEVELS, Question, User, Video
 
@@ -147,3 +151,66 @@ async def generate(body: GenerateIn, session: Session = Depends(get_session)) ->
             continue
     session.commit()
     return {"drafted": saved, "note": "Review under /api/admin/questions/drafts and approve the good ones."}
+
+
+@router.get("/diagnostics")
+async def diagnostics(session: Session = Depends(get_session)) -> dict:
+    """Admin-only 'is everything connected?' report. Never returns a secret."""
+    checks: list[dict] = []
+
+    def add(name: str, ok: bool, detail: str, fix: str = "") -> None:
+        checks.append({"name": name, "ok": ok, "detail": detail, "fix": fix})
+
+    # Database
+    kind = engine.dialect.name
+    try:
+        session.exec(text("SELECT 1"))
+        counts = {
+            "questions": len(session.exec(select(Question)).all()),
+            "videos": len(session.exec(select(Video)).all()),
+            "families": len(session.exec(select(User)).all()),
+        }
+        if kind == "postgresql":
+            add("Database (Neon / Postgres)", True, f"Connected. {counts['questions']} questions, {counts['videos']} videos, {counts['families']} accounts.")
+        else:
+            add("Database (Neon / Postgres)", False, f"Using {kind} (a local file), not Neon. Data would be lost on Render.",
+                "Set DATABASE_URL in Render to your Neon connection string.")
+    except Exception as exc:  # noqa: BLE001
+        add("Database (Neon / Postgres)", False, f"Cannot query the database ({type(exc).__name__}).", "Check DATABASE_URL.")
+
+    # Secrets and web addresses
+    add("SECRET_KEY", not settings.secret_key.startswith("dev-only"),
+        "Set." if not settings.secret_key.startswith("dev-only") else "Still the development default.",
+        "Set SECRET_KEY in Render (openssl rand -hex 32).")
+    add("Admin emails", bool(settings.admin_emails), f"{len(settings.admin_emails)} configured.", "Set ADMIN_EMAILS in Render.")
+    site_origins = [o for o in settings.cors_origins if "localhost" not in o and "127.0.0.1" not in o]
+    add("CORS (website allowed to call the API)", bool(site_origins),
+        ", ".join(site_origins) if site_origins else "Only localhost is allowed.",
+        "Set CORS_ORIGINS to your website addresses, e.g. https://www.cedarvilleprivateschool.com")
+    add("APP_URL (where Paystack sends parents back)", not settings.app_url.startswith("http://localhost"),
+        settings.app_url, "Set APP_URL to https://<your-site>/app/")
+
+    # Paystack — a harmless authenticated call
+    if not settings.paystack_secret_key:
+        add("Paystack payments", False, "No key set. Payments show 'coming soon'.", "Set PAYSTACK_SECRET_KEY in Render.")
+    else:
+        mode = "test" if settings.paystack_secret_key.startswith("sk_test_") else "live"
+        try:
+            async with httpx.AsyncClient(timeout=15) as client:
+                r = await client.get("https://api.paystack.co/bank?perPage=1",
+                                     headers={"Authorization": f"Bearer {settings.paystack_secret_key}"})
+            add("Paystack payments", r.status_code == 200, f"Key accepted ({mode} mode)." if r.status_code == 200
+                else f"Paystack rejected the key (HTTP {r.status_code}).", "" if r.status_code == 200 else "Copy the secret key again from Paystack > Settings > API Keys.")
+        except Exception as exc:  # noqa: BLE001
+            add("Paystack payments", False, f"Could not reach Paystack ({type(exc).__name__}).", "Try again in a minute.")
+
+    # AI — one tiny request
+    if not ai_enabled():
+        add("AI helper (Cedar)", False, "No key set. Cedar shows a friendly 'napping' message.", "Set ANTHROPIC_API_KEY in Render.")
+    else:
+        reply = await complete("Reply with the single word OK.", "ping", max_tokens=5)
+        add("AI helper (Cedar)", reply is not None, f"Working (model {settings.ai_model})." if reply is not None
+            else "The key or model name was rejected.", "" if reply is not None else "Check ANTHROPIC_API_KEY and AI_MODEL.")
+
+    return {"all_ok": all(c["ok"] for c in checks), "checks": checks,
+            "webhook_reminder": "In Paystack > Settings > API Keys & Webhooks, set the webhook URL to https://<your-api>/api/payments/webhook"}

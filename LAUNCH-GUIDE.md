@@ -19,6 +19,42 @@ call-to-action on the Learning Hub page (it used to say "coming soon").
 > lives in `site/`. Deploy from `site/` and delete the root copies once you've confirmed (otherwise you'll
 > edit the wrong one).
 
+## Connect everything — checklist (what to add, and how to confirm it works)
+
+> **Database = Neon, not Supabase.** This project talks to Neon (plain Postgres). You do **not** need Supabase,
+> and nothing here uses a Supabase key.
+
+| # | Add this | Where | How to get it |
+|---|---|---|---|
+| 1 | `DATABASE_URL` | Render → your service → Environment | Neon dashboard → *Connection details* → copy the `postgresql://…?sslmode=require` string |
+| 2 | `SECRET_KEY` | Render (the Blueprint generates it) | or run `openssl rand -hex 32` |
+| 3 | `ADMIN_EMAILS` | Render | your own email — that account sees *Teacher tools* |
+| 4 | `CORS_ORIGINS` | Render | `https://www.cedarvilleprivateschool.com,https://cedarvilleprivateschool.com` |
+| 5 | `APP_URL` | Render | `https://www.cedarvilleprivateschool.com/app/` |
+| 6 | `PAYSTACK_SECRET_KEY` | Render | Paystack → Settings → API Keys (start with the **test** key `sk_test_…`) |
+| 7 | Paystack webhook URL | Paystack dashboard | `https://<your-render-address>/api/payments/webhook` |
+| 8 | `ANTHROPIC_API_KEY` | Render | console.anthropic.com → API keys (powers Cedar the Owl) |
+| 9 | `PROD_API` | `site/app/config.js` (top of file) | your Render address + `/api`, e.g. `https://cedarville-api.onrender.com/api` |
+
+**Confirm each link works**
+1. **API is alive:** open `https://<your-render-address>/api/health` — it should say `"status":"ok"` and `"database":true`.
+2. **Everything else:** sign up on the website's Learning Portal with the `ADMIN_EMAILS` address, add a child, open
+   🔒 *Grown-ups area* → *Teacher tools* → **✅ Run setup check**. It shows a green tick or a red cross with the fix for:
+   database (is it really Neon?), secret key, admin email, CORS, payment return address, Paystack key, AI key.
+3. **Neon itself:** Neon dashboard → *SQL Editor* → `select count(*) from question;` should return **215**.
+4. **Website → API:** on the live site open the Learning Portal; if sign-up says "No internet right now", `PROD_API`
+   in `config.js` is wrong or `CORS_ORIGINS` is missing your website address.
+
+**Navigation (what the website now has)**
+- A yellow **🎓 Learning Portal** button in the navbar of every page.
+- A **More ▾** menu holding Gallery, Blog, FAQ, Contact, Learning Hub and **📲 Install the app**.
+- An install page at `/app/#/install` with Android and iPhone steps (and an Install button when the browser allows it).
+
+**Is your live site actually updated?** A site that still shows the old navbar means the new code isn't deployed yet.
+Check where the site is served from (GitHub → repo → *Settings → Pages*). If it says **Deploy from branch / (root)**, the
+site that's served is the *root* folder, not `site/`. In that case copy the current site over the root once:
+`cp -a site/. .` (from the repo folder), commit and push.
+
 ## Updating an existing `cedarville-main` folder (merge commands)
 
 Run these on your Linux machine. They keep a backup, show you what would change first, then merge. Nothing in
@@ -33,7 +69,7 @@ cp -a cedarville-main "cedarville-main.backup-$(date +%F)"
 
 # 2. unzip the new version into a temporary folder
 rm -rf /tmp/cedar-new && mkdir /tmp/cedar-new
-unzip -q ~/Downloads/cedarville-learning-v2.zip -d /tmp/cedar-new
+unzip -q ~/Downloads/cedarville-learning-v3.zip -d /tmp/cedar-new
 
 # 3. PREVIEW — lists files that differ or are new; changes nothing
 diff -rq /tmp/cedar-new/cedarville-main cedarville-main | less
@@ -45,7 +81,7 @@ cp -a /tmp/cedar-new/cedarville-main/. cedarville-main/
 cd cedarville-main/backend
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements-dev.txt
-pytest -q                                   # expect: 32 passed
+pytest -q                                   # expect: 33 passed
 cp -n .env.example .env                     # never overwrites an .env you already have
 uvicorn app.main:app --reload --port 8000   # leave running
 
@@ -80,7 +116,7 @@ Notes:
 - Show/hide password, "Add to home screen" button, forgot-password contact line.
 - Star pop on correct answers, better small-phone layout, screen-reader focus handling.
 
-**Tests:** 32 backend tests (7 new for security) and a full browser walk-through including password change, account deletion and the break card, with zero CSP violations.
+**Tests:** 33 backend tests (7 new for security) and a full browser walk-through including password change, account deletion and the break card, with zero CSP violations.
 
 **Still to do (not in this release):** self-service password reset by email (needs an email service such as Resend or
 Brevo), Alembic migrations, and a live Neon/Paystack/AI test with your real keys. If you change your API domain,
@@ -116,7 +152,7 @@ cd site && npm install && npm start
 # open http://localhost:5000/app/
 ```
 
-Or run both with `./dev.sh`. API docs: http://localhost:8000/api/docs. Tests: `cd backend && pytest` (32 tests).
+Or run both with `./dev.sh`. API docs: http://localhost:8000/api/docs. Tests: `cd backend && pytest` (33 tests).
 With no `DATABASE_URL` it uses a local SQLite file, so you can try everything immediately.
 
 Free-plan limits (1 child, 1 practice round a day) and Premium unlocks work locally too. To test Premium
@@ -161,7 +197,7 @@ without paying, set `PAYSTACK_SECRET_KEY` to a Paystack **test** key and use Pay
   Data Protection Act and Google Play's Families Policy before publishing. Nothing here is legal advice.
 - **Database migrations:** tables are created automatically on startup. That is fine now; before you change the
   schema on a live database, add **Alembic** (as BACKEND-PLAN.md recommends) so you never lose data.
-- **Tested here:** 32 backend tests (accounts, quizzes, anti-cheating, limits, webhook security, AI privacy,
+- **Tested here:** 33 backend tests (accounts, quizzes, anti-cheating, limits, webhook security, AI privacy,
   admin) and a full browser walk-through on a phone-sized screen. **Not tested here:** a live Neon database
   (the connection code is standard SQLAlchemy/psycopg, but run `/api/health` after deploying), real Paystack
   payments, real AI replies, and the Android build (needs Android Studio on your machine).
