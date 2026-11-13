@@ -86,20 +86,50 @@ document.addEventListener('DOMContentLoaded', function () {
       if (submitBtn) submitBtn.disabled = true;
 
       try {
-        const res = await fetch(this.action, {
-          method: 'POST',
-          body: new FormData(this),
-          headers: { Accept: 'application/json' }
-        });
-        if (res.ok) {
-          if (feedback) { feedback.textContent = 'Thank you! Your message has been sent. We will be in touch shortly.'; feedback.className = 'text-success mt-2'; }
-          this.reset();
-        } else {
-          throw new Error('Form service returned an error');
+        // Prefer our own backend (js/config.js -> CEDARVILLE_CONTACT_ENDPOINT).
+        // If it is unreachable, fall back to the hosted form service in the
+        // form's action attribute so enquiries are never lost.
+        const apiEndpoint = window.CEDARVILLE_CONTACT_ENDPOINT;
+        let delivered = false;
+
+        if (apiEndpoint) {
+          const payload = {
+            name: name,
+            email: email,
+            phone: (this.querySelector('#phone') || {}).value || null,
+            subject: (this.querySelector('#subject') || {}).value || null,
+            message: msg
+          };
+          try {
+            const apiRes = await fetch(apiEndpoint, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            if (apiRes.ok) delivered = true;
+            else if (apiRes.status === 422) throw new Error('validation');
+          } catch (apiErr) {
+            if (apiErr.message === 'validation') throw apiErr;
+            console.warn('Contact: API unavailable, falling back to form service.', apiErr);
+          }
         }
+
+        if (!delivered) {
+          const res = await fetch(this.action, {
+            method: 'POST',
+            body: new FormData(this),
+            headers: { Accept: 'application/json' }
+          });
+          if (!res.ok) throw new Error('Form service returned an error');
+        }
+
+        if (feedback) { feedback.textContent = 'Thank you! Your message has been sent. We will be in touch shortly.'; feedback.className = 'text-success mt-2'; }
+        this.reset();
       } catch (err) {
         if (feedback) {
-          feedback.textContent = 'Something went wrong sending your message. Please try again, or reach us directly on WhatsApp / phone.';
+          feedback.textContent = err.message === 'validation'
+            ? 'Please check your details — especially the email address — and try again.'
+            : 'Something went wrong sending your message. Please try again, or reach us directly on WhatsApp / phone.';
           feedback.className = 'text-danger mt-2';
         }
       } finally {

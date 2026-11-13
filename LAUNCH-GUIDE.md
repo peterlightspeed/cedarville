@@ -50,10 +50,17 @@ call-to-action on the Learning Hub page (it used to say "coming soon").
 - A **More ▾** menu holding Gallery, Blog, FAQ, Contact, Learning Hub and **📲 Install the app**.
 - An install page at `/app/#/install` with Android and iPhone steps (and an Install button when the browser allows it).
 
-**Is your live site actually updated?** A site that still shows the old navbar means the new code isn't deployed yet.
-Check where the site is served from (GitHub → repo → *Settings → Pages*). If it says **Deploy from branch / (root)**, the
-site that's served is the *root* folder, not `site/`. In that case copy the current site over the root once:
-`cp -a site/. .` (from the repo folder), commit and push.
+**Your site is served from the repo ROOT (GitHub Pages), not from `site/`.** `site/` is the copy we edit; the root is the copy
+visitors see. After any change inside `site/`, run this once from the repo folder, then commit and push:
+
+```bash
+bash sync-site.sh
+```
+
+It copies the pages, `css/`, `js/`, `images/`, `data/` and `app/` from `site/` to the root. (Version 4 of the zip already
+includes the synced root, so you only need `sync-site.sh` for future edits.) After the push, GitHub Pages takes 1–2
+minutes to update; do a hard refresh (Ctrl+Shift+R). The app is then at `https://www.cedarvilleprivateschool.com/app/`
+(the older `/site/app/` address keeps working too).
 
 ## Updating an existing `cedarville-main` folder (merge commands)
 
@@ -69,7 +76,7 @@ cp -a cedarville-main "cedarville-main.backup-$(date +%F)"
 
 # 2. unzip the new version into a temporary folder
 rm -rf /tmp/cedar-new && mkdir /tmp/cedar-new
-unzip -q ~/Downloads/cedarville-learning-v3.zip -d /tmp/cedar-new
+unzip -q ~/Downloads/cedarville-learning-v4.zip -d /tmp/cedar-new
 
 # 3. PREVIEW — lists files that differ or are new; changes nothing
 diff -rq /tmp/cedar-new/cedarville-main cedarville-main | less

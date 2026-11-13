@@ -195,10 +195,13 @@ async function loadChildren() {
 }
 function pickChild(id) { S.childId = id; store.set('cedar_child', String(id)); }
 
+const brand = (big = false) => `<div class="brand ${big ? 'big' : ''}"><img src="icons/school-logo.png" alt="Cedarville Private Schools logo" width="${big ? 84 : 48}" height="${big ? 84 : 48}"><span>Cedarville Private Schools</span></div>`;
+
 // ---------------------------------------------------------------- screens
 function welcome(mode = 'signup') {
   render(`
     <div class="center">
+      ${brand(true)}
       <div style="display:flex;justify-content:center">${owl('happy').replace('class="owl"', 'class="owl big"')}</div>
       <h1>Cedarville Learning</h1>
       <p class="muted">Fun quizzes, videos and a friendly owl for little learners. 🌈</p>
@@ -251,6 +254,7 @@ function welcome(mode = 'signup') {
 
 function who() {
   render(`
+    ${brand()}
     <div class="center"><h1>Who is playing? 🎈</h1></div>
     <div class="kidpick">
       ${S.children.map((c) => `<button data-id="${c.id}"><span class="av">${esc(c.avatar)}</span>${esc(c.name)}</button>`).join('')}
@@ -307,7 +311,8 @@ async function home() {
     ? `Great job today, ${esc(c.name)}! Come back tomorrow for a new quiz. 🌙`
     : c.streak > 1 ? `${greet}, ${esc(c.name)}! You're on a ${c.streak}-day streak! 🔥` : `${greet}, ${esc(c.name)}! Ready for today's quiz? 🎉`;
   render(`
-    <div class="hello">${owl(d.already_done ? 'happy' : 'happy')}<div class="bubble">${line}</div></div>
+    ${brand()}
+    <div class="hello">${owl('happy')}<div class="bubble">${line}</div></div>
     <button class="big-cta ${d.already_done ? 'done' : ''}" id="daily">
       <div class="t">${d.already_done ? 'Today\'s quiz is done! ✅' : 'Today\'s Quiz'}</div>
       <div class="s">${d.already_done ? `You got ${d.result.correct} out of ${d.result.total} and earned ${d.result.stars} ⭐` : '5 quick questions · earn stars ⭐'}</div>
@@ -550,7 +555,7 @@ function stars() {
 function installPage() {
   const standalone = window.matchMedia && window.matchMedia('(display-mode: standalone)').matches;
   render(`
-    <div class="center">${owl('happy').replace('class="owl"', 'class="owl big"')}<h1>Install Cedarville Learning 📲</h1>
+    <div class="center">${brand()}${owl('happy').replace('class="owl"', 'class="owl big"')}<h1>Install Cedarville Learning 📲</h1>
       <p class="muted">Put the app on your phone's home screen. It opens full-screen, just like any other app.</p></div>
     ${standalone ? '<div class="ok">✅ You are already using the installed app.</div>' : ''}
     <div class="card"><h3>🤖 Android (Chrome)</h3>
@@ -599,6 +604,7 @@ async function grownups(query = '') {
   const premium = S.user.premium;
   const naira = (k) => '₦' + (k / 100).toLocaleString('en-NG');
   render(`
+    ${brand()}
     <h1>Grown-ups area 🔒</h1>
     ${flash}<div id="msg"></div>
     <div class="card">

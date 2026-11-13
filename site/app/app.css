@@ -192,3 +192,10 @@ details summary { cursor: pointer; padding: 4px 0; }
 [hidden] { display: none !important; }
 .opt, .btn, .tile, .big-cta { touch-action: manipulation; }
 @media (max-width: 360px) { .stickers { grid-template-columns: repeat(3, 1fr); } .visual { font-size: 60px; } .qtext { font-size: 1.35rem; } }
+
+/* ---------- school logo ---------- */
+.brand { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 2px 0 10px; font-weight: 600; color: var(--blue-dark); }
+.brand img { border-radius: 14px; background: #fff; padding: 3px; box-shadow: 0 4px 12px rgba(26,86,219,.18); object-fit: contain; }
+.brand.big { flex-direction: column; gap: 6px; margin-bottom: 6px; }
+.brand.big img { border-radius: 22px; }
+.brand.big span { font-size: 1rem; }

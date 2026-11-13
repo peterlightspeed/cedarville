@@ -1,5 +1,5 @@
 {
-  "_comment": "EDIT ME: add a new topic by adding a key to 'responses' (string or array of strings for varied phrasing) and matching trigger words to 'keywords'. See CMS-GUIDE.md.",
+  "_comment": "EDIT ME: add a new topic by adding a key to 'responses' (string or array of strings for varied phrasing) and matching trigger words to 'keywords'. See README.md.",
   "responses": {
     "greeting": [
       "Hello! Welcome to Cedarville Private Schools. How can I help you today? You can ask me about our programs, fees, admissions, uniform, events or facilities.",

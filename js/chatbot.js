@@ -2,26 +2,40 @@
    Cedarville Schools - Rule-Based Chatbot
    NO API or external services. Loads its knowledge base from
    /data/chatbot-responses.json so non-developers can edit
-   responses without touching this file. See CMS-GUIDE.md.
+   responses without touching this file. See README.md.
    ============================================================ */
 
 let chatbotData = null;
 let lastFallbackIndex = -1;
 
 async function loadChatbotData() {
-  try {
-    const res = await fetch('data/chatbot-responses.json', { cache: 'no-cache' });
-    chatbotData = await res.json();
-  } catch (err) {
-    console.warn('Chatbot: could not load knowledge base, using minimal fallback.', err);
-    chatbotData = {
-      responses: {
-        greeting: "Hello! Welcome to Cedarville Private Schools. How can I help you today?",
-        fallback: "I'm having trouble reaching my knowledge base right now. Please call us at +234 813 745 1764."
-      },
-      keywords: { greeting: ["hello", "hi", "hey"] }
-    };
+  // Same source resolution as cms.js: API first when configured, static folder
+  // as the safety net. Both serve an identical JSON shape.
+  const apiBase = (window.CEDARVILLE_DATA_BASE
+    || document.documentElement.getAttribute('data-api-base')
+    || '').replace(/\/$/, '');
+  const sources = apiBase ? [`${apiBase}/chatbot-responses.json`, 'data/chatbot-responses.json']
+                          : ['data/chatbot-responses.json'];
+
+  for (const url of sources) {
+    try {
+      const res = await fetch(url, { cache: 'no-cache' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      chatbotData = await res.json();
+      return;
+    } catch (err) {
+      console.warn('Chatbot: could not load ' + url + ' (' + err.message + ')');
+    }
   }
+
+  console.warn('Chatbot: using minimal built-in fallback.');
+  chatbotData = {
+    responses: {
+      greeting: "Hello! Welcome to Cedarville Private Schools. How can I help you today?",
+      fallback: "I'm having trouble reaching my knowledge base right now. Please call us at +234 813 745 1764."
+    },
+    keywords: { greeting: ["hello", "hi", "hey"] }
+  };
 }
 
 function pickResponse(value) {

@@ -2,7 +2,7 @@
    Cedarville Schools - CMS Rendering Engine
    Loads structured JSON from /data and renders it into the page.
    Edit content in /data/*.json — never edit this file to change content.
-   See CMS-GUIDE.md for full documentation.
+   See README.md for full documentation.
    ============================================================ */
 
 (function () {
@@ -10,25 +10,50 @@
 
   /**
    * Data source for all CMS content.
-   * Today this points at the static /data folder. When a Python backend exists,
-   * set window.CEDARVILLE_DATA_BASE = '/api' before cms.js loads (or add
-   * data-api-base="/api" to <html>) and every endpoint keeps the same shape:
-   *   GET /api/site.json, /api/testimonials.json, /api/blog-posts.json, ...
+   *
+   * Priority:
+   *   1. window.CEDARVILLE_DATA_BASE  (set in js/config.js)
+   *   2. <html data-api-base="...">
+   *   3. the static "data" folder
+   *
+   * The Python API exposes the same filenames as the static folder
+   * (GET /api/site.json, /api/faq.json, ...), so switching sources changes
+   * nothing about the shape of the data.
    */
-  const DATA_BASE = (window.CEDARVILLE_DATA_BASE
+  const API_BASE = (window.CEDARVILLE_DATA_BASE
     || document.documentElement.getAttribute('data-api-base')
-    || 'data').replace(/\/$/, '');
+    || '').replace(/\/$/, '');
+  const LOCAL_BASE = 'data';
 
-  /** Small fetch helper with graceful failure (keeps static fallback markup if a fetch fails, e.g. opened via file://) */
-  async function loadJSON(path) {
-    try {
-      const res = await fetch(path, { cache: 'no-cache' });
-      if (!res.ok) throw new Error('Bad response for ' + path);
-      return await res.json();
-    } catch (err) {
-      console.warn('CMS: could not load', path, err);
-      return null;
+  // Starts at the API if one is configured. If the API ever fails, we drop to
+  // the static folder for the rest of the session so the page still renders.
+  let activeBase = API_BASE || LOCAL_BASE;
+
+  /**
+   * Fetch a content document by name.
+   * Tries the API first (when configured), then the static folder. Returns
+   * null only when both fail, which leaves the page's fallback markup intact.
+   */
+  async function loadJSON(name) {
+    const file = name.endsWith('.json') ? name : name + '.json';
+    const bases = activeBase === LOCAL_BASE ? [LOCAL_BASE] : [activeBase, LOCAL_BASE];
+
+    for (const base of bases) {
+      const url = base + '/' + file;
+      try {
+        const res = await fetch(url, { cache: 'no-cache' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        if (base !== activeBase) {
+          console.info('CMS: API unavailable, using static ' + base + '/ for this session');
+          activeBase = base;
+        }
+        return data;
+      } catch (err) {
+        console.warn('CMS: could not load ' + url + ' (' + err.message + ')');
+      }
     }
+    return null;
   }
 
   function escapeHTML(str) {
@@ -450,12 +475,12 @@
      ------------------------------------------------------- */
   document.addEventListener('DOMContentLoaded', async function () {
     const [site, testimonials, events, blog, gallery, faq] = await Promise.all([
-      loadJSON(`${DATA_BASE}/site.json`),
-      document.getElementById('testimonialsGrid') ? loadJSON(`${DATA_BASE}/testimonials.json`) : null,
-      document.getElementById('eventsGrid') ? loadJSON(`${DATA_BASE}/events.json`) : null,
-      (document.getElementById('blogPreviewGrid') || document.getElementById('blogGrid')) ? loadJSON(`${DATA_BASE}/blog-posts.json`) : null,
-      document.getElementById('galleryGrid') ? loadJSON(`${DATA_BASE}/gallery.json`) : null,
-      document.querySelector('[data-cms-faq]') ? loadJSON(`${DATA_BASE}/faq.json`) : null
+      loadJSON('site'),
+      document.getElementById('testimonialsGrid') ? loadJSON('testimonials') : null,
+      document.getElementById('eventsGrid') ? loadJSON('events') : null,
+      (document.getElementById('blogPreviewGrid') || document.getElementById('blogGrid')) ? loadJSON('blog-posts') : null,
+      document.getElementById('galleryGrid') ? loadJSON('gallery') : null,
+      document.querySelector('[data-cms-faq]') ? loadJSON('faq') : null
     ]);
 
     if (blog && blog.categories) blog.categories.forEach((c) => { blogCategoryLabels[c.key] = c.label; });

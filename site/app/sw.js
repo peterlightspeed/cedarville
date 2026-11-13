@@ -1,7 +1,7 @@
 /* Caches the app shell so it opens instantly on slow connections.
    API calls are never cached. Bump VERSION to force an update. */
-const VERSION = 'cedar-v1';
-const SHELL = ['./', 'app.css', 'app.js', 'config.js', 'icons/icon-192.png'];
+const VERSION = 'cedar-v3';
+const SHELL = ['./', 'app.css', 'app.js', 'config.js', 'icons/icon-192.png', 'icons/school-logo.png'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(VERSION).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));
