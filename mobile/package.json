@@ -1,0 +1,19 @@
+{
+  "name": "cedarville-learning-mobile",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Capacitor wrapper that turns site/app into an Android (and iOS) app",
+  "scripts": {
+    "prepare-web": "rm -rf www && mkdir www && cp -r ../site/app/. www/ && rm -f www/sw.js",
+    "sync": "npm run prepare-web && npx cap sync android",
+    "open": "npx cap open android",
+    "run": "npm run sync && npx cap run android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.1.2",
+    "@capacitor/core": "^6.1.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.1.2"
+  }
+}

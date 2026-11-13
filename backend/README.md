@@ -1,4 +1,4 @@
-# Cedarville Schools — API
+# Cedarville Schools — API (v0.2: learning platform)
 
 FastAPI service that backs the Cedarville Schools website and will grow into the
 learning platform (accounts, quizzes, AI assistant, subscriptions).
@@ -38,7 +38,23 @@ ever talks to one origin and CORS never comes into play.
 
 ---
 
-## Endpoints
+## New in v0.2 — learning platform
+
+Parents sign up; children are profiles. Full guide: `../LAUNCH-GUIDE.md`. Interactive docs at `/api/docs`.
+
+| Area | Endpoints |
+|---|---|
+| Auth | `POST /api/auth/signup`, `POST /api/auth/login`, `GET /api/auth/me` |
+| Children | `GET/POST /api/children`, `PATCH/DELETE /api/children/{id}`, `GET /api/children/{id}/progress` |
+| Learning | `GET /api/learn/daily`, `/subjects`, `/practice`, `/videos`; `POST /api/learn/check`, `/submit` |
+| Payments | `GET /api/payments/plans`, `POST /checkout`, `POST /webhook`, `GET /verify`, `/status` |
+| AI | `POST /api/ai/buddy` (Premium) |
+| Admin | `/api/admin/videos`, `/api/admin/questions`, `/questions/generate`, `/questions/drafts` |
+
+Run the tests: `pip install -r requirements-dev.txt && pytest`.
+Set `DATABASE_URL` to your Neon string for Postgres; leave it unset for local SQLite.
+
+## Endpoints (original content API)
 
 | Method | Path | Purpose |
 |---|---|---|

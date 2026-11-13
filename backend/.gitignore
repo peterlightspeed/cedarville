@@ -7,3 +7,8 @@ var/
 .pytest_cache/
 .ruff_cache/
 *.log
+
+*.db
+var/
+.pytest_cache/
+__pycache__/

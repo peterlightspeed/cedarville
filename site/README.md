@@ -18,6 +18,10 @@ npm start
 
 You can also open `index.html` directly, but JSON content loads more reliably through the server (browsers block `fetch()` on `file://`).
 
+## Kids' learning app
+
+`app/` is a separate mobile-first web app (quizzes, videos, AI helper, parent area). It talks to the FastAPI backend and is wrapped for Android in `../mobile`. See `../LAUNCH-GUIDE.md`.
+
 ## Pages
 
 | Page | File | Clean URL |

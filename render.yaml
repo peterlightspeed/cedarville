@@ -1,0 +1,31 @@
+# Render Blueprint — deploys the FastAPI backend from this repo.
+# Render dashboard > New > Blueprint > pick this repo.
+services:
+  - type: web
+    name: cedarville-api
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: .
+    plan: free            # upgrade to "starter" (~$7/mo) to stop cold-start sleeping
+    region: frankfurt     # closest Render region to Lagos
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: PORT
+        value: "8000"
+      - key: APP_ENV
+        value: production
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        sync: false        # paste your Neon connection string
+      - key: CORS_ORIGINS
+        value: https://repurposekey.com,https://www.repurposekey.com,https://www.cedarvilleprivateschool.com,https://cedarvilleprivateschool.com,https://localhost,capacitor://localhost
+      - key: APP_URL
+        value: https://repurposekey.com/app/
+      - key: ADMIN_EMAILS
+        sync: false        # your email, comma-separated for more than one
+      - key: PAYSTACK_SECRET_KEY
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false

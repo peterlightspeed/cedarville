@@ -16,3 +16,12 @@ Thumbs.db
 # Logs
 logs/
 *.log
+
+# Secrets & local files
+.env
+.venv/
+venv/
+__pycache__/
+*.db
+backend/var/
+.pytest_cache/

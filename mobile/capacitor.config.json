@@ -1,0 +1,12 @@
+{
+  "appId": "com.repurposekey.cedarlearning",
+  "appName": "Cedarville Learning",
+  "webDir": "www",
+  "backgroundColor": "#e8f4ff",
+  "android": {
+    "allowMixedContent": false
+  },
+  "server": {
+    "androidScheme": "https"
+  }
+}
