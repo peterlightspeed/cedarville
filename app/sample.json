@@ -1,0 +1,230 @@
+{
+ "tiny": [
+  {
+   "visual": "🐸",
+   "prompt": "Which animal says RIBBIT?",
+   "answer": "Frog",
+   "options": [
+    "Frog",
+    "Duck",
+    "Cow"
+   ],
+   "explanation": "The frog says ribbit! 🐸"
+  },
+  {
+   "visual": "🍓",
+   "prompt": "What colour is a strawberry?",
+   "answer": "Red",
+   "options": [
+    "Red",
+    "Blue",
+    "Green"
+   ],
+   "explanation": "Strawberries are red. ❤️"
+  },
+  {
+   "visual": "⭐⭐",
+   "prompt": "How many stars?",
+   "answer": "2",
+   "options": [
+    "2",
+    "3",
+    "1"
+   ],
+   "explanation": "There are 2 stars. Well counted!"
+  },
+  {
+   "visual": "🚗",
+   "prompt": "Which one has wheels?",
+   "answer": "Car",
+   "options": [
+    "Car",
+    "Fish",
+    "Tree"
+   ],
+   "explanation": "Cars roll along on wheels."
+  },
+  {
+   "visual": "🧼",
+   "prompt": "What do we use to wash our hands?",
+   "answer": "Soap and water",
+   "options": [
+    "Soap and water",
+    "Sand",
+    "Paper"
+   ],
+   "explanation": "Soap and water keep our hands clean!"
+  }
+ ],
+ "nursery": [
+  {
+   "visual": "🍌",
+   "prompt": "Banana starts with which letter?",
+   "answer": "B",
+   "options": [
+    "B",
+    "M",
+    "T"
+   ],
+   "explanation": "Banana starts with B. B is for Banana!"
+  },
+  {
+   "visual": "🍎🍎🍎🍎",
+   "prompt": "How many apples?",
+   "answer": "4",
+   "options": [
+    "4",
+    "3",
+    "5"
+   ],
+   "explanation": "There are 4 apples."
+  },
+  {
+   "visual": "🌞",
+   "prompt": "The opposite of DAY is ...",
+   "answer": "Night",
+   "options": [
+    "Night",
+    "Hot",
+    "Fast"
+   ],
+   "explanation": "Day and night are opposites. 🌙"
+  },
+  {
+   "visual": "⬜",
+   "prompt": "Which shape has four equal sides?",
+   "answer": "Square",
+   "options": [
+    "Square",
+    "Circle",
+    "Triangle"
+   ],
+   "explanation": "A square has 4 equal sides."
+  },
+  {
+   "visual": "🚦",
+   "prompt": "Which colour on a traffic light means STOP?",
+   "answer": "Red",
+   "options": [
+    "Red",
+    "Green",
+    "Blue"
+   ],
+   "explanation": "Red means stop. Stay safe!"
+  }
+ ],
+ "lower": [
+  {
+   "visual": "➕",
+   "prompt": "7 + 5 = ?",
+   "answer": "12",
+   "options": [
+    "12",
+    "11",
+    "13"
+   ],
+   "explanation": "7 + 5 = 12"
+  },
+  {
+   "visual": "➖",
+   "prompt": "15 - 8 = ?",
+   "answer": "7",
+   "options": [
+    "7",
+    "6",
+    "8"
+   ],
+   "explanation": "15 - 8 = 7"
+  },
+  {
+   "visual": "🗓️",
+   "prompt": "How many days are in a week?",
+   "answer": "7",
+   "options": [
+    "7",
+    "5",
+    "10"
+   ],
+   "explanation": "Monday to Sunday is 7 days."
+  },
+  {
+   "visual": "🪑",
+   "prompt": "Which word is a NOUN (a naming word)?",
+   "answer": "Table",
+   "options": [
+    "Table",
+    "Run",
+    "Happy"
+   ],
+   "explanation": "A noun names a person, animal, place or thing."
+  },
+  {
+   "visual": "🐘",
+   "prompt": "Which is the biggest animal on land?",
+   "answer": "Elephant",
+   "options": [
+    "Elephant",
+    "Lion",
+    "Goat"
+   ],
+   "explanation": "Elephants are the biggest land animals!"
+  }
+ ],
+ "upper": [
+  {
+   "visual": "✖️",
+   "prompt": "6 × 7 = ?",
+   "answer": "42",
+   "options": [
+    "42",
+    "36",
+    "48"
+   ],
+   "explanation": "6 × 7 = 42"
+  },
+  {
+   "visual": "🍕",
+   "prompt": "What is 3/4 of 20?",
+   "answer": "15",
+   "options": [
+    "15",
+    "12",
+    "10"
+   ],
+   "explanation": "20 ÷ 4 = 5, and 5 × 3 = 15."
+  },
+  {
+   "visual": "☀️",
+   "prompt": "Which planet is closest to the Sun?",
+   "answer": "Mercury",
+   "options": [
+    "Mercury",
+    "Venus",
+    "Earth"
+   ],
+   "explanation": "Mercury is the closest planet to the Sun."
+  },
+  {
+   "visual": "🐭",
+   "prompt": "The plural of 'mouse' is ...",
+   "answer": "Mice",
+   "options": [
+    "Mice",
+    "Mouses",
+    "Mices"
+   ],
+   "explanation": "Mouse → mice is an irregular plural."
+  },
+  {
+   "visual": "🌡️",
+   "prompt": "At what temperature does water boil (at sea level)?",
+   "answer": "100°C",
+   "options": [
+    "100°C",
+    "50°C",
+    "10°C"
+   ],
+   "explanation": "Water boils at 100°C."
+  }
+ ]
+}

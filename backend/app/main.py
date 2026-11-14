@@ -15,7 +15,7 @@ from fastapi.responses import JSONResponse
 
 from sqlmodel import Session
 
-from app.api import admin, ai, auth, children, contact, content, health, learn, payments
+from app.api import admin, ai, analytics, auth, children, contact, content, health, learn, payments
 from app.config import settings
 from app.database import engine, init_db
 from app.seed import seed_if_empty
@@ -66,7 +66,7 @@ async def security_headers(request: Request, call_next):
 
 app.include_router(health.router, prefix="/api")
 app.include_router(contact.router, prefix="/api")
-for r in (auth.router, children.router, learn.router, payments.router, ai.router, admin.router):
+for r in (auth.router, children.router, learn.router, payments.router, ai.router, admin.router, analytics.router):
     app.include_router(r, prefix="/api")
 # Content goes last: its `/{name}.json` catch-all must not shadow anything above.
 app.include_router(content.router, prefix="/api")
@@ -93,11 +93,20 @@ async def not_found(request: Request, exc) -> JSONResponse:
 @app.on_event("startup")
 async def startup() -> None:
     log.info("Starting %s v%s (%s)", settings.app_name, settings.version, settings.env)
+    if settings.env == "production":
+        problems = []
+        if settings.secret_key.startswith("dev-only"):
+            problems.append("SECRET_KEY is not set (create one with: openssl rand -hex 32)")
+        if problems:
+            raise RuntimeError(
+                "STARTUP BLOCKED - fix these in Render > Environment, then redeploy: " + "; ".join(problems)
+            )
+        if settings.database_url.startswith("sqlite"):
+            log.warning("DATABASE_URL is not set: using a temporary SQLite file. Data is LOST on every redeploy. "
+                        "Set DATABASE_URL to your Neon connection string.")
     init_db()
     with Session(engine) as session:
         seed_if_empty(session)
-    if settings.env == "production" and settings.secret_key.startswith("dev-only"):
-        raise RuntimeError("SECRET_KEY must be set in production (openssl rand -hex 32).")
     log.info("Content directory: %s", settings.content_dir)
     if not settings.content_dir.is_dir():
         log.warning("Content directory does not exist — content endpoints will 404")

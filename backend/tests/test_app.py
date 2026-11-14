@@ -283,9 +283,17 @@ def test_checkout_uses_paystack(client, auth, monkeypatch):
 
 
 # ---------- AI ----------
-def test_ai_requires_premium(client, auth):
+def test_ai_free_taster_then_premium_wall(client, auth):
     c = make_child(client, auth)
-    assert client.post("/api/ai/buddy", json={"child_id": c["id"], "message": "hi"}, headers=auth).status_code == 402
+    st = client.get(f"/api/ai/status?child_id={c['id']}", headers=auth).json()
+    assert st["premium"] is False and st["limit"] == 3 and st["left"] == 3
+    for _ in range(3):  # three free questions (no AI key in tests -> friendly fallback, still counts)
+        assert client.post("/api/ai/buddy", json={"child_id": c["id"], "message": "hi"}, headers=auth).status_code == 200
+    r = client.post("/api/ai/buddy", json={"child_id": c["id"], "message": "hi"}, headers=auth)
+    assert r.status_code == 402 and "Premium" in r.json()["detail"]
+    assert client.get(f"/api/ai/status?child_id={c['id']}", headers=auth).json()["left"] == 0
+    _grant_premium(client, auth)  # paying unlocks more straight away
+    assert client.post("/api/ai/buddy", json={"child_id": c["id"], "message": "hi"}, headers=auth).status_code == 200
 
 
 def test_ai_fallback_and_privacy(client, auth, monkeypatch):
@@ -411,3 +419,230 @@ def test_diagnostics_admin_only_and_honest(client, auth, admin, monkeypatch):
     FakeClient.code = 401
     bad = {c["name"]: c for c in client.get("/api/admin/diagnostics", headers=admin).json()["checks"]}["Paystack payments"]
     assert bad["ok"] is False and "401" in bad["detail"]
+
+
+# ---------- v4: Google sign-in, migrations, startup guard ----------
+FAKE_TOKEN = "x" * 40
+
+
+@pytest.fixture()
+def google(monkeypatch):
+    from app.api import auth as auth_api
+    monkeypatch.setattr(auth_api.settings, "google_client_id", "client-123.apps.googleusercontent.com")
+    state = {"info": {"iss": "https://accounts.google.com", "sub": "g-1", "email": "Kemi@Example.com",
+                      "email_verified": True, "name": "Kemi Ade"}, "fail": False}
+
+    def fake_verify(credential):
+        if state["fail"]:
+            raise ValueError("bad signature")
+        return state["info"]
+    monkeypatch.setattr(auth_api, "verify_google_token", fake_verify)
+    return state
+
+
+def test_google_off_when_not_configured(client):
+    assert client.get("/api/auth/providers").json()["google_client_id"] is None
+    assert client.post("/api/auth/google", json={"credential": FAKE_TOKEN}).status_code == 503
+
+
+def test_google_new_account_needs_consent_then_works(client, google):
+    assert client.get("/api/auth/providers").json()["google_client_id"].startswith("client-123")
+    r = client.post("/api/auth/google", json={"credential": FAKE_TOKEN, "accepted_terms": False})
+    assert r.status_code == 409 and "Sign up" in r.json()["detail"]
+    r = client.post("/api/auth/google", json={"credential": FAKE_TOKEN, "accepted_terms": True})
+    assert r.status_code == 200
+    u = r.json()["user"]
+    assert u["email"] == "kemi@example.com" and u["display_name"] == "Kemi Ade" and u["google"] and not u["has_password"]
+    h = {"Authorization": "Bearer " + r.json()["token"]}
+    assert client.get("/api/auth/me", headers=h).status_code == 200
+    # signing in again (even without ticking the box) returns the same account
+    again = client.post("/api/auth/google", json={"credential": FAKE_TOKEN}).json()
+    assert again["user"]["id"] == u["id"]
+
+
+def test_google_rejects_bad_token(client, google):
+    google["fail"] = True
+    assert client.post("/api/auth/google", json={"credential": FAKE_TOKEN, "accepted_terms": True}).status_code == 401
+
+
+def test_google_cannot_be_used_to_log_in_with_a_password(client, google):
+    google["info"] = {**google["info"], "sub": "g-nopw", "email": "nopw@example.com"}
+    client.post("/api/auth/google", json={"credential": FAKE_TOKEN, "accepted_terms": True})
+    r = client.post("/api/auth/login", json={"email": "nopw@example.com", "password": "!"})
+    assert r.status_code == 401
+
+
+def test_google_link_disables_preregistered_password(client, google):
+    """Pre-hijack defence: a stranger registers the victim's email with a password first."""
+    import time
+    google["info"] = {**google["info"], "sub": "g-victim", "email": "victim@example.com"}
+    attacker = signup(client, "victim@example.com")
+    time.sleep(1.2)
+    r = client.post("/api/auth/google", json={"credential": FAKE_TOKEN}).json()
+    assert "Google" in r["note"]
+    assert client.get("/api/auth/me", headers=attacker).status_code == 401  # attacker's session is dead
+    assert client.post("/api/auth/login", json={"email": "victim@example.com", "password": "correct-horse-1"}).status_code == 401
+
+
+def test_google_account_password_and_delete_rules(client, google):
+    google["info"] = {**google["info"], "sub": "g-del", "email": "del@example.com"}
+    r = client.post("/api/auth/google", json={"credential": FAKE_TOKEN, "accepted_terms": True}).json()
+    h = {"Authorization": "Bearer " + r["token"]}
+    assert client.post("/api/auth/change-password", headers=h, json={"current_password": "x", "new_password": "purple-mango-sky-7"}).status_code == 400
+    assert client.post("/api/auth/delete-account", headers=h, json={"confirm": "nope"}).status_code == 400
+    assert client.post("/api/auth/delete-account", headers=h, json={"confirm": "DELETE"}).json()["deleted"]
+    assert client.get("/api/auth/me", headers=h).status_code == 401  # token dies immediately
+
+
+def test_google_admin_email_gets_admin(client, google):
+    google["info"] = {**google["info"], "sub": "g-boss", "email": "gboss@example.com"}
+    r = client.post("/api/auth/google", json={"credential": FAKE_TOKEN, "accepted_terms": True}).json()
+    assert r["user"]["is_admin"] is True
+
+
+def test_add_missing_columns_upgrades_old_database(tmp_path):
+    """A database made by an older release (no google_sub column) is upgraded in place, data kept."""
+    from sqlalchemy import create_engine, inspect, text
+    from app.database import add_missing_columns
+    eng = create_engine(f"sqlite:///{tmp_path}/old.db")
+    with eng.begin() as c:
+        c.execute(text('CREATE TABLE "user" (id INTEGER PRIMARY KEY, email VARCHAR NOT NULL, password_hash VARCHAR NOT NULL, '
+                       'display_name VARCHAR NOT NULL, is_admin BOOLEAN NOT NULL DEFAULT 0, created_at DATETIME NOT NULL)'))
+        c.execute(text("INSERT INTO \"user\" VALUES (1,'old@example.com','h','Old',0,'2026-01-01')"))
+    add_missing_columns(eng)
+    cols = {c["name"] for c in inspect(eng).get_columns("user")}
+    assert {"google_sub", "password_changed_at"} <= cols
+    with eng.connect() as c:
+        assert c.execute(text('SELECT email FROM "user"')).scalar() == "old@example.com"
+    add_missing_columns(eng)  # idempotent
+
+
+def test_production_refuses_to_start_without_secret(monkeypatch):
+    from fastapi.testclient import TestClient
+    from app import main
+    monkeypatch.setattr(main.settings, "env", "production")
+    monkeypatch.setattr(main.settings, "secret_key", "dev-only-change-me-please-32-chars-min")
+    with pytest.raises(RuntimeError, match="STARTUP BLOCKED.*SECRET_KEY"):
+        with TestClient(main.app):
+            pass
+
+
+# ---------- v5: free vs premium ----------
+def test_locked_subjects_for_free_families(client, auth):
+    c = make_child(client, auth, age=9)  # upper level: maths is free, science/english/etc are Premium
+    subs = client.get(f"/api/learn/subjects?child_id={c['id']}", headers=auth).json()["subjects"]
+    by = {x["key"]: x for x in subs}
+    assert by["maths"]["locked"] is False and by["science"]["locked"] is True
+    assert subs[0]["locked"] is False  # free subjects are listed first
+    r = client.get(f"/api/learn/practice?child_id={c['id']}&subject=science", headers=auth)
+    assert r.status_code == 402 and "Premium" in r.json()["detail"]
+    ok = client.get(f"/api/learn/practice?child_id={c['id']}&subject=maths", headers=auth)
+    assert ok.status_code == 200
+
+
+def test_free_surprise_me_only_uses_free_subjects_and_5_questions(client, auth):
+    c = make_child(client, auth, age=9)
+    q = client.get(f"/api/learn/practice?child_id={c['id']}&count=10", headers=auth).json()
+    assert len(q["questions"]) == 5 and all(x["subject"] == "maths" for x in q["questions"])
+
+
+def test_premium_unlocks_everything(client, auth):
+    c = make_child(client, auth, age=9)
+    _grant_premium(client, auth)
+    subs = client.get(f"/api/learn/subjects?child_id={c['id']}", headers=auth).json()["subjects"]
+    assert not any(x["locked"] for x in subs)
+    assert client.get(f"/api/learn/practice?child_id={c['id']}&subject=science&count=10", headers=auth).status_code == 200
+
+
+def test_daily_quiz_stays_free_and_mixed(client, auth):
+    c = make_child(client, auth, age=9)
+    d = client.get(f"/api/learn/daily?child_id={c['id']}", headers=auth).json()
+    assert len(d["questions"]) == 5  # never locked behind payment: it is the daily habit
+
+
+def test_progress_insights_are_premium(client, auth):
+    c = make_child(client, auth, age=9)
+    for _ in range(2):  # build some history in one subject
+        p = client.get(f"/api/learn/practice?child_id={c['id']}&subject=maths", headers=auth)
+        if p.status_code != 200:
+            break
+        client.post("/api/learn/submit", json={"child_id": c["id"], "kind": "practice", "subject": "maths",
+                    "answers": answer_all(client, auth, p.json()["questions"])}, headers=auth)
+    free = client.get(f"/api/children/{c['id']}/progress", headers=auth).json()
+    assert free["insights_locked"] is True and free["subjects"] == [] and free["strengths"] == []
+    _grant_premium(client, auth)
+    prem = client.get(f"/api/children/{c['id']}/progress", headers=auth).json()
+    assert prem["insights_locked"] is False and prem["subjects"] and prem["subjects"][0]["subject"] == "maths"
+    assert "maths" in prem["strengths"]
+
+
+def test_comparison_table_matches_real_limits(client):
+    rows = {r["feature"]: r for r in client.get("/api/payments/plans").json()["comparison"]}
+    assert rows["Practice rounds"]["free"] == "1 a day" and rows["Practice rounds"]["premium"] == "Unlimited"
+    assert "Maths" in rows["Practice subjects"]["free"]
+    assert rows["Cedar the Owl (AI helper)"]["free"] == "3 questions a day"
+    assert rows["Child profiles"]["free"] == "1"
+
+
+# ---------- v6: ad attribution, funnel stats, upgrade page data ----------
+def test_signup_stores_first_touch_campaign_and_rejects_junk(client):
+    r = client.post("/api/auth/signup", json={"email": "fb1@example.com", "password": "correct-horse-1", "display_name": "A",
+                    "utm": {"utm_source": "facebook", "utm_medium": "paid", "utm_campaign": "nov-launch", "evil": "x"}})
+    assert r.status_code == 201
+    client.post("/api/auth/signup", json={"email": "fb2@example.com", "password": "correct-horse-1", "display_name": "B",
+                "utm": {"utm_source": "<script>alert(1)</script>", "utm_campaign": "x" * 200}})
+    from sqlmodel import Session, select
+    from app.database import engine
+    from app.models import User
+    with Session(engine) as s:
+        a = s.exec(select(User).where(User.email == "fb1@example.com")).first()
+        b = s.exec(select(User).where(User.email == "fb2@example.com")).first()
+        assert (a.utm_source, a.utm_medium, a.utm_campaign) == ("facebook", "paid", "nov-launch")
+        assert b.utm_source is None  # script tags are dropped
+        assert len(b.utm_campaign) == 60  # oversize tags are cut, never stored whole
+
+
+def test_events_whitelist_and_no_personal_data(client):
+    assert client.post("/api/events", json={"name": "landing_view", "utm": {"utm_source": "tiktok"}}).status_code == 204
+    assert client.post("/api/events", json={"name": "drop_table"}).status_code == 400
+    from sqlmodel import Session, select
+    from app.database import engine
+    from app.models import Event
+    with Session(engine) as s:
+        e = s.exec(select(Event).where(Event.utm_source == "tiktok")).first()
+        assert e is not None and set(Event.model_fields) == {"id", "name", "utm_source", "utm_campaign", "created_at"}
+
+
+def test_stats_funnel_by_campaign(client, admin):
+    tag = {"utm_source": "instagram", "utm_campaign": "stats-test"}
+    h = {}
+    for i in range(3):
+        r = client.post("/api/auth/signup", json={"email": f"ig{i}@example.com", "password": "correct-horse-1", "display_name": "P", "utm": tag})
+        h[i] = {"Authorization": "Bearer " + r.json()["token"]}
+    c0 = make_child(client, h[0], age=6)
+    d = client.get(f"/api/learn/daily?child_id={c0['id']}", headers=h[0]).json()
+    client.post("/api/learn/submit", json={"child_id": c0["id"], "kind": "daily", "answers": answer_all(client, h[0], d["questions"])}, headers=h[0])
+    _grant_premium(client, h[1])  # one family pays
+    client.post("/api/events", json={"name": "demo_start", "utm": tag})
+    s = client.get("/api/admin/stats?days=7", headers=admin).json()
+    row = next(r for r in s["campaigns"] if r["campaign"] == "instagram / stats-test")
+    assert row["signups"] == 3 and row["added_child"] == 1 and row["played_daily"] == 1 and row["paid"] == 1
+    assert row["revenue_kobo"] == 200_000 and row["started_checkout"] == 1
+    assert s["funnel"]["demo_started"] >= 1 and s["funnel"]["signups"] >= 3
+    assert client.get("/api/admin/stats", headers=h[0]).status_code == 403  # admins only
+
+
+def test_daily_includes_week_strip(client, auth):
+    c = make_child(client, auth, age=6)
+    d = client.get(f"/api/learn/daily?child_id={c['id']}", headers=auth).json()
+    assert len(d["week"]) == 7 and d["week"][-1]["done"] is False
+    client.post("/api/learn/submit", json={"child_id": c["id"], "kind": "daily", "answers": answer_all(client, auth, d["questions"])}, headers=auth)
+    assert client.get(f"/api/learn/daily?child_id={c['id']}", headers=auth).json()["week"][-1]["done"] is True
+
+
+def test_plan_cards_show_savings_and_copy_is_honest(client):
+    r = client.get("/api/payments/plans").json()
+    by = {p["code"]: p for p in r["plans"]}
+    assert by["premium_monthly"]["saving_pct"] == 0
+    assert by["premium_yearly"]["saving_pct"] > 30 and by["premium_yearly"]["per_month_kobo"] < by["premium_monthly"]["per_month_kobo"]
+    assert not any("Weekly progress report" in f for f in r["features"])  # we don't send those, so we don't promise them

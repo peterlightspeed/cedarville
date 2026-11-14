@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cedarville Learning: fun daily quizzes for kids aged 2–11</title>
+<meta name="description" content="A friendly daily quiz and an owl helper for children aged 2–11. No ads, no chat, parent-controlled. Try a free quiz in 1 minute. From Cedarville Private Schools, Lagos.">
+<link rel="canonical" href="https://www.cedarvilleprivateschool.com/learn.html">
+<meta name="theme-color" content="#1a56db">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Cedarville Private Schools">
+<meta property="og:title" content="Make learning a daily habit: a free quiz for kids aged 2–11">
+<meta property="og:description" content="A new 5-question quiz every day, read aloud for little ones. No ads, no chat. Try a free quiz in 1 minute.">
+<meta property="og:url" content="https://www.cedarvilleprivateschool.com/learn.html">
+<meta property="og:image" content="https://www.cedarvilleprivateschool.com/images/og-learning.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="app/icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#1a56db;--blue-d:#1245b8;--sun:#ffcf3f;--sun-d:#e0a800;--ink:#23314d;--muted:#5d6b88;--mint:#2fd18b;--grape:#8b5cf6;--sky:#e8f4ff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font-family:'Fredoka',ui-rounded,'Comic Sans MS',system-ui,sans-serif;color:var(--ink);font-size:18px;line-height:1.45;background:#fff;padding-bottom:84px}
+a{color:var(--blue)}h1,h2,h3{line-height:1.12;margin:0 0 .4em}
+.wrap{max-width:1080px;margin:0 auto;padding:0 18px}
+.top{display:flex;align-items:center;gap:10px;padding:12px 0}
+.top img{width:46px;height:46px;border-radius:12px;background:#fff;box-shadow:0 3px 10px rgba(26,86,219,.2)}
+.top b{font-size:1rem;line-height:1.15;color:var(--blue-d)}.top .sp{flex:1}
+.top a.login{white-space:nowrap;font-weight:600;text-decoration:none;padding:8px 14px;border-radius:30px;background:#fff;box-shadow:inset 0 0 0 2px #c9d8f5}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-weight:700;font-size:1.15rem;border:0;cursor:pointer;color:#3d2e00;background:var(--sun);border-radius:20px;padding:15px 26px;min-height:56px;box-shadow:0 6px 0 var(--sun-d);text-decoration:none;transition:transform .08s,box-shadow .08s}
+.btn:active{transform:translateY(5px);box-shadow:0 1px 0 var(--sun-d)}
+.btn.blue{background:var(--blue);color:#fff;box-shadow:0 6px 0 var(--blue-d)}.btn.ghost{background:#fff;color:var(--blue);box-shadow:inset 0 0 0 3px #c9d8f5,0 6px 0 #c9d8f5}
+:focus-visible{outline:4px solid var(--grape);outline-offset:3px;border-radius:12px}
+.hero{background:linear-gradient(180deg,#cfe8ff 0%,var(--sky) 55%,#fff 100%);padding-bottom:28px;overflow:hidden}
+.hero .grid{display:grid;gap:26px;align-items:center;padding-top:8px}
+.pill{display:inline-block;background:#fff;border-radius:30px;padding:6px 14px;font-weight:600;font-size:.9rem;color:var(--blue-d);box-shadow:inset 0 0 0 2px #c9d8f5}
+h1{font-size:clamp(2rem,6.2vw,3.3rem);margin-top:12px}h1 em{font-style:normal;color:var(--blue);background:linear-gradient(transparent 62%,#ffe58a 62%)}
+.lead{font-size:1.15rem;color:var(--muted);margin:10px 0 18px;max-width:34em}
+.ages{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0 6px;max-width:460px}
+.age{display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;color:var(--ink);background:#fff;border-radius:22px;padding:14px 8px;font-weight:700;font-size:1.2rem;box-shadow:0 6px 0 #c9d8f5,inset 0 0 0 3px #c9d8f5;transition:transform .08s}
+.age:active{transform:translateY(5px);box-shadow:0 1px 0 #c9d8f5,inset 0 0 0 3px #c9d8f5}.age span{font-size:2rem}.age small{font-weight:500;color:var(--muted);font-size:.8rem}
+.say{font-weight:600;margin:16px 0 0}.fine{font-size:.9rem;color:var(--muted);margin-top:8px}
+.phone{justify-self:center;width:min(300px,78vw);background:#16233f;border-radius:38px;padding:11px;box-shadow:0 24px 50px rgba(26,86,219,.3);transform:rotate(3deg)}
+.screen{background:linear-gradient(180deg,#cfe8ff,#fff7e0);border-radius:28px;padding:14px;min-height:410px}
+.screen .dots{display:flex;gap:5px;margin-bottom:12px}.screen .dots i{flex:1;height:10px;border-radius:6px;background:#d7e4fa}.screen .dots i.ok{background:var(--mint)}.screen .dots i.now{background:var(--sun)}
+.qc{background:#fff;border-radius:22px;text-align:center;padding:14px 10px;box-shadow:0 6px 16px rgba(26,86,219,.12)}.qc .v{font-size:56px;line-height:1.1}.qc .t{font-weight:600;font-size:1.25rem}
+.o{margin-top:10px;background:#fff;border-radius:18px;padding:13px;text-align:center;font-weight:700;font-size:1.2rem;box-shadow:0 5px 0 #c9d8f5,inset 0 0 0 3px #c9d8f5}.o.r{background:var(--mint);color:#fff;box-shadow:0 5px 0 #1fa86c}
+.owl{width:64px;height:64px;position:absolute;right:-6px;bottom:-14px}.screen{position:relative}
+.trust{background:var(--blue);color:#fff}.trust .wrap{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:16px 18px;font-weight:600;font-size:.95rem}
+section.s{padding:44px 0}.center{text-align:center}h2{font-size:clamp(1.6rem,4.6vw,2.3rem)}
+.steps{display:grid;gap:16px;margin-top:20px}.step{background:#fff;border-radius:24px;padding:20px;box-shadow:0 8px 24px rgba(26,86,219,.12)}.step .n{display:inline-grid;place-items:center;width:42px;height:42px;border-radius:50%;background:var(--sun);font-weight:700;margin-bottom:8px}
+.feats{display:grid;gap:14px;margin-top:20px}.feat{background:var(--sky);border-radius:24px;padding:18px}.feat .e{font-size:38px}.feat h3{font-size:1.2rem}.feat p{margin:0;color:var(--muted);font-size:1rem}
+.alt{background:linear-gradient(180deg,#fff,var(--sky))}
+.cmp{background:#fff;border-radius:24px;padding:10px 14px;box-shadow:0 8px 24px rgba(26,86,219,.12);margin-top:18px}.cmp .r{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:8px;padding:10px 2px;border-bottom:2px solid #eef3fc;font-size:.95rem}.cmp .r:last-child{border:0}.cmp .h{font-weight:700}.cmp .p{background:#fff9e0;border-radius:10px;padding:3px 6px;font-weight:600}
+.prices{display:grid;gap:12px;margin-top:16px}.plan{background:#fff;border-radius:22px;padding:16px;text-align:left;box-shadow:inset 0 0 0 3px #d7e4fa}.plan.best{box-shadow:inset 0 0 0 3px var(--sun-d);background:#fff9e0}.plan b{font-size:1.15rem}.plan .m{color:var(--muted);font-size:.95rem}.badge{display:inline-block;background:var(--sun);color:#5a4300;font-weight:700;font-size:.78rem;border-radius:20px;padding:2px 10px;margin-left:6px}
+details{background:#fff;border-radius:20px;padding:14px 16px;margin-bottom:10px;box-shadow:inset 0 0 0 2px #e3ecfb}summary{cursor:pointer;font-weight:600}details p{margin:8px 0 0;color:var(--muted)}
+.final{background:linear-gradient(135deg,#1a56db,#3b82f6);color:#fff;text-align:center;border-radius:32px;padding:34px 18px;margin:10px 0 40px}
+footer{background:#0f1d3d;color:#c8d3ee;font-size:.9rem;padding:26px 0 110px}footer a{color:#fff}
+.sticky{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);padding:10px 14px calc(10px + env(safe-area-inset-bottom));box-shadow:0 -6px 20px rgba(0,0,0,.12);display:flex;gap:10px}
+.sticky .btn{flex:1;padding:12px 10px;font-size:1.05rem;min-height:52px}
+@media(min-width:760px){body{padding-bottom:0;font-size:19px}.hero .grid{grid-template-columns:1.15fr .85fr;padding-top:34px}.trust .wrap{grid-template-columns:repeat(4,1fr);text-align:center}.steps,.feats{grid-template-columns:repeat(3,1fr)}.feats{grid-template-columns:repeat(4,1fr)}.prices{grid-template-columns:repeat(3,1fr)}.sticky{display:none}footer{padding-bottom:30px}.final{padding:48px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header class="hero">
+ <div class="wrap">
+  <div class="top"><img src="images/cedarville_logo.jpg" alt="Cedarville Private Schools logo" width="46" height="46"><b>Cedarville Private Schools</b><span class="sp"></span><a class="login" data-app="#/welcome" href="app/">Log in</a></div>
+  <div class="grid">
+   <div>
+    <span class="pill">🎈 Free to start · Ages 2–11</span>
+    <h1>Make learning a <em>daily habit</em>, in just 5 minutes a day</h1>
+    <p class="lead">A fun new quiz every day, plus a friendly owl helper. Words are read aloud for little ones, with no ads and no chatting with strangers.</p>
+    <p class="say">👇 How old is your child? Try a free quiz now.</p>
+    <div class="ages" id="ages">
+     <a class="age" data-app="#/try?level=tiny" href="app/#/try?level=tiny"><span>🧸</span>2–3 years<small>Little Explorers</small></a>
+     <a class="age" data-app="#/try?level=nursery" href="app/#/try?level=nursery"><span>🎨</span>4–5 years<small>Nursery</small></a>
+     <a class="age" data-app="#/try?level=lower" href="app/#/try?level=lower"><span>📚</span>6–8 years<small>Primary 1–3</small></a>
+     <a class="age" data-app="#/try?level=upper" href="app/#/try?level=upper"><span>🎒</span>9–11 years<small>Primary 4–6</small></a>
+    </div>
+    <p class="fine">No sign-up needed to try. Takes about a minute.</p>
+   </div>
+   <div class="phone" aria-hidden="true"><div class="screen">
+     <div class="dots"><i class="ok"></i><i class="ok"></i><i class="now"></i><i></i><i></i></div>
+     <div class="qc"><div class="v">🍌</div><div class="t">Banana starts with which letter?</div></div>
+     <div class="o r">B ⭐</div><div class="o">M</div><div class="o">T</div>
+     <svg class="owl" aria-hidden="true" viewBox="0 0 100 100">
+    <ellipse cx="50" cy="60" rx="32" ry="34" fill="#a9743f"/><ellipse cx="50" cy="68" rx="20" ry="22" fill="#f6dcae"/>
+    <path d="M22 34 l-6 -18 l20 10 z M78 34 l6 -18 l-20 10 z" fill="#8a5b2e"/>
+    <circle cx="36" cy="42" r="14" fill="#fff"/><circle cx="64" cy="42" r="14" fill="#fff"/>
+    <circle cx="37" cy="43" r="7" fill="#23314d"/><circle cx="63" cy="43" r="7" fill="#23314d"/>
+    <circle cx="39.5" cy="40.5" r="2.4" fill="#fff"/><circle cx="65.5" cy="40.5" r="2.4" fill="#fff"/>
+    <path d="M46 60 l4 8 l4 -8 z" fill="#ff9f1a"/>
+    <path d="M30 78 q-8 -10 -4 -26 q10 8 10 22 z M70 78 q8 -10 4 -26 q-10 8 -10 22 z" fill="#8a5b2e"/>
+    <path d="M42 92 l-3 6 M58 92 l3 6" stroke="#ff9f1a" stroke-width="4" stroke-linecap="round"/>
+    <path d="M36 14 q14 -10 28 0" stroke="#1a56db" stroke-width="6" fill="none" stroke-linecap="round" opacity="0"/>
+  </svg>
+   </div></div>
+  </div>
+ </div>
+</header>
+
+<div class="trust"><div class="wrap"><span>🚫 No ads</span><span>🔒 No chat with strangers</span><span>👨‍👩‍👧 Parent-controlled</span><span>🏫 From Cedarville Private Schools</span></div></div>
+
+<section class="s"><div class="wrap">
+ <h2 class="center">How it works</h2>
+ <div class="steps">
+  <div class="step"><div class="n">1</div><h3>Try a free quiz</h3><p>Pick your child's age and play a 5-question quiz right now, without signing up.</p></div>
+  <div class="step"><div class="n">2</div><h3>Create a parent account</h3><p>Sign up with email or Google in under a minute. You set up a safe profile for your child.</p></div>
+  <div class="step"><div class="n">3</div><h3>Play a little every day</h3><p>A new quiz each day builds stars, streaks and stickers, so learning becomes a habit.</p></div>
+ </div>
+ <p class="center" style="margin-top:22px"><a class="btn" data-app="#/welcome" href="app/">Create my free account 🎉</a></p>
+</div></section>
+
+<section class="s alt"><div class="wrap">
+ <h2 class="center">Made for little learners</h2>
+ <div class="feats">
+  <div class="feat"><div class="e">🎯</div><h3>Daily 5-question quiz</h3><p>Short enough for busy days. Always free.</p></div>
+  <div class="feat"><div class="e">🔊</div><h3>Read aloud</h3><p>Tap to hear every question, great for children who can't read yet.</p></div>
+  <div class="feat"><div class="e">🦉</div><h3>Cedar the Owl</h3><p>A friendly AI helper that answers children's questions in simple words, on learning topics only.</p></div>
+  <div class="feat"><div class="e">📈</div><h3>Parent corner</h3><p>See stars and activity each week. Premium shows strengths and what to practise next.</p></div>
+ </div>
+</div></section>
+
+<section class="s"><div class="wrap center">
+ <h2>Free forever. Premium when you want more.</h2>
+ <p style="color:var(--muted)">The daily quiz is always free. Premium unlocks every subject, unlimited practice, more owl chats and progress insights.</p>
+ <div class="cmp" id="cmp" style="text-align:left" hidden></div>
+ <div class="prices" id="prices"></div>
+ <p class="fine">Pay securely with Paystack (card, bank transfer or USSD). It does not renew by itself.</p>
+</div></section>
+
+<section class="s alt"><div class="wrap" style="max-width:760px">
+ <h2 class="center">Questions parents ask</h2>
+ <details><summary>Is it really free?</summary><p>Yes. The daily quiz, stars, streaks and stickers are free forever. Premium is optional and adds unlimited practice in every subject, more owl chats and progress insights.</p></details>
+ <details><summary>Is it safe for my child?</summary><p>There are no ads and no chat with other people. Children never create accounts: you, the parent, do. A maths question protects the grown-ups area, so children can't change settings or pay.</p></details>
+ <details><summary>What ages is it for?</summary><p>Four levels: 2–3 (Little Explorers), 4–5 (Nursery), 6–8 (Primary 1–3) and 9–11 (Primary 4–6). Questions match the age you choose.</p></details>
+ <details><summary>Do I need to download anything?</summary><p>No. It works in your phone's browser, and you can add it to your home screen so it opens like an app. A Google Play app is planned.</p></details>
+ <details><summary>What information do you collect?</summary><p>Your name and email, and for each child just a first name or nickname, age and a cartoon avatar. No photos, no location. Read the full <a href="app/privacy.html">Privacy Policy</a>. You can delete your account any time.</p></details>
+ <details><summary>Who is behind it?</summary><p>Cedarville Private Schools in Aguda, Surulere, Lagos, serving families since 2014. <a href="index.html">Visit our school website</a>.</p></details>
+</div></section>
+
+<section class="s"><div class="wrap"><div class="final">
+ <h2>Ready to try it?</h2><p>Play a free quiz in a minute. No sign-up needed.</p>
+ <a class="btn" data-app="#/try?level=nursery" href="app/#/try?level=nursery">🎮 Try a free quiz</a>
+</div></div></section>
+
+<footer><div class="wrap">© Cedarville Private Schools, Aguda, Surulere, Lagos · <a href="app/privacy.html">Privacy</a> · <a href="index.html">School website</a> · <a href="contact.html">Contact</a></div></footer>
+
+<div class="sticky"><a class="btn" data-app="#/try?level=nursery" href="app/#/try?level=nursery">🎮 Try a free quiz</a><a class="btn blue" data-app="#/welcome" href="app/">Sign up free</a></div>
+
+<script src="app/config.js"></script>
+<script>
+(function(){
+  var api=(window.CEDAR_APP||{}).API_BASE||'/api';
+  var q=new URLSearchParams(location.search), tags={};
+  ['utm_source','utm_medium','utm_campaign'].forEach(function(k){ if(q.get(k)) tags[k]=q.get(k).slice(0,60); });
+  var saved={}; try{ saved=JSON.parse(localStorage.getItem('cedar_utm')||'{}'); if(Object.keys(tags).length && !Object.keys(saved).length){ localStorage.setItem('cedar_utm',JSON.stringify(tags)); saved=tags; } }catch(e){}
+  var use=Object.keys(saved).length?saved:tags, qs=Object.keys(use).length?'?'+new URLSearchParams(use).toString():'';
+  document.querySelectorAll('[data-app]').forEach(function(a){ a.href='app/'+qs+a.getAttribute('data-app'); });
+  function track(n){ try{ fetch(api+'/events',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:n,utm:use}),keepalive:true}).catch(function(){}); }catch(e){} }
+  track('landing_view');
+  try{ fetch(api+'/health').catch(function(){}); }catch(e){}   // wakes the server while the parent reads
+  document.addEventListener('click',function(e){ if(e.target.closest('[data-app]')) track('cta_click'); });
+  // live prices + comparison from the server, so this page can never disagree with the app
+  var ctrl=window.AbortController?new AbortController():null, t=setTimeout(function(){ctrl&&ctrl.abort();},9000);
+  fetch(api+'/payments/plans',ctrl?{signal:ctrl.signal}:{}).then(function(r){return r.json();}).then(function(p){
+    clearTimeout(t);
+    var c=document.getElementById('cmp'); c.hidden=false;
+    var h=document.createElement('div'); h.className='r h'; ['','Free','Premium ⭐'].forEach(function(x,i){var s=document.createElement('span'); if(i==2)s.className='p'; s.textContent=x; h.appendChild(s);}); c.appendChild(h);
+    p.comparison.forEach(function(r){ var d=document.createElement('div'); d.className='r'; [r.feature,r.free,r.premium].forEach(function(x,i){var s=document.createElement('span'); if(i==2)s.className='p'; if(i==0)s.style.fontWeight='600'; s.textContent=x; d.appendChild(s);}); c.appendChild(d); });
+    var n=function(k){return '₦'+Math.round(k/100).toLocaleString('en-NG');};
+    p.plans.forEach(function(x){ var d=document.createElement('div'); d.className='plan'+(x.saving_pct>0&&x.code==='premium_yearly'?' best':''); 
+      var b=document.createElement('b'); b.textContent=x.name; d.appendChild(b);
+      if(x.saving_pct>0){ var g=document.createElement('span'); g.className='badge'; g.textContent='Save '+x.saving_pct+'%'; d.appendChild(g); }
+      var m=document.createElement('div'); m.className='m'; m.textContent=x.blurb+(x.saving_pct>0?' · about '+n(x.per_month_kobo)+' a month':''); d.appendChild(m);
+      document.getElementById('prices').appendChild(d); });
+  }).catch(function(){ var pr=document.getElementById('prices'); pr.textContent='Premium prices are shown inside the app.'; pr.style.color='#5d6b88'; });
+})();
+</script>
+</body>
+</html>

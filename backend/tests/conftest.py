@@ -5,7 +5,7 @@ _tmp = tempfile.mkdtemp()
 os.environ["DATABASE_URL"] = f"sqlite:///{_tmp}/test.db"
 os.environ["SECRET_KEY"] = "test-secret-key-test-secret-key-123"
 os.environ["PAYSTACK_SECRET_KEY"] = "sk_test_dummy"
-os.environ["ADMIN_EMAILS"] = "boss@example.com"
+os.environ["ADMIN_EMAILS"] = "boss@example.com,gboss@example.com"
 os.environ["ANTHROPIC_API_KEY"] = ""
 os.environ["RATE_LIMIT_PER_MINUTE"] = "1000"
 

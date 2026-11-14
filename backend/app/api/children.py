@@ -110,10 +110,17 @@ def progress(child_id: int, user: User = Depends(get_current_user), session: Ses
         s = by_subject.setdefault(a.subject, [0, 0])
         s[0] += a.correct
         s[1] += a.total
+    premium = is_premium(session, user.id)
+    subjects = [{"subject": k, "correct": v[0], "total": v[1], "pct": round(100 * v[0] / max(1, v[1]))}
+                for k, v in sorted(by_subject.items()) if k != "mixed"]
     return {
         "child": child_out(child),
         "days": days,
         "total_rounds": len(all_att),
         "accuracy": round(100 * sum(a.correct for a in all_att) / max(1, sum(a.total for a in all_att))),
-        "subjects": [{"subject": k, "correct": v[0], "total": v[1]} for k, v in sorted(by_subject.items())],
+        # Premium parents see where the child is strong and what to practise next.
+        "insights_locked": not premium,
+        "subjects": subjects if premium else [],
+        "strengths": [x["subject"] for x in subjects if x["total"] >= 5 and x["pct"] >= 80] if premium else [],
+        "practise": [x["subject"] for x in subjects if x["total"] >= 5 and x["pct"] < 60] if premium else [],
     }

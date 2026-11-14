@@ -3,7 +3,7 @@
 (function () {
   // The address of your Render backend (include /api at the end).
   // Use the *.onrender.com address Render gives you, or your own domain once DNS is set up.
-  var PROD_API = 'https://cedarville-api.onrender.com/api';
+  var PROD_API = 'https://cedarville.onrender.com/api';
 
   var local = ['localhost', '127.0.0.1'].indexOf(location.hostname) !== -1 && location.protocol === 'http:';
   window.CEDAR_APP = {

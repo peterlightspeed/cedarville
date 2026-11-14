@@ -26,7 +26,7 @@ class Settings:
 
     def __init__(self) -> None:
         self.app_name: str = os.getenv("APP_NAME", "Cedarville Schools API")
-        self.version: str = os.getenv("APP_VERSION", "0.1.0")
+        self.version: str = os.getenv("APP_VERSION", "0.4.0")
         self.env: str = os.getenv("APP_ENV", "development")
         self.debug: bool = os.getenv("APP_DEBUG", "true").lower() == "true"
 
@@ -79,6 +79,9 @@ class Settings:
         # ---- Paystack -------------------------------------------------
         self.paystack_secret_key: str = os.getenv("PAYSTACK_SECRET_KEY", "")
 
+        # ---- Google sign-in (public "Web client ID" from Google Cloud Console) --
+        self.google_client_id: str = os.getenv("GOOGLE_CLIENT_ID", "").strip()
+
         # ---- AI buddy -------------------------------------------------
         self.anthropic_api_key: str = os.getenv("ANTHROPIC_API_KEY", "")
         self.ai_model: str = os.getenv("AI_MODEL", "claude-haiku-5-5")
@@ -88,6 +91,9 @@ class Settings:
         self.free_max_children: int = int(os.getenv("FREE_MAX_CHILDREN", "1"))
         self.premium_max_children: int = int(os.getenv("PREMIUM_MAX_CHILDREN", "5"))
         self.free_practice_per_day: int = int(os.getenv("FREE_PRACTICE_PER_DAY", "1"))
+        # Subjects free families can practise. Everything else is Premium. Daily quiz always mixes ALL subjects.
+        self.free_subjects: list[str] = [x.lower() for x in _split_csv(os.getenv("FREE_SUBJECTS", "letters,numbers,colours,maths"))]
+        self.free_ai_per_day: int = int(os.getenv("FREE_AI_PER_DAY", "3"))  # free "taster" questions for Cedar
 
 
 @lru_cache(maxsize=1)

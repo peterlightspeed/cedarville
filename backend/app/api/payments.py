@@ -22,7 +22,7 @@ from app.config import settings
 from app.database import get_session
 from app.deps import get_current_user, is_premium
 from app.models import Subscription, Transaction, User
-from app.plans import PLANS, PREMIUM_FEATURES
+from app.plans import PLANS, PREMIUM_FEATURES, comparison, plan_cards
 
 log = logging.getLogger("cedarville.payments")
 router = APIRouter(prefix="/payments", tags=["payments"])
@@ -32,9 +32,9 @@ PAYSTACK = "https://api.paystack.co"
 @router.get("/plans")
 def plans() -> dict:
     return {
-        "plans": [{"code": k, "name": v["name"], "amount_kobo": v["amount_kobo"], "blurb": v["blurb"]}
-                  for k, v in PLANS.items()],
+        "plans": plan_cards(),
         "features": PREMIUM_FEATURES,
+        "comparison": comparison(settings),
         "payments_enabled": bool(settings.paystack_secret_key),
     }
 

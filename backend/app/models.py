@@ -40,6 +40,10 @@ class User(SQLModel, table=True):
     display_name: str = Field(max_length=80)
     is_admin: bool = False
     password_changed_at: datetime | None = None
+    google_sub: str | None = Field(default=None, index=True)
+    utm_source: str | None = Field(default=None, max_length=60)
+    utm_medium: str | None = Field(default=None, max_length=60)
+    utm_campaign: str | None = Field(default=None, max_length=60)
     created_at: datetime = Field(default_factory=utcnow)
 
 
@@ -121,3 +125,13 @@ class AIUsage(SQLModel, table=True):
     child_id: int = Field(index=True)
     day: date = Field(index=True)
     count: int = 0
+
+
+class Event(SQLModel, table=True):
+    """Anonymous pre-signup funnel counter (landing visit, demo quiz...). No IP, no user id, no cookies."""
+
+    id: int | None = Field(default=None, primary_key=True)
+    name: str = Field(index=True, max_length=30)
+    utm_source: str | None = Field(default=None, max_length=60)
+    utm_campaign: str | None = Field(default=None, max_length=60)
+    created_at: datetime = Field(default_factory=utcnow, index=True)

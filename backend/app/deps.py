@@ -26,6 +26,8 @@ def get_current_user(
     user = session.get(User, decoded[0]) if decoded else None
     if user is None:
         raise HTTPException(401, "Your session has ended. Please log in again.")
+    if user.email.endswith("@deleted.invalid"):
+        raise HTTPException(401, "This account has been deleted.")
     changed = user.password_changed_at
     if changed is not None:
         if changed.tzinfo is None:

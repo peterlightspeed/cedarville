@@ -41,22 +41,33 @@ FALLBACKS = [
 ]
 
 
+def _used_today(session: Session, child_id: int) -> int:
+    u = session.exec(select(AIUsage).where(AIUsage.child_id == child_id, AIUsage.day == date.today())).first()
+    return u.count if u else 0
+
+
 @router.get("/status")
-def ai_status(user: User = Depends(get_current_user), session: Session = Depends(get_session)) -> dict:
-    return {"premium": is_premium(session, user.id), "ai_available": ai_enabled()}
+def ai_status(child_id: int | None = None, user: User = Depends(get_current_user),
+              session: Session = Depends(get_session)) -> dict:
+    premium = is_premium(session, user.id)
+    limit = settings.ai_daily_limit if premium else settings.free_ai_per_day
+    used = _used_today(session, get_own_child(child_id, user, session).id) if child_id else 0
+    return {"premium": premium, "ai_available": ai_enabled(), "limit": limit, "left": max(0, limit - used)}
 
 
 @router.post("/buddy")
 async def buddy(body: BuddyIn, user: User = Depends(get_current_user),
                 session: Session = Depends(get_session)) -> dict:
     child = get_own_child(body.child_id, user, session)
-    if not is_premium(session, user.id):
-        raise HTTPException(402, "Cedar the Owl is part of Premium. Ask a grown-up to take a look!")
+    premium = is_premium(session, user.id)
+    limit = settings.ai_daily_limit if premium else settings.free_ai_per_day
+    if not premium and _used_today(session, child.id) >= limit:
+        raise HTTPException(402, "I loved chatting today! Cedar chats are part of Premium. Ask a grown-up to unlock more. 🦉")
 
     usage = session.exec(select(AIUsage).where(AIUsage.child_id == child.id, AIUsage.day == date.today())).first()
     if usage is None:
         usage = AIUsage(child_id=child.id, day=date.today(), count=0)
-    if usage.count >= settings.ai_daily_limit:
+    if usage.count >= limit:
         return {"reply": "I've talked a lot today! 🦉 Let's chat again tomorrow.", "ai": False, "limited": True}
 
     # The model only ever sees the question and an age band: no name, no account details.

@@ -190,6 +190,10 @@ async def diagnostics(session: Session = Depends(get_session)) -> dict:
     add("APP_URL (where Paystack sends parents back)", not settings.app_url.startswith("http://localhost"),
         settings.app_url, "Set APP_URL to https://<your-site>/app/")
 
+    add("Google sign-in", bool(settings.google_client_id),
+        "Client ID set." if settings.google_client_id else "Not set. The Google button is hidden.",
+        "Set GOOGLE_CLIENT_ID in Render (Google Cloud Console > Credentials > Web client).")
+
     # Paystack — a harmless authenticated call
     if not settings.paystack_secret_key:
         add("Paystack payments", False, "No key set. Payments show 'coming soon'.", "Set PAYSTACK_SECRET_KEY in Render.")

@@ -12,17 +12,35 @@ from datetime import datetime, timezone
 
 from sqlmodel import delete
 
+import logging
+
+from google.auth.transport import requests as g_requests
+from google.oauth2 import id_token as g_id_token
+
 from app.models import AIUsage, Attempt, Child, Subscription, Transaction, User
 from app.security import create_token, hash_password, password_problem, verify_password
 
+log = logging.getLogger("cedarville.auth")
 router = APIRouter(prefix="/auth", tags=["auth"])
 _DUMMY_HASH = hash_password("not-a-real-password")
+NO_PASSWORD = "!"  # stored for Google-only accounts; can never verify
+
+
+def clean_utm(utm: dict | None) -> dict:
+    """Keep only short, plain campaign tags (letters, digits, - _ . space) so nothing odd gets stored."""
+    out = {}
+    for k in ("utm_source", "utm_medium", "utm_campaign"):
+        v = str((utm or {}).get(k, ""))[:60].strip()
+        if v and all(c.isalnum() or c in "-_. " for c in v):
+            out[k] = v
+    return out
 
 
 class SignupIn(BaseModel):
     email: EmailStr
     password: str = Field(min_length=8, max_length=128)
     display_name: str = Field(min_length=1, max_length=80)
+    utm: dict[str, str] | None = None
 
     @field_validator("display_name")
     @classmethod
@@ -42,6 +60,8 @@ def _user_out(user: User, session: Session) -> dict:
         "display_name": user.display_name,
         "is_admin": user.is_admin,
         "premium": is_premium(session, user.id),
+        "has_password": user.password_hash != NO_PASSWORD,
+        "google": bool(user.google_sub),
     }
 
 
@@ -58,6 +78,7 @@ def signup(body: SignupIn, session: Session = Depends(get_session)) -> dict:
         password_hash=hash_password(body.password),
         display_name=body.display_name,
         is_admin=email in settings.admin_emails,
+        **clean_utm(body.utm),
     )
     session.add(user)
     session.commit()
@@ -97,6 +118,8 @@ class ChangePasswordIn(BaseModel):
 @router.post("/change-password", dependencies=[Depends(rate_limit("chpw", 10))])
 def change_password(body: ChangePasswordIn, user: User = Depends(get_current_user),
                     session: Session = Depends(get_session)) -> dict:
+    if user.password_hash == NO_PASSWORD:
+        raise HTTPException(400, "Your account signs in with Google, so there is no password to change.")
     if not verify_password(body.current_password, user.password_hash):
         raise HTTPException(401, "Your current password is not right.")
     problem = password_problem(body.new_password, user.email)
@@ -111,14 +134,18 @@ def change_password(body: ChangePasswordIn, user: User = Depends(get_current_use
 
 
 class DeleteAccountIn(BaseModel):
-    password: str = Field(max_length=128)
+    password: str = Field(default="", max_length=128)
+    confirm: str = Field(default="", max_length=20)  # Google-only accounts type DELETE instead
 
 
 @router.post("/delete-account", dependencies=[Depends(rate_limit("delacct", 5))])
 def delete_account(body: DeleteAccountIn, user: User = Depends(get_current_user),
                    session: Session = Depends(get_session)) -> dict:
     """Erase the family's data (right to erasure). Payment records are kept without personal details."""
-    if not verify_password(body.password, user.password_hash):
+    if user.password_hash == NO_PASSWORD:
+        if body.confirm.strip() != "DELETE":
+            raise HTTPException(400, "Please type DELETE (in capital letters) to confirm.")
+    elif not verify_password(body.password, user.password_hash):
         raise HTTPException(401, "That password is not right.")
     kids = session.exec(select(Child).where(Child.parent_id == user.id)).all()
     for k in kids:
@@ -128,9 +155,75 @@ def delete_account(body: DeleteAccountIn, user: User = Depends(get_current_user)
     session.exec(delete(Subscription).where(Subscription.user_id == user.id))
     user.email = f"deleted-{user.id}@deleted.invalid"
     user.display_name = "Deleted"
-    user.password_hash = "!"  # can never verify
+    user.password_hash = NO_PASSWORD
+    user.google_sub = None
     user.is_admin = False
     user.password_changed_at = datetime.now(timezone.utc)
     session.add(user)
     session.commit()
     return {"deleted": True}
+
+
+# ----------------------------------------------------------------- Google sign-in
+@router.get("/providers")
+def providers() -> dict:
+    """Tells the app which sign-in options are switched on (the Google client ID is public by design)."""
+    return {"google_client_id": settings.google_client_id or None}
+
+
+def verify_google_token(credential: str) -> dict:
+    """Checks Google's signature, expiry and that the token was issued for OUR client ID."""
+    info = g_id_token.verify_oauth2_token(credential, g_requests.Request(), settings.google_client_id)
+    if info.get("iss") not in ("accounts.google.com", "https://accounts.google.com"):
+        raise ValueError("wrong issuer")
+    if not info.get("email") or not info.get("email_verified"):
+        raise ValueError("email not verified by Google")
+    return info
+
+
+class GoogleIn(BaseModel):
+    credential: str = Field(min_length=20, max_length=4096)
+    accepted_terms: bool = False
+    utm: dict[str, str] | None = None
+
+
+@router.post("/google", dependencies=[Depends(rate_limit("google", 20))])
+def google_login(body: GoogleIn, session: Session = Depends(get_session)) -> dict:
+    if not settings.google_client_id:
+        raise HTTPException(503, "Google sign-in is not switched on yet.")
+    try:
+        info = verify_google_token(body.credential)
+    except Exception as exc:  # bad signature, expired, wrong audience, unverified email...
+        log.warning("Google token rejected: %s", exc)
+        raise HTTPException(401, "Google could not confirm your sign-in. Please try again.")
+
+    email, sub = info["email"].lower(), info["sub"]
+    user = session.exec(select(User).where(User.google_sub == sub)).first()
+    note = None
+    if user is None:
+        user = session.exec(select(User).where(User.email == email)).first()
+        if user is not None:
+            # Same verified email as an existing account. We never verified that email at password sign-up, so
+            # someone else could have registered it first. Linking therefore REPLACES the password and logs out
+            # every older session: whoever controls the Google account now owns the account.
+            if user.password_hash != NO_PASSWORD:
+                note = "Your account now signs in with Google. The old password has been switched off."
+            user.google_sub = sub
+            user.password_hash = NO_PASSWORD
+            user.password_changed_at = datetime.now(timezone.utc)
+        else:
+            if not body.accepted_terms:
+                raise HTTPException(409, "No account for this Google email yet. Open the 'New here? Sign up' tab, "
+                                         "tick the parent/guardian box, then tap the Google button again.")
+            user = User(email=email, password_hash=NO_PASSWORD, google_sub=sub,
+                        display_name=(info.get("name") or email.split("@")[0]).strip()[:80] or "Parent",
+                        **clean_utm(body.utm))
+    if email in settings.admin_emails:
+        user.is_admin = True
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+    out = {"token": create_token(user.id), "user": _user_out(user, session)}
+    if note:
+        out["note"] = note
+    return out

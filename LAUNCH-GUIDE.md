@@ -19,6 +19,121 @@ call-to-action on the Learning Hub page (it used to say "coming soon").
 > lives in `site/`. Deploy from `site/` and delete the root copies once you've confirmed (otherwise you'll
 > edit the wrong one).
 
+## 📣 Running ads: what to send people to, and what to fix first
+
+**Send ad traffic to the landing page, not the app:**
+
+`https://www.cedarvilleprivateschool.com/learn.html?utm_source=facebook&utm_medium=paid&utm_campaign=YOUR-AD-NAME`
+
+Change `utm_source` (facebook, instagram, tiktok, google, whatsapp) and `utm_campaign` (a short name for each ad, letters/numbers/dashes) on every ad.
+The page is fast and static, previews nicely when shared (it has a share image), and asks "How old is your child?". The parent plays a
+free 5-question quiz with **no sign-up**, sees their score, and is then invited to create a free account. The ad tag follows them all the way
+to sign-up, and the age they picked is pre-filled for their child.
+
+**See what's working:** log in with your `ADMIN_EMAILS` account → 🔒 Grown-ups → *Teacher tools* → **📈 Ad performance**. It shows the funnel
+(saw page → played the free quiz → signed up → added a child → played → started checkout → paid), money in, and a table per ad.
+Type what you've spent and it works out **cost per sign-up** and **cost per paying family**. It counts only things that really
+happened (from the database), uses no cookies and no third-party trackers, and the privacy policy already says so.
+
+### Fix these BEFORE you spend money (they decide whether ads pay back)
+
+1. **Upgrade the Render instance** (Starter, about $7/month). On the free plan the API sleeps and the first request can take ~50 seconds,
+   which is exactly when a parent from an ad taps "Create account". (The landing page wakes the server while the parent reads, which helps, but it isn't enough.)
+2. **Turn on Paystack and test a real payment** with your live key. Until then the upgrade page offers "Subscribe via WhatsApp" (still works, but is manual).
+   Run a test payment yourself on a phone, over mobile data.
+3. **Add videos.** Only one starter video is included, and the app has a *Watch & Learn* tab. Ad copy and landing page therefore do not promise videos.
+   Add 10–20 teacher-approved ones (Teacher tools → Add a video) before you advertise them.
+4. **Grow the question bank**, especially ages 2–3, which has only 28 questions, so a child sees repeats within days. Use the admin tool that asks the
+   AI to *draft* questions (they stay hidden until a teacher approves them). Retention is what makes a paying customer, not just a signup.
+5. **Do the full journey on a real phone** (mobile data, not Wi-Fi): ad link → quiz → sign-up → add child → daily quiz → pay.
+
+### Ad rules to keep you safe
+- **Target parents (18+), never children.** Ad platforms don't allow targeting under-13s, and the app is built so the parent is the customer.
+- **Only claim what's true.** The landing page says: no ads, no chat with strangers, read aloud, parent-controlled, free to start. Don't add
+  claims like "improves exam scores" or "Cambridge-approved" unless you can prove them.
+- **Don't paste ad pixels into the app.** A Meta/TikTok/Google tag can go on `learn.html` (the parent page) with a cookie-consent notice,
+  but never inside the children's area. If you want the ad platforms to optimise for *purchases*, the proper next step is server-side
+  conversion reporting; ask me when you're ready.
+- Use your own photos of children only with written parental consent.
+- Start small: run 2–3 different ads for 3–5 days on a small daily budget, then compare **cost per sign-up** in Teacher tools and put more money behind the winner.
+
+## 🔧 Render deploy shows "Failed"? Do this first
+
+**Cause (reproduced):** the API refuses to start in production until it has a secret login key. Your service was created by
+hand, so it has no environment variables yet. The log line to look for (Render → your service → **Logs**) is:
+`STARTUP BLOCKED - fix these in Render > Environment ... SECRET_KEY is not set`. This is deliberate: it stops the live
+site from ever running with a guessable key.
+
+**Fix, in order (about 5 minutes):**
+1. Render → your service `cedarville` → **Environment** → *Add Environment Variable*. Add at least:
+
+| Key | Value |
+|---|---|
+| `SECRET_KEY` | a long random string. Make one with `openssl rand -hex 32` in your terminal, or use Render's *Generate* button |
+| `DATABASE_URL` | Neon dashboard → your project → **Connect** → copy the `postgresql://…?sslmode=require` string |
+| `ADMIN_EMAILS` | your own email address |
+| `CORS_ORIGINS` | `https://www.cedarvilleprivateschool.com,https://cedarvilleprivateschool.com` |
+| `APP_URL` | `https://www.cedarvilleprivateschool.com/app/` |
+
+2. **Settings → Health Check Path** → `/api/health`.
+3. **Manual Deploy → Deploy latest commit** (or "Clear build cache & deploy" if it still fails).
+4. Open `https://cedarville.onrender.com/api/health`. You should see `"status":"ok"` and `"database":true`.
+   (Free instances sleep when idle, so the first visit can take ~50 seconds.)
+
+If it still fails, open **Logs** and send me the last 15 lines. The build step itself was checked: a clean install of
+`requirements.txt` works on the same Python version Render uses.
+
+## Google sign-in — what to set up (10 minutes, free)
+
+The app already has the "Continue with Google" button. It appears automatically once the backend knows your Google Client ID.
+1. Go to **console.cloud.google.com** → create a project (e.g. "Cedarville Learning").
+2. **APIs & Services → OAuth consent screen** → *External* → app name `Cedarville Learning`, support email, your logo,
+   privacy-policy link `https://www.cedarvilleprivateschool.com/app/privacy.html`, authorised domain
+   `cedarvilleprivateschool.com`. Scopes: only the defaults (email, profile, openid), so no Google review is needed. Publish the app (*In production*).
+3. **Credentials → Create credentials → OAuth client ID → Web application.**
+   **Authorised JavaScript origins** (no redirect URIs needed):
+   `https://www.cedarvilleprivateschool.com`, `https://cedarvilleprivateschool.com`, `http://localhost:5000`
+4. Copy the **Client ID** (ends in `.apps.googleusercontent.com`) → Render → Environment → `GOOGLE_CLIENT_ID` → save (it redeploys).
+5. Check: Grown-ups → Teacher tools → **Run setup check** shows ✅ Google sign-in.
+
+Good to know: Google sign-up still asks the parent to tick the "I'm a parent/guardian 18+" box. If someone already made a password
+account with the same email, signing in with Google switches that account to Google-only and logs out its old sessions (this blocks
+a stranger who registered someone else's email first). Google's button does **not** work inside the Android app wrapper (Google
+blocks it in embedded web views); the Play Store version will need Google's native sign-in plugin. The website and the installed
+home-screen app work normally.
+
+## Free vs Premium — how the money side works
+
+| | Free | Premium |
+|---|---|---|
+| Daily quiz, stars, streaks, stickers | ✅ always | ✅ |
+| Practice | 1 round/day, 5 questions, Letters / Numbers / Colours / Maths | Unlimited, up to 10 questions, every subject |
+| Videos | starter (non-Premium) videos | all |
+| Cedar the Owl | 3 questions/day (a taste) | 20/day |
+| Parent insights | stars this week | + strengths and "practise next" per subject |
+| Children | 1 | up to 5 |
+
+The daily quiz is deliberately never locked: it builds the daily habit, and the limits above are where families feel the difference.
+Every number is a setting, so you can tune it without touching code: `FREE_PRACTICE_PER_DAY`, `FREE_SUBJECTS`,
+`FREE_AI_PER_DAY`, `FREE_MAX_CHILDREN` (Render → Environment). Prices: `backend/app/plans.py` (placeholders: ₦2,000 / month,
+₦5,000 / term, ₦15,000 / year). To make a video Premium-only, tick *Premium only* when you add it in Teacher tools.
+
+**Turning on Paystack** (it is already built; it only needs keys):
+1. paystack.com → create/verify your business → **Settings → API Keys** → copy the **test** secret key (`sk_test_…`).
+2. Render → Environment → `PAYSTACK_SECRET_KEY`.
+3. Paystack → Settings → **API Keys & Webhooks** → Webhook URL: `https://cedarville.onrender.com/api/payments/webhook`.
+4. Test with Paystack's test card in the Grown-ups area (Premium switches on and shows an end date). Then swap in your **live** key.
+Each payment adds time to Premium (renewing early never wastes days). It does **not** charge automatically; parents renew when it
+ends, and a reminder shows in the Grown-ups area during the last 7 days. Automatic renewal would need Paystack "Plans" and is a good
+next step once you see how many families pay.
+
+## Guided tour
+
+New children get a 9-step spotlight tour on first visit (quiz → practice → videos → Cedar → stars → grown-ups lock → Free vs
+Premium). It runs once per child, and **🧭 Take the tour** on the home screen replays it. Parents and visitors can also open
+**Free vs Premium** (`/app/#/plans`) before signing up; it is linked from the sign-in page. For classroom tablets that should never
+show the tour, run `localStorage.setItem('cedar_tour_off','1')` once in that browser.
+
 ## Connect everything — checklist (what to add, and how to confirm it works)
 
 > **Database = Neon, not Supabase.** This project talks to Neon (plain Postgres). You do **not** need Supabase,
@@ -34,10 +149,11 @@ call-to-action on the Learning Hub page (it used to say "coming soon").
 | 6 | `PAYSTACK_SECRET_KEY` | Render | Paystack → Settings → API Keys (start with the **test** key `sk_test_…`) |
 | 7 | Paystack webhook URL | Paystack dashboard | `https://<your-render-address>/api/payments/webhook` |
 | 8 | `ANTHROPIC_API_KEY` | Render | console.anthropic.com → API keys (powers Cedar the Owl) |
-| 9 | `PROD_API` | `site/app/config.js` (top of file) | your Render address + `/api`, e.g. `https://cedarville-api.onrender.com/api` |
+| 9 | `GOOGLE_CLIENT_ID` | Render | Google Cloud Console (see the Google section above) |
+| 10 | `PROD_API` | `site/app/config.js` (top of file) | your Render address + `/api` — already set to `https://cedarville.onrender.com/api` |
 
 **Confirm each link works**
-1. **API is alive:** open `https://<your-render-address>/api/health` — it should say `"status":"ok"` and `"database":true`.
+1. **API is alive:** open `https://cedarville.onrender.com/api/health` — it should say `"status":"ok"` and `"database":true`.
 2. **Everything else:** sign up on the website's Learning Portal with the `ADMIN_EMAILS` address, add a child, open
    🔒 *Grown-ups area* → *Teacher tools* → **✅ Run setup check**. It shows a green tick or a red cross with the fix for:
    database (is it really Neon?), secret key, admin email, CORS, payment return address, Paystack key, AI key.
@@ -76,7 +192,7 @@ cp -a cedarville-main "cedarville-main.backup-$(date +%F)"
 
 # 2. unzip the new version into a temporary folder
 rm -rf /tmp/cedar-new && mkdir /tmp/cedar-new
-unzip -q ~/Downloads/cedarville-learning-v4.zip -d /tmp/cedar-new
+unzip -q ~/Downloads/cedarville-learning-v6.zip -d /tmp/cedar-new
 
 # 3. PREVIEW — lists files that differ or are new; changes nothing
 diff -rq /tmp/cedar-new/cedarville-main cedarville-main | less
@@ -88,7 +204,7 @@ cp -a /tmp/cedar-new/cedarville-main/. cedarville-main/
 cd cedarville-main/backend
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements-dev.txt
-pytest -q                                   # expect: 33 passed
+pytest -q                                   # expect: 53 passed
 cp -n .env.example .env                     # never overwrites an .env you already have
 uvicorn app.main:app --reload --port 8000   # leave running
 
@@ -123,7 +239,7 @@ Notes:
 - Show/hide password, "Add to home screen" button, forgot-password contact line.
 - Star pop on correct answers, better small-phone layout, screen-reader focus handling.
 
-**Tests:** 33 backend tests (7 new for security) and a full browser walk-through including password change, account deletion and the break card, with zero CSP violations.
+**Tests:** 53 backend tests (7 new for security) and a full browser walk-through including password change, account deletion and the break card, with zero CSP violations.
 
 **Still to do (not in this release):** self-service password reset by email (needs an email service such as Resend or
 Brevo), Alembic migrations, and a live Neon/Paystack/AI test with your real keys. If you change your API domain,
@@ -159,7 +275,7 @@ cd site && npm install && npm start
 # open http://localhost:5000/app/
 ```
 
-Or run both with `./dev.sh`. API docs: http://localhost:8000/api/docs. Tests: `cd backend && pytest` (33 tests).
+Or run both with `./dev.sh`. API docs: http://localhost:8000/api/docs. Tests: `cd backend && pytest` (53 tests).
 With no `DATABASE_URL` it uses a local SQLite file, so you can try everything immediately.
 
 Free-plan limits (1 child, 1 practice round a day) and Premium unlocks work locally too. To test Premium
@@ -204,7 +320,7 @@ without paying, set `PAYSTACK_SECRET_KEY` to a Paystack **test** key and use Pay
   Data Protection Act and Google Play's Families Policy before publishing. Nothing here is legal advice.
 - **Database migrations:** tables are created automatically on startup. That is fine now; before you change the
   schema on a live database, add **Alembic** (as BACKEND-PLAN.md recommends) so you never lose data.
-- **Tested here:** 33 backend tests (accounts, quizzes, anti-cheating, limits, webhook security, AI privacy,
+- **Tested here:** 53 backend tests (accounts, quizzes, anti-cheating, limits, webhook security, AI privacy,
   admin) and a full browser walk-through on a phone-sized screen. **Not tested here:** a live Neon database
   (the connection code is standard SQLAlchemy/psycopg, but run `/api/health` after deploying), real Paystack
   payments, real AI replies, and the Android build (needs Android Studio on your machine).

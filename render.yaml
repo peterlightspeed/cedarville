@@ -2,7 +2,7 @@
 # Render dashboard > New > Blueprint > pick this repo.
 services:
   - type: web
-    name: cedarville-api
+    name: cedarville
     runtime: docker
     dockerfilePath: ./backend/Dockerfile
     dockerContext: .
@@ -27,5 +27,7 @@ services:
         sync: false        # your email, comma-separated for more than one
       - key: PAYSTACK_SECRET_KEY
         sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false        # Google Cloud Console > Credentials > OAuth client ID (Web)
       - key: ANTHROPIC_API_KEY
         sync: false

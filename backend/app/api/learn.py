@@ -59,8 +59,13 @@ def daily(child_id: int, user: User = Depends(get_current_user), session: Sessio
     done = _daily_attempt(session, child, today)
     qs = _daily_questions(session, child, today)
     rng = random.Random(f"shuffle:{child.id}:{today.isoformat()}")
+    done_days = {a.day for a in session.exec(select(Attempt).where(
+        Attempt.child_id == child.id, Attempt.kind == "daily", Attempt.day >= today - timedelta(days=6))).all()}
+    week = [{"day": (today - timedelta(days=6 - i)).isoformat(), "done": (today - timedelta(days=6 - i)) in done_days}
+            for i in range(7)]
     return {
         "date": today.isoformat(),
+        "week": week,
         "already_done": done is not None,
         "result": {"correct": done.correct, "total": done.total, "stars": done.stars_earned} if done else None,
         "questions": [_public(q, rng) for q in qs],
@@ -77,8 +82,9 @@ def subjects(child_id: int, user: User = Depends(get_current_user), session: Ses
     used = _practice_used_today(session, child)
     return {
         "subjects": [
-            {"key": k, "label": SUBJECT_LABEL.get(k, k.capitalize()), "emoji": SUBJECT_EMOJI.get(k, "⭐"), "count": n}
-            for k, n in sorted(counts.items())
+            {"key": k, "label": SUBJECT_LABEL.get(k, k.capitalize()), "emoji": SUBJECT_EMOJI.get(k, "⭐"), "count": n,
+             "locked": (not premium) and k not in settings.free_subjects}
+            for k, n in sorted(counts.items(), key=lambda kv: (kv[0] not in settings.free_subjects, kv[0]))
         ],
         "premium": premium,
         "practice_left": None if premium else max(0, settings.free_practice_per_day - used),
@@ -91,9 +97,16 @@ def practice(child_id: int, subject: str | None = None, count: int = Query(5, ge
     child = get_own_child(child_id, user, session)
     if not is_premium(session, user.id) and _practice_used_today(session, child) >= settings.free_practice_per_day:
         raise HTTPException(402, "You've finished today's free practice! Come back tomorrow, or ask a grown-up about Premium.")
+    premium = is_premium(session, user.id)
+    if subject and not premium and subject not in settings.free_subjects:
+        raise HTTPException(402, "This subject is part of Premium. Ask a grown-up to unlock every subject!")
     pool = _pool(session, child.level, subject)
+    if not subject and not premium:  # "Surprise Me" for free families draws from the free subjects only
+        pool = [q for q in pool if q.subject in settings.free_subjects] or pool
     if not pool:
         raise HTTPException(404, "No questions here yet.")
+    if not premium:
+        count = min(count, 5)
     rng = random.Random()
     picked = rng.sample(pool, min(count, len(pool)))
     return {"subject": subject or "mixed", "questions": [_public(q, rng) for q in picked]}
