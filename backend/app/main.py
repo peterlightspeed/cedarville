@@ -15,7 +15,7 @@ from fastapi.responses import JSONResponse
 
 from sqlmodel import Session
 
-from app.api import admin, ai, analytics, auth, children, contact, content, health, learn, payments
+from app.api import admin, ai, analytics, auth, children, classroom, codes, contact, content, health, learn, payments
 from app.config import settings
 from app.database import engine, init_db
 from app.seed import seed_if_empty
@@ -66,7 +66,7 @@ async def security_headers(request: Request, call_next):
 
 app.include_router(health.router, prefix="/api")
 app.include_router(contact.router, prefix="/api")
-for r in (auth.router, children.router, learn.router, payments.router, ai.router, admin.router, analytics.router):
+for r in (auth.router, children.router, learn.router, payments.router, ai.router, admin.router, analytics.router, classroom.router, codes.router):
     app.include_router(r, prefix="/api")
 # Content goes last: its `/{name}.json` catch-all must not shadow anything above.
 app.include_router(content.router, prefix="/api")

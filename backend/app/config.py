@@ -69,6 +69,8 @@ class Settings:
         # ---- Auth -----------------------------------------------------
         self.secret_key: str = os.getenv("SECRET_KEY", "dev-only-change-me-please-32-chars-min")
         self.access_token_days: int = int(os.getenv("ACCESS_TOKEN_DAYS", "14"))
+        # Teachers with these emails are approved automatically (everyone else asks and an admin approves).
+        self.teacher_emails: list[str] = [e.lower() for e in _split_csv(os.getenv("TEACHER_EMAILS", ""))]
         # Parents with these emails get admin rights (add videos/questions).
         self.admin_emails: list[str] = [e.lower() for e in _split_csv(os.getenv("ADMIN_EMAILS", ""))]
 
@@ -81,6 +83,10 @@ class Settings:
 
         # ---- Google sign-in (public "Web client ID" from Google Cloud Console) --
         self.google_client_id: str = os.getenv("GOOGLE_CLIENT_ID", "").strip()
+
+        # ---- Features that stay OFF until you are ready ------------------------
+        # Videos are off by default: only publish videos you own or have written permission to show.
+        self.enable_videos: bool = os.getenv("ENABLE_VIDEOS", "false").strip().lower() in ("1", "true", "yes")
 
         # ---- AI buddy -------------------------------------------------
         self.anthropic_api_key: str = os.getenv("ANTHROPIC_API_KEY", "")

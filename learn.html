@@ -50,7 +50,7 @@ h1{font-size:clamp(2rem,6.2vw,3.3rem);margin-top:12px}h1 em{font-style:normal;co
 .trust{background:var(--blue);color:#fff}.trust .wrap{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:16px 18px;font-weight:600;font-size:.95rem}
 section.s{padding:44px 0}.center{text-align:center}h2{font-size:clamp(1.6rem,4.6vw,2.3rem)}
 .steps{display:grid;gap:16px;margin-top:20px}.step{background:#fff;border-radius:24px;padding:20px;box-shadow:0 8px 24px rgba(26,86,219,.12)}.step .n{display:inline-grid;place-items:center;width:42px;height:42px;border-radius:50%;background:var(--sun);font-weight:700;margin-bottom:8px}
-.feats{display:grid;gap:14px;margin-top:20px}.feat{background:var(--sky);border-radius:24px;padding:18px}.feat .e{font-size:38px}.feat h3{font-size:1.2rem}.feat p{margin:0;color:var(--muted);font-size:1rem}
+.feats{display:grid;gap:14px;margin-top:20px}[data-feature]{display:none}[data-feature].show{display:revert}.feat{background:var(--sky);border-radius:24px;padding:18px}.feat .e{font-size:38px}.feat h3{font-size:1.2rem}.feat p{margin:0;color:var(--muted);font-size:1rem}
 .alt{background:linear-gradient(180deg,#fff,var(--sky))}
 .cmp{background:#fff;border-radius:24px;padding:10px 14px;box-shadow:0 8px 24px rgba(26,86,219,.12);margin-top:18px}.cmp .r{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:8px;padding:10px 2px;border-bottom:2px solid #eef3fc;font-size:.95rem}.cmp .r:last-child{border:0}.cmp .h{font-weight:700}.cmp .p{background:#fff9e0;border-radius:10px;padding:3px 6px;font-weight:600}
 .prices{display:grid;gap:12px;margin-top:16px}.plan{background:#fff;border-radius:22px;padding:16px;text-align:left;box-shadow:inset 0 0 0 3px #d7e4fa}.plan.best{box-shadow:inset 0 0 0 3px var(--sun-d);background:#fff9e0}.plan b{font-size:1.15rem}.plan .m{color:var(--muted);font-size:.95rem}.badge{display:inline-block;background:var(--sun);color:#5a4300;font-weight:700;font-size:.78rem;border-radius:20px;padding:2px 10px;margin-left:6px}
@@ -59,7 +59,7 @@ details{background:#fff;border-radius:20px;padding:14px 16px;margin-bottom:10px;
 footer{background:#0f1d3d;color:#c8d3ee;font-size:.9rem;padding:26px 0 110px}footer a{color:#fff}
 .sticky{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);padding:10px 14px calc(10px + env(safe-area-inset-bottom));box-shadow:0 -6px 20px rgba(0,0,0,.12);display:flex;gap:10px}
 .sticky .btn{flex:1;padding:12px 10px;font-size:1.05rem;min-height:52px}
-@media(min-width:760px){body{padding-bottom:0;font-size:19px}.hero .grid{grid-template-columns:1.15fr .85fr;padding-top:34px}.trust .wrap{grid-template-columns:repeat(4,1fr);text-align:center}.steps,.feats{grid-template-columns:repeat(3,1fr)}.feats{grid-template-columns:repeat(4,1fr)}.prices{grid-template-columns:repeat(3,1fr)}.sticky{display:none}footer{padding-bottom:30px}.final{padding:48px}}
+@media(min-width:760px){body{padding-bottom:0;font-size:19px}.hero .grid{grid-template-columns:1.15fr .85fr;padding-top:34px}.trust .wrap{grid-template-columns:repeat(4,1fr);text-align:center}.steps{grid-template-columns:repeat(3,1fr)}.feats{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}.prices{grid-template-columns:repeat(3,1fr)}.sticky{display:none}footer{padding-bottom:30px}.final{padding:48px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -71,7 +71,7 @@ footer{background:#0f1d3d;color:#c8d3ee;font-size:.9rem;padding:26px 0 110px}foo
    <div>
     <span class="pill">🎈 Free to start · Ages 2–11</span>
     <h1>Make learning a <em>daily habit</em>, in just 5 minutes a day</h1>
-    <p class="lead">A fun new quiz every day, plus a friendly owl helper. Words are read aloud for little ones, with no ads and no chatting with strangers.</p>
+    <p class="lead">A fun new quiz every day<span data-feature="cedar">, plus a friendly owl helper</span>. Words are read aloud for little ones, with no ads and no chatting with strangers.</p>
     <p class="say">👇 How old is your child? Try a free quiz now.</p>
     <div class="ages" id="ages">
      <a class="age" data-app="#/try?level=tiny" href="app/#/try?level=tiny"><span>🧸</span>2–3 years<small>Little Explorers</small></a>
@@ -118,14 +118,14 @@ footer{background:#0f1d3d;color:#c8d3ee;font-size:.9rem;padding:26px 0 110px}foo
  <div class="feats">
   <div class="feat"><div class="e">🎯</div><h3>Daily 5-question quiz</h3><p>Short enough for busy days. Always free.</p></div>
   <div class="feat"><div class="e">🔊</div><h3>Read aloud</h3><p>Tap to hear every question, great for children who can't read yet.</p></div>
-  <div class="feat"><div class="e">🦉</div><h3>Cedar the Owl</h3><p>A friendly AI helper that answers children's questions in simple words, on learning topics only.</p></div>
+  <div class="feat" data-feature="cedar"><div class="e">🦉</div><h3>Cedar the Owl</h3><p>A friendly AI helper that answers children's questions in simple words, on learning topics only.</p></div>
   <div class="feat"><div class="e">📈</div><h3>Parent corner</h3><p>See stars and activity each week. Premium shows strengths and what to practise next.</p></div>
  </div>
 </div></section>
 
 <section class="s"><div class="wrap center">
  <h2>Free forever. Premium when you want more.</h2>
- <p style="color:var(--muted)">The daily quiz is always free. Premium unlocks every subject, unlimited practice, more owl chats and progress insights.</p>
+ <p style="color:var(--muted)">The daily quiz is always free. Premium unlocks every subject, unlimited practice<span data-feature="cedar">, more owl chats</span> and progress insights.</p>
  <div class="cmp" id="cmp" style="text-align:left" hidden></div>
  <div class="prices" id="prices"></div>
  <p class="fine">Pay securely with Paystack (card, bank transfer or USSD). It does not renew by itself.</p>
@@ -133,7 +133,7 @@ footer{background:#0f1d3d;color:#c8d3ee;font-size:.9rem;padding:26px 0 110px}foo
 
 <section class="s alt"><div class="wrap" style="max-width:760px">
  <h2 class="center">Questions parents ask</h2>
- <details><summary>Is it really free?</summary><p>Yes. The daily quiz, stars, streaks and stickers are free forever. Premium is optional and adds unlimited practice in every subject, more owl chats and progress insights.</p></details>
+ <details><summary>Is it really free?</summary><p>Yes. The daily quiz, stars, streaks and stickers are free forever. Premium is optional and adds unlimited practice in every subject<span data-feature="cedar">, more owl chats</span> and progress insights.</p></details>
  <details><summary>Is it safe for my child?</summary><p>There are no ads and no chat with other people. Children never create accounts: you, the parent, do. A maths question protects the grown-ups area, so children can't change settings or pay.</p></details>
  <details><summary>What ages is it for?</summary><p>Four levels: 2–3 (Little Explorers), 4–5 (Nursery), 6–8 (Primary 1–3) and 9–11 (Primary 4–6). Questions match the age you choose.</p></details>
  <details><summary>Do I need to download anything?</summary><p>No. It works in your phone's browser, and you can add it to your home screen so it opens like an app. A Google Play app is planned.</p></details>
@@ -161,6 +161,10 @@ footer{background:#0f1d3d;color:#c8d3ee;font-size:.9rem;padding:26px 0 110px}foo
   document.querySelectorAll('[data-app]').forEach(function(a){ a.href='app/'+qs+a.getAttribute('data-app'); });
   function track(n){ try{ fetch(api+'/events',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:n,utm:use}),keepalive:true}).catch(function(){}); }catch(e){} }
   track('landing_view');
+  // optional features (the owl helper) are only mentioned once the server says they are really switched on
+  fetch(api+'/auth/providers').then(function(r){return r.json();}).then(function(p){
+    if(p.features&&p.features.cedar) document.querySelectorAll('[data-feature="cedar"]').forEach(function(e){e.classList.add('show');});
+  }).catch(function(){});
   try{ fetch(api+'/health').catch(function(){}); }catch(e){}   // wakes the server while the parent reads
   document.addEventListener('click',function(e){ if(e.target.closest('[data-app]')) track('cta_click'); });
   // live prices + comparison from the server, so this page can never disagree with the app

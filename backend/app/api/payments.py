@@ -22,7 +22,8 @@ from app.config import settings
 from app.database import get_session
 from app.deps import get_current_user, is_premium
 from app.models import Subscription, Transaction, User
-from app.plans import PLANS, PREMIUM_FEATURES, comparison, plan_cards
+from app.plans import PLANS, comparison, plan_cards, premium_features
+from app.premium import grant_premium
 
 log = logging.getLogger("cedarville.payments")
 router = APIRouter(prefix="/payments", tags=["payments"])
@@ -33,7 +34,7 @@ PAYSTACK = "https://api.paystack.co"
 def plans() -> dict:
     return {
         "plans": plan_cards(),
-        "features": PREMIUM_FEATURES,
+        "features": premium_features(settings),
         "comparison": comparison(settings),
         "payments_enabled": bool(settings.paystack_secret_key),
     }
@@ -88,14 +89,7 @@ def _activate(session: Session, reference: str, paid_kobo: int, currency: str) -
         log.error("Amount mismatch for %s: paid %s expected %s", reference, paid_kobo, tx.amount_kobo)
         return False
 
-    now = datetime.now(timezone.utc)
-    start = now
-    for sub in session.exec(select(Subscription).where(Subscription.user_id == tx.user_id)).all():
-        end = sub.current_period_end if sub.current_period_end.tzinfo else sub.current_period_end.replace(tzinfo=timezone.utc)
-        if end > start:
-            start = end  # renewing early never wastes paid days
-    session.add(Subscription(user_id=tx.user_id, plan_code=tx.plan_code,
-                             current_period_end=start + timedelta(days=PLANS[tx.plan_code]["days"])))
+    grant_premium(session, tx.user_id, PLANS[tx.plan_code]["days"], tx.plan_code)
     tx.status = "success"
     session.add(tx)
     session.commit()

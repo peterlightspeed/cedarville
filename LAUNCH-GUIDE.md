@@ -19,6 +19,42 @@ call-to-action on the Learning Hub page (it used to say "coming soon").
 > lives in `site/`. Deploy from `site/` and delete the root copies once you've confirmed (otherwise you'll
 > edit the wrong one).
 
+## 🆕 What's new in this version (v8)
+
+**For children:** every question is now **read aloud automatically** (a 🗣 Voice button in each quiz turns it off, and 🔊 in the top bar mutes everything), and answers, results and the tour are spoken too.
+Calmer, clearer screens: lettered answer buttons (A/B/C), a blinking mascot, smoother transitions, buddies to **unlock with stars** (never for sale, so nobody feels left out and nobody rushes for a prize).
+
+**Questions:** the bank grew from 215 to **788**, with 30+ new topics (rhymes, patterns, community helpers, senses, time, money, safety, computers, health, geography, Nigerian history and civics, science and more). Ages 2–3 went from 28 to 94 questions.
+Existing live databases receive the new questions automatically on the next deploy; teacher-edited and teacher-made questions are never touched.
+
+**Classes, homework and leaderboards (teachers):**
+1. A teacher signs up with the **"I'm a teacher"** box (or taps *Ask for teacher access* in Grown-ups). Add their email to `TEACHER_EMAILS` on Render to approve them instantly, or approve them in **Admin dashboard → People**.
+2. In the **teacher area** they make a class (age group), get a 6-letter **class code**, and share it with parents (one tap to WhatsApp).
+3. A **parent** enters the code under Grown-ups → *Join your child's class* (that is the consent). They can hide their child from the leaderboard or leave at any time.
+4. The teacher sets **homework / exercise / quiz**: pick random questions from the question bank, write their own, or both, with an optional due date.
+5. Children see a 📚 homework card on Home and a **Class** tab (with a red dot when something is due). Results (per child and per question, so teachers see what to re-teach) show in the teacher area.
+6. The **class leaderboard** ranks stars earned this week or all time. Stars come from finishing quizzes, not speed. It shows first names and avatars of children in the same class only, never a school-wide or public board.
+
+**Premium codes dashboard (you and people you add):** the **🛠 Admin dashboard** (Grown-ups → *For school staff*) has four tabs:
+- **Overview:** the setup check and the ad performance numbers.
+- **Codes:** make codes for 7 days up to a year (or any number of days), many at once, for one family or shareable by a class, with a label and an optional "use before" date. One tap sends a code on WhatsApp. Revoke any code. Parents enter it under *Upgrade → "Have a Premium code?"* and Premium starts at once; gifted time stacks with paid time so nothing is wasted.
+- **People:** approve teachers, and **add "code staff"**: people (who must already have an account) who can make and revoke codes but see *only their own* codes and nothing else. Staff are limited to 50 codes at a time and 365 days; only you have no limit.
+- **Content:** import and approve questions, review Cedar reports, and (when videos are on) add videos.
+Codes are random, forgiving to type (`ced 6esz sp85` works), rate-limited against guessing, and every failure gives the same message so nobody can probe for real codes.
+
+**School website:** a new **Learning app section** on the home page with a phone preview, a dismissible "New: free daily quiz app" bar on every page, footer links, hover polish and visible keyboard-focus outlines.
+
+### Why Google sign-in doesn't show yet
+The button is built into the sign-up and log-in screens (now placed **first**, right under the parent-consent tick), but Google only shows it once the server has your **Google Client ID**. Until you add `GOOGLE_CLIENT_ID` on Render (steps in the Google section above), the app hides it so visitors never see a button that can't work. After you add it and redeploy, it appears automatically.
+
+### What I learned from other children's apps, and what I applied
+Looking at Khan Academy Kids, ABCmouse, Duolingo ABC and similar apps and parent reviews: the ones parents trust are **ad-free, calm, and focused**, with a friendly character, short lessons, instant kind feedback, audio for pre-readers, and a parent dashboard. The common complaints are busy screens, reward loops that make children rush, and in-app "shops" that make non-paying children feel left out.
+So I added what is proven and simple (voice, mascot, earned buddies, parent insights, class homework) and deliberately did **not** add a store, coins, timers, or pop-ups. Everything new reuses the same screens and the same data, so there is little extra to maintain.
+
+### New things to set on Render (all optional)
+- `TEACHER_EMAILS` = comma-separated emails of teachers to approve automatically.
+- New tables and columns are created automatically on the next start; nothing to run by hand.
+
 ## 📣 Running ads: what to send people to, and what to fix first
 
 **Send ad traffic to the landing page, not the app:**
@@ -56,6 +92,67 @@ happened (from the database), uses no cookies and no third-party trackers, and t
   conversion reporting; ask me when you're ready.
 - Use your own photos of children only with written parental consent.
 - Start small: run 2–3 different ads for 3–5 days on a small daily budget, then compare **cost per sign-up** in Teacher tools and put more money behind the winner.
+
+## ✅ Your Render environment: reviewed from your screenshot
+
+What I can see is **correct**: `APP_ENV=production`, `APP_DEBUG=false`, `CONTENT_CACHE_SECONDS=300`, `RATE_LIMIT_PER_MINUTE=30`,
+`CORS_ORIGINS` (both `https://www.cedarvilleprivateschool.com` and `https://cedarvilleprivateschool.com`, the code trims spaces) and
+`APP_URL=https://www.cedarvilleprivateschool.com/app/`. Three values are hidden, so check them with the 👁 eye icon:
+- `SECRET_KEY`: at least 32 random characters (not a word like "secret").
+- `DATABASE_URL`: starts with `postgresql://` and ends with `?sslmode=require` (copied from Neon → Connect).
+- `ADMIN_EMAILS`: exactly the email you sign up with, in lower case, no spaces.
+
+**Not needed yet (leave them out):** `PAYSTACK_SECRET_KEY` (add when you test payments), `GOOGLE_CLIENT_ID` (add when Google sign-in is set up),
+`ANTHROPIC_API_KEY` (Cedar stays hidden without it), `ENABLE_VIDEOS` (default is off, which is what you want).
+Click **Save, rebuild and deploy**, then open `https://cedarville.onrender.com/api/health`. It should say `"status":"ok"` and `"database":true`.
+After you sign up with your admin email: Grown-ups → Teacher tools → **Run setup check** shows what is and isn't connected.
+
+## 🌐 Vercel and Namecheap DNS: you do not need Vercel
+
+Your website stays on **GitHub Pages** and the API on **Render**. The app calls Render directly (`PROD_API` in `site/app/config.js`), so
+**nothing changes in Namecheap and you don't need Vercel at all.** Skip it: attaching your domain to Vercel would mean replacing the
+DNS records that point your school website at GitHub, which risks taking the site down for no benefit.
+
+*Optional, later:* a nicer API address such as `api.cedarvilleprivateschool.com`. In Render → your service → **Settings → Custom Domains** add it;
+Render shows the exact record. In Namecheap → Domain List → **Manage → Advanced DNS** add a **CNAME** record, Host `api`, Value `cedarville.onrender.com`
+(leave every other record alone, especially the ones for email). Then change `PROD_API` in `site/app/config.js` to
+`https://api.cedarvilleprivateschool.com/api`. The app's security policy already allows this address.
+
+## 🎬 Videos: switched OFF (good call)
+
+Videos are now off by default: the Watch tab, tile, tour step, prices table and landing page all hide it, and the server returns no videos.
+It stays off until you set `ENABLE_VIDEOS=true` in Render. Why this is the right call: a video on YouTube belongs to its creator,
+embedding doesn't give you the right to build a paid product around it, and YouTube's and Google Play's rules for children's apps add more
+conditions. I'm not your lawyer, so have the school confirm before you turn it on. Safe ways to bring videos back:
+1. **Videos the school makes** (teachers record short lessons) and uploads to the school's own YouTube channel, marked "made for kids".
+2. **Written permission** from the creator to show their video in your app.
+3. **Openly licensed** videos (check the licence and give credit).
+Turn on `ENABLE_VIDEOS` only when every video in the list is one of these.
+
+## 🤖 About AI: why not Gemini, and what to do instead
+
+I checked Google's current terms. **Gemini API terms (effective March 23, 2026) say you must not use the Services in an app "directed towards or
+likely to be accessed by individuals under the age of 18."** A children's learning app is exactly that, free tier or paid. The free tier also lets
+Google use prompts and responses to improve its products, with human reviewers. So I did **not** connect Gemini to the app, even though a free key is
+tempting: it could get your Google account suspended later, and it would send children's messages into Google's training pipeline.
+
+**What the app does now:** Cedar is **hidden from children** until an AI key exists, so there is no "napping owl" and no cost. The quiz, stars,
+streaks and parent tools work fully without AI.
+
+**When you want Cedar:** Anthropic's API (Claude) is pay-as-you-go (no free plan to rely on) and *does* allow apps for minors if you
+add safeguards. Their guidelines (updated March 16, 2026) ask for: age gating, content filtering, a monitoring and reporting channel, telling users it is an
+AI, and stating child-privacy compliance publicly. The app already has all of these:
+- **Parent-held accounts** (children never sign up).
+- **A safety filter** that stops unsuitable or self-harm wording *before* it reaches the AI and answers kindly. Self-harm wording is marked URGENT for staff.
+- **Reply checks:** links, emails and phone numbers are stripped; replies are capped at a few sentences; the AI is told to stay on learning topics.
+- **A 🚩 report button** on every reply, and Teacher tools → **🚩 Cedar reports** where staff review and clear them. *Please check it regularly*, and act on URGENT items the same day.
+- **A permanent "Cedar is a computer helper (AI)" notice** in the chat, and an updated privacy policy (`site/app/privacy.html`) that says so.
+The filter is a basic safety net, not a guarantee. Get the privacy policy reviewed (Nigeria Data Protection Act) before you launch Cedar.
+Cost stays small and capped: 3 free questions a day per child, 20 for Premium. Check Anthropic's pricing page for the current rate before you switch it on.
+To switch on: console.anthropic.com → API keys → add credit → copy the key → Render → `ANTHROPIC_API_KEY` → deploy. Cedar then appears everywhere automatically.
+
+**Free way to grow content without any API:** Teacher tools → *📝 Questions: import and review*. Use any AI chat on your own account (or your teachers' ideas),
+paste the JSON, and approve the good drafts. Children never see a draft. That adds questions for ages 2–3, which need it most.
 
 ## 🔧 Render deploy shows "Failed"? Do this first
 
@@ -192,7 +289,7 @@ cp -a cedarville-main "cedarville-main.backup-$(date +%F)"
 
 # 2. unzip the new version into a temporary folder
 rm -rf /tmp/cedar-new && mkdir /tmp/cedar-new
-unzip -q ~/Downloads/cedarville-learning-v6.zip -d /tmp/cedar-new
+unzip -q ~/Downloads/cedarville-learning-v8.zip -d /tmp/cedar-new
 
 # 3. PREVIEW — lists files that differ or are new; changes nothing
 diff -rq /tmp/cedar-new/cedarville-main cedarville-main | less
@@ -204,7 +301,7 @@ cp -a /tmp/cedar-new/cedarville-main/. cedarville-main/
 cd cedarville-main/backend
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements-dev.txt
-pytest -q                                   # expect: 53 passed
+pytest -q                                   # expect: 83 passed
 cp -n .env.example .env                     # never overwrites an .env you already have
 uvicorn app.main:app --reload --port 8000   # leave running
 
@@ -239,7 +336,7 @@ Notes:
 - Show/hide password, "Add to home screen" button, forgot-password contact line.
 - Star pop on correct answers, better small-phone layout, screen-reader focus handling.
 
-**Tests:** 53 backend tests (7 new for security) and a full browser walk-through including password change, account deletion and the break card, with zero CSP violations.
+**Tests:** 83 backend tests (7 new for security) and a full browser walk-through including password change, account deletion and the break card, with zero CSP violations.
 
 **Still to do (not in this release):** self-service password reset by email (needs an email service such as Resend or
 Brevo), Alembic migrations, and a live Neon/Paystack/AI test with your real keys. If you change your API domain,
@@ -275,7 +372,7 @@ cd site && npm install && npm start
 # open http://localhost:5000/app/
 ```
 
-Or run both with `./dev.sh`. API docs: http://localhost:8000/api/docs. Tests: `cd backend && pytest` (53 tests).
+Or run both with `./dev.sh`. API docs: http://localhost:8000/api/docs. Tests: `cd backend && pytest` (83 tests).
 With no `DATABASE_URL` it uses a local SQLite file, so you can try everything immediately.
 
 Free-plan limits (1 child, 1 practice round a day) and Premium unlocks work locally too. To test Premium
@@ -289,7 +386,7 @@ without paying, set `PAYSTACK_SECRET_KEY` to a Paystack **test** key and use Pay
    `ADMIN_EMAILS` (your email) and, later, the Paystack and Anthropic keys. `SECRET_KEY` is generated for you.
    Check `https://<service>.onrender.com/api/health` shows `"database": true`.
    The free Render plan sleeps when idle (first request after a pause takes ~30–50 s); the $7 Starter plan doesn't.
-4. **Vercel**: import the repo, set **Root Directory = `site`**. Deploy.
+4. ~~**Vercel**~~ Not needed (see the Vercel section above).
 5. **Domain**: add `repurposekey.com` to Vercel and `api.repurposekey.com` to Render (each shows the DNS records
    to add). Then make these match your real addresses:
    - `site/vercel.json` → the `destination` of the `/api` rewrite
@@ -320,7 +417,7 @@ without paying, set `PAYSTACK_SECRET_KEY` to a Paystack **test** key and use Pay
   Data Protection Act and Google Play's Families Policy before publishing. Nothing here is legal advice.
 - **Database migrations:** tables are created automatically on startup. That is fine now; before you change the
   schema on a live database, add **Alembic** (as BACKEND-PLAN.md recommends) so you never lose data.
-- **Tested here:** 53 backend tests (accounts, quizzes, anti-cheating, limits, webhook security, AI privacy,
+- **Tested here:** 83 backend tests (accounts, quizzes, anti-cheating, limits, webhook security, AI privacy,
   admin) and a full browser walk-through on a phone-sized screen. **Not tested here:** a live Neon database
   (the connection code is standard SQLAlchemy/psycopg, but run `/api/health` after deploying), real Paystack
   payments, real AI replies, and the Android build (needs Android Studio on your machine).

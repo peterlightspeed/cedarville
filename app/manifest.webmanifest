@@ -1,7 +1,7 @@
 {
   "name": "Cedarville Learning",
   "short_name": "Cedar Kids",
-  "description": "Daily quizzes, videos and a friendly owl helper for young learners.",
+  "description": "Daily quizzes, stars and streaks for young learners.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

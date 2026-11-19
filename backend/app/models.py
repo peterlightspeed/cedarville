@@ -44,6 +44,8 @@ class User(SQLModel, table=True):
     utm_source: str | None = Field(default=None, max_length=60)
     utm_medium: str | None = Field(default=None, max_length=60)
     utm_campaign: str | None = Field(default=None, max_length=60)
+    teacher_status: str | None = Field(default=None, max_length=12, index=True)  # None | pending | approved | rejected
+    staff_role: str | None = Field(default=None, max_length=12)  # None | codes  (can issue Premium codes, nothing else)
     created_at: datetime = Field(default_factory=utcnow)
 
 
@@ -73,6 +75,7 @@ class Question(SQLModel, table=True):
     answer: str  # must equal one of options
     explanation: str = ""
     approved: bool = True  # AI-drafted questions start False until a teacher approves
+    owner_id: int | None = Field(default=None, index=True)  # set = a teacher's private class question (never in the public bank)
 
 
 class Video(SQLModel, table=True):
@@ -135,3 +138,84 @@ class Event(SQLModel, table=True):
     utm_source: str | None = Field(default=None, max_length=60)
     utm_campaign: str | None = Field(default=None, max_length=60)
     created_at: datetime = Field(default_factory=utcnow, index=True)
+
+
+class AIReport(SQLModel, table=True):
+    """A Cedar reply a parent flagged, or one our safety filter stopped. Reviewed by school staff."""
+
+    id: int | None = Field(default=None, primary_key=True)
+    child_id: int = Field(index=True)
+    source: str = Field(max_length=20)  # parent_report | auto_filter
+    prompt: str = Field(default="", max_length=400)   # already scrubbed of phone numbers / emails
+    reply: str = Field(default="", max_length=1200)
+    resolved: bool = False
+    created_at: datetime = Field(default_factory=utcnow, index=True)
+
+
+class Classroom(SQLModel, table=True):
+    """A teacher's class. Parents join their child with the code."""
+
+    id: int | None = Field(default=None, primary_key=True)
+    teacher_id: int = Field(index=True)
+    name: str = Field(max_length=60)
+    level: str = "nursery"
+    code: str = Field(unique=True, index=True, max_length=8)
+    archived: bool = False
+    created_at: datetime = Field(default_factory=utcnow)
+
+
+class ClassMember(SQLModel, table=True):
+    """A child joined to a class BY THEIR PARENT (consent). show_on_board lets a parent opt out of the leaderboard."""
+
+    id: int | None = Field(default=None, primary_key=True)
+    class_id: int = Field(index=True)
+    child_id: int = Field(index=True)
+    show_on_board: bool = True
+    joined_at: datetime = Field(default_factory=utcnow)
+
+
+class Assignment(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    class_id: int = Field(index=True)
+    teacher_id: int = Field(index=True)
+    title: str = Field(max_length=120)
+    instructions: str = Field(default="", max_length=500)
+    kind: str = Field(default="homework", max_length=12)  # homework | exercise | quiz
+    due_date: date | None = None
+    question_ids: list = Field(default_factory=list, sa_column=Column(JSON))
+    created_at: datetime = Field(default_factory=utcnow)
+
+
+class AssignmentResult(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    assignment_id: int = Field(index=True)
+    child_id: int = Field(index=True)
+    correct: int
+    total: int
+    stars: int = 0
+    answers: list = Field(default_factory=list, sa_column=Column(JSON))  # [{question_id, correct}]
+    late: bool = False
+    submitted_at: datetime = Field(default_factory=utcnow)
+
+
+class PremiumCode(SQLModel, table=True):
+    """A voucher that gives a family Premium for a number of days. Made only by admins / code staff."""
+
+    id: int | None = Field(default=None, primary_key=True)
+    code: str = Field(unique=True, index=True, max_length=20)
+    days: int
+    label: str = Field(default="", max_length=60)      # e.g. "Scholarship 2026", "Term 1 staff kids"
+    max_uses: int = 1
+    uses: int = 0
+    redeem_by: date | None = None                      # the code stops working after this date
+    revoked: bool = False
+    created_by: int = Field(index=True)
+    created_at: datetime = Field(default_factory=utcnow)
+
+
+class CodeRedemption(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    code_id: int = Field(index=True)
+    user_id: int = Field(index=True)
+    days: int
+    redeemed_at: datetime = Field(default_factory=utcnow)

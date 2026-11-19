@@ -6,13 +6,15 @@ PLANS = {
     "premium_yearly": {"name": "Yearly", "amount_kobo": 1_500_000, "days": 365, "blurb": "₦15,000 / year"},
 }
 
-PREMIUM_FEATURES = [
-    "Unlimited practice rounds in every subject",
-    "All Watch & Learn videos",
-    "More chats with Cedar the Owl, the friendly AI helper",
-    "Progress insights: what your child is strong at and what to practise next",
-    "Up to 5 children on one account",
-]
+def premium_features(settings) -> list[str]:
+    items = ["Unlimited practice rounds in every subject"]
+    if settings.enable_videos:
+        items.append("All Watch & Learn videos")
+    if settings.anthropic_api_key:
+        items.append("More chats with Cedar the Owl, the friendly AI helper")
+    items += ["Progress insights: what your child is strong at and what to practise next",
+              f"Up to {settings.premium_max_children} children on one account"]
+    return items
 
 
 def plan_cards() -> list[dict]:
@@ -30,13 +32,17 @@ def plan_cards() -> list[dict]:
 def comparison(settings) -> list[dict]:
     """Free vs Premium rows shown on the website, in the app and in the tour. Numbers come from real settings."""
     free_subjects = ", ".join(x.capitalize() for x in settings.free_subjects)
-    return [
+    rows = [
         {"feature": "Daily quiz (5 questions, all subjects)", "free": "✅", "premium": "✅"},
         {"feature": "Stars, streaks and stickers", "free": "✅", "premium": "✅"},
         {"feature": "Practice rounds", "free": f"{settings.free_practice_per_day} a day", "premium": "Unlimited"},
         {"feature": "Practice subjects", "free": free_subjects, "premium": "All subjects"},
-        {"feature": "Watch & Learn videos", "free": "Starter videos", "premium": "All videos"},
-        {"feature": "Cedar the Owl (AI helper)", "free": f"{settings.free_ai_per_day} questions a day", "premium": f"{settings.ai_daily_limit} a day"},
         {"feature": "Progress for parents", "free": "Stars this week", "premium": "+ strengths & what to practise"},
         {"feature": "Child profiles", "free": f"{settings.free_max_children}", "premium": f"Up to {settings.premium_max_children}"},
     ]
+    if settings.enable_videos:
+        rows.insert(4, {"feature": "Watch & Learn videos", "free": "Starter videos", "premium": "All videos"})
+    if settings.anthropic_api_key:
+        rows.insert(5 if settings.enable_videos else 4, {"feature": "Cedar the Owl (AI helper)",
+                    "free": f"{settings.free_ai_per_day} questions a day", "premium": f"{settings.ai_daily_limit} a day"})
+    return rows

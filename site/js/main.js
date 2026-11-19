@@ -139,3 +139,17 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
 });
+
+
+/* Dismissible announcement for the Learning app. Remembers the choice; never shown on the landing page or the app. */
+(function () {
+  try {
+    if (localStorage.getItem('cedar_ann') === '1' || /learn\.html/.test(location.pathname)) return;
+    var bar = document.createElement('div');
+    bar.className = 'announce';
+    bar.setAttribute('role', 'region'); bar.setAttribute('aria-label', 'Announcement');
+    bar.innerHTML = '<a href="learn.html">🎈 <b>New:</b> free daily quiz app for ages 2–11 <span>Try it →</span></a><button type="button" aria-label="Dismiss announcement">×</button>';
+    document.body.insertBefore(bar, document.body.firstChild); document.body.classList.add('has-announce');
+    bar.querySelector('button').addEventListener('click', function () { bar.remove(); document.body.classList.remove('has-announce'); try { localStorage.setItem('cedar_ann', '1'); } catch (e) {} });
+  } catch (e) { /* the announcement is optional */ }
+})();

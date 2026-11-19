@@ -10,10 +10,15 @@ from sqlmodel import Session, select
 from app.config import settings
 from app.database import get_session
 from app.deps import get_current_user, get_own_child, is_premium
-from app.models import LEVEL_LABELS, Attempt, Child, User, level_for_age
+from sqlmodel import delete
+
+from app.models import LEVEL_LABELS, AssignmentResult, Attempt, Child, ClassMember, User, level_for_age
 
 router = APIRouter(prefix="/children", tags=["children"])
-AVATARS = {"🦁", "🐯", "🐼", "🐸", "🐵", "🦄", "🐧", "🐙", "🦊", "🐰", "🐶", "🐱"}
+STARTER_AVATARS = ["🦁", "🐯", "🐼", "🐸", "🐵", "🦄", "🐧", "🐙", "🦊", "🐰", "🐶", "🐱"]
+# Buddies that are EARNED with stars, never bought: nobody gets left out and nobody rushes for a prize.
+UNLOCKS = {"🦖": 40, "🐬": 80, "🦚": 140, "🐲": 220, "🦋": 320, "🚀": 450, "🌈": 600}
+AVATARS = set(STARTER_AVATARS) | set(UNLOCKS)
 
 
 class ChildIn(BaseModel):
@@ -46,6 +51,28 @@ def child_out(c: Child) -> dict:
     }
 
 
+@router.get("/avatars")
+def avatars() -> dict:
+    return {"avatars": [{"emoji": e, "stars": 0} for e in STARTER_AVATARS] + [{"emoji": e, "stars": n} for e, n in UNLOCKS.items()]}
+
+
+class AvatarIn(BaseModel):
+    avatar: str = Field(max_length=8)
+
+
+@router.patch("/{child_id}/avatar")
+def set_avatar(child_id: int, body: AvatarIn, user: User = Depends(get_current_user), session: Session = Depends(get_session)) -> dict:
+    child = get_own_child(child_id, user, session)
+    if body.avatar not in AVATARS:
+        raise HTTPException(400, "Pick one of the buddies.")
+    if child.stars < UNLOCKS.get(body.avatar, 0):
+        raise HTTPException(403, f"Earn {UNLOCKS[body.avatar]} stars to unlock this buddy!")
+    child.avatar = body.avatar
+    session.add(child)
+    session.commit()
+    return child_out(child)
+
+
 @router.get("")
 def list_children(user: User = Depends(get_current_user), session: Session = Depends(get_session)) -> dict:
     kids = session.exec(select(Child).where(Child.parent_id == user.id).order_by(Child.id)).all()
@@ -63,7 +90,7 @@ def add_child(body: ChildIn, user: User = Depends(get_current_user), session: Se
     if count >= limit:
         raise HTTPException(402, f"Your plan allows {limit} child profile{'s' if limit != 1 else ''}. Upgrade to add more.")
     child = Child(parent_id=user.id, name=body.name.strip(), age=body.age,
-                  level=level_for_age(body.age), avatar=body.avatar)
+                  level=level_for_age(body.age), avatar=body.avatar if body.avatar in STARTER_AVATARS else STARTER_AVATARS[0])
     session.add(child)
     session.commit()
     session.refresh(child)
@@ -86,6 +113,8 @@ def delete_child(child_id: int, user: User = Depends(get_current_user), session:
     child = get_own_child(child_id, user, session)
     for a in session.exec(select(Attempt).where(Attempt.child_id == child.id)).all():
         session.delete(a)
+    session.exec(delete(ClassMember).where(ClassMember.child_id == child.id))
+    session.exec(delete(AssignmentResult).where(AssignmentResult.child_id == child.id))
     session.delete(child)
     session.commit()
 

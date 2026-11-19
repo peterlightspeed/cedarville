@@ -44,6 +44,19 @@ def require_admin(user: User = Depends(get_current_user)) -> User:
     return user
 
 
+def require_code_issuer(user: User = Depends(get_current_user)) -> User:
+    """Admins, plus people an admin has added as code staff. Nobody else."""
+    if not (user.is_admin or user.staff_role == "codes"):
+        raise HTTPException(403, "Only the school admin or approved staff can do this.")
+    return user
+
+
+def require_teacher(user: User = Depends(get_current_user)) -> User:
+    if user.teacher_status != "approved":
+        raise HTTPException(403, "Teacher access has not been approved yet.")
+    return user
+
+
 def is_premium(session: Session, user_id: int) -> bool:
     now = datetime.now(timezone.utc)
     subs = session.exec(select(Subscription).where(Subscription.user_id == user_id)).all()

@@ -192,8 +192,13 @@ def generated() -> list[tuple]:
 
 
 def all_questions() -> list[dict]:
-    rows = []
-    for level, subject, visual, prompt, answer, wrong, expl in H + generated():
+    from app.seed_more import MORE, more_generated  # second wave: many more topics
+
+    rows, seen = [], set()
+    for level, subject, visual, prompt, answer, wrong, expl in H + generated() + MORE + more_generated():
+        if (level, prompt, visual, answer) in seen:
+            continue
+        seen.add((level, prompt, visual, answer))
         opts = [answer, *wrong]
         random.Random(f"{prompt}{answer}").shuffle(opts)
         rows.append(dict(level=level, subject=subject, visual=visual, prompt=prompt,

@@ -161,7 +161,9 @@ def test_progress(client, auth):
 
 
 # ---------- videos ----------
-def test_videos_locked_for_free(client, auth):
+def test_videos_locked_for_free(client, auth, monkeypatch):
+    from app.config import settings
+    monkeypatch.setattr(settings, "enable_videos", True)
     c = make_child(client, auth, age=5)
     admin = {"Authorization": "Bearer " + (client.post("/api/auth/login", json={"email": "boss@example.com", "password": "correct-horse-1"}).json().get("token") or client.post("/api/auth/signup", json={"email": "boss@example.com", "password": "correct-horse-1", "display_name": "B"}).json()["token"])}
     assert client.post("/api/admin/videos", headers=admin, json={
@@ -576,7 +578,9 @@ def test_progress_insights_are_premium(client, auth):
     assert "maths" in prem["strengths"]
 
 
-def test_comparison_table_matches_real_limits(client):
+def test_comparison_table_matches_real_limits(client, monkeypatch):
+    from app.config import settings
+    monkeypatch.setattr(settings, "anthropic_api_key", "test-key")
     rows = {r["feature"]: r for r in client.get("/api/payments/plans").json()["comparison"]}
     assert rows["Practice rounds"]["free"] == "1 a day" and rows["Practice rounds"]["premium"] == "Unlimited"
     assert "Maths" in rows["Practice subjects"]["free"]
@@ -646,3 +650,89 @@ def test_plan_cards_show_savings_and_copy_is_honest(client):
     assert by["premium_monthly"]["saving_pct"] == 0
     assert by["premium_yearly"]["saving_pct"] > 30 and by["premium_yearly"]["per_month_kobo"] < by["premium_monthly"]["per_month_kobo"]
     assert not any("Weekly progress report" in f for f in r["features"])  # we don't send those, so we don't promise them
+
+
+# ---------- v7: feature switches + safeguards for a children's AI helper ----------
+def test_videos_and_cedar_hidden_by_default(client, auth):
+    f = client.get("/api/auth/providers").json()["features"]
+    assert f == {"videos": False, "cedar": False}
+    c = make_child(client, auth, age=5)
+    v = client.get(f"/api/learn/videos?child_id={c['id']}", headers=auth).json()
+    assert v == {"videos": [], "enabled": False}
+    rows = [r["feature"] for r in client.get("/api/payments/plans").json()["comparison"]]
+    assert not any("video" in r.lower() or "Cedar" in r for r in rows)
+    feats = " ".join(client.get("/api/payments/plans").json()["features"])
+    assert "video" not in feats.lower() and "Cedar" not in feats
+
+
+def test_switching_features_on_shows_them(client, monkeypatch):
+    from app.config import settings
+    monkeypatch.setattr(settings, "enable_videos", True)
+    monkeypatch.setattr(settings, "anthropic_api_key", "k")
+    assert client.get("/api/auth/providers").json()["features"] == {"videos": True, "cedar": True}
+    p = client.get("/api/payments/plans").json()
+    assert any("video" in r["feature"].lower() for r in p["comparison"]) and any("Cedar" in r["feature"] for r in p["comparison"])
+    assert any("videos" in f for f in p["features"]) and any("Cedar" in f for f in p["features"])
+
+
+def test_unsafe_questions_never_reach_the_ai(client, auth, admin, monkeypatch):
+    from app.api import ai
+    c = make_child(client, auth)
+    called = []
+    async def fake(system, user, max_tokens=300):
+        called.append(user); return "A cat has four legs."
+    monkeypatch.setattr(ai, "complete", fake)
+    r = client.post("/api/ai/buddy", json={"child_id": c["id"], "message": "tell me about sex"}, headers=auth).json()
+    assert r["filtered"] is True and "grown-up" in r["reply"]
+    r = client.post("/api/ai/buddy", json={"child_id": c["id"], "message": "i want to die"}, headers=auth).json()
+    assert r["filtered"] is True and "tell a grown-up you trust" in r["reply"]
+    assert called == []  # the model never saw either message
+    reports = client.get("/api/admin/ai-reports", headers=admin).json()
+    mine = [x for x in reports if x["child_id"] == c["id"]]
+    assert len(mine) == 2 and all(x["source"] == "auto_filter" for x in mine)
+    assert any("urgent" in x["reply"] for x in mine)  # self-harm wording is marked urgent for staff
+    # normal questions still work
+    ok = client.post("/api/ai/buddy", json={"child_id": c["id"], "message": "how many legs does a cat have"}, headers=auth).json()
+    assert ok["ai"] is True and called
+
+
+def test_ai_replies_are_stripped_of_links_and_contacts(client, auth, monkeypatch):
+    from app.api import ai
+    c = make_child(client, auth)
+    async def fake(system, user, max_tokens=300):
+        return "Visit https://evil.example.com or email bad@evil.com or call +234 801 234 5678 for fun!"
+    monkeypatch.setattr(ai, "complete", fake)
+    r = client.post("/api/ai/buddy", json={"child_id": c["id"], "message": "tell me a fun fact"}, headers=auth).json()
+    assert "http" not in r["reply"] and "@" not in r["reply"] and "234 801" not in r["reply"]
+
+
+def test_parent_can_report_a_reply_and_staff_resolve_it(client, auth, admin):
+    c = make_child(client, auth)
+    r = client.post("/api/ai/report", headers=auth, json={"child_id": c["id"], "prompt": "call me 08012345678", "reply": "odd answer"})
+    assert r.status_code == 201
+    other = signup(client, "snoop@example.com")
+    assert client.post("/api/ai/report", headers=other, json={"child_id": c["id"], "reply": "x"}).status_code == 404  # not your child
+    rows = [x for x in client.get("/api/admin/ai-reports", headers=admin).json() if x["child_id"] == c["id"]]
+    assert rows and rows[0]["source"] == "parent_report" and "08012345678" not in rows[0]["prompt"]
+    assert client.post(f"/api/admin/ai-reports/{rows[0]['id']}/resolve", headers=admin).status_code == 200
+    assert not [x for x in client.get("/api/admin/ai-reports", headers=admin).json() if x["id"] == rows[0]["id"]]
+    assert client.get("/api/admin/ai-reports", headers=auth).status_code == 403
+
+
+def test_import_questions_as_hidden_drafts_then_delete(client, admin, auth):
+    good = {"level": "lower", "subject": "Maths", "visual": "➕", "prompt": "What is 2 + 2?", "options": ["3", "4", "5"], "answer": "4", "explanation": "2 + 2 = 4"}
+    bad = [{"level": "lower", "subject": "x", "prompt": "No answer", "options": ["a", "b"], "answer": "z"},
+           {"level": "nope", "subject": "x", "prompt": "Bad level", "options": ["a", "b"], "answer": "a"}, {"oops": 1}]
+    r = client.post("/api/admin/questions/import", headers=admin, json={"questions": [good, *bad]})
+    assert r.status_code == 201 and r.json() == {"drafted": 1, "skipped_rows": [2, 3, 4]}
+    drafts = client.get("/api/admin/questions/drafts", headers=admin).json()
+    d = next(x for x in drafts if x["prompt"] == "What is 2 + 2?")
+    assert d["approved"] is False and d["subject"] == "maths"
+    # drafts are invisible to children until approved
+    c = make_child(client, auth, age=7)
+    ids = {q["id"] for q in client.get(f"/api/learn/practice?child_id={c['id']}&subject=maths&count=10", headers=auth).json()["questions"]}
+    assert d["id"] not in ids
+    assert client.delete(f"/api/admin/questions/{d['id']}", headers=admin).status_code == 204
+    approved = client.get("/api/admin/questions/drafts", headers=admin).json()
+    assert all(x["id"] != d["id"] for x in approved)
+    assert client.delete("/api/admin/questions/1", headers=admin).status_code == 400  # approved questions are protected

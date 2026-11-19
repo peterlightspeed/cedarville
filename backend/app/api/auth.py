@@ -17,7 +17,8 @@ import logging
 from google.auth.transport import requests as g_requests
 from google.oauth2 import id_token as g_id_token
 
-from app.models import AIUsage, Attempt, Child, Subscription, Transaction, User
+from app.models import (AIUsage, Assignment, AssignmentResult, Attempt, Child, ClassMember, Classroom, Question,
+                        Subscription, Transaction, User)
 from app.security import create_token, hash_password, password_problem, verify_password
 
 log = logging.getLogger("cedarville.auth")
@@ -41,6 +42,7 @@ class SignupIn(BaseModel):
     password: str = Field(min_length=8, max_length=128)
     display_name: str = Field(min_length=1, max_length=80)
     utm: dict[str, str] | None = None
+    as_teacher: bool = False
 
     @field_validator("display_name")
     @classmethod
@@ -53,6 +55,16 @@ class LoginIn(BaseModel):
     password: str = Field(max_length=128)
 
 
+def teacher_status_for(email: str, wants: bool, current: str | None = None) -> str | None:
+    """Allow-listed emails are approved at once; anyone else who asks waits for an admin."""
+    if email in settings.teacher_emails:
+        return "approved"
+    if current in ("approved", "pending", "rejected"):
+        return current
+    # Admins are trusted, but only become teachers when they ask (so they still land on the normal parent screens).
+    return ("approved" if email in settings.admin_emails else "pending") if wants else None
+
+
 def _user_out(user: User, session: Session) -> dict:
     return {
         "id": user.id,
@@ -60,6 +72,8 @@ def _user_out(user: User, session: Session) -> dict:
         "display_name": user.display_name,
         "is_admin": user.is_admin,
         "premium": is_premium(session, user.id),
+        "teacher_status": user.teacher_status,
+        "staff_role": user.staff_role,
         "has_password": user.password_hash != NO_PASSWORD,
         "google": bool(user.google_sub),
     }
@@ -78,6 +92,7 @@ def signup(body: SignupIn, session: Session = Depends(get_session)) -> dict:
         password_hash=hash_password(body.password),
         display_name=body.display_name,
         is_admin=email in settings.admin_emails,
+        teacher_status=teacher_status_for(email, body.as_teacher),
         **clean_utm(body.utm),
     )
     session.add(user)
@@ -98,6 +113,10 @@ def login(body: LoginIn, session: Session = Depends(get_session)) -> dict:
         record_login_failure(email)
         raise HTTPException(401, "That email or password is not right.")
     clear_login_failures(email)
+    if email in settings.teacher_emails and user.teacher_status != "approved":
+        user.teacher_status = "approved"
+        session.add(user)
+        session.commit()
     if user.email in settings.admin_emails and not user.is_admin:
         user.is_admin = True
         session.add(user)
@@ -149,10 +168,21 @@ def delete_account(body: DeleteAccountIn, user: User = Depends(get_current_user)
         raise HTTPException(401, "That password is not right.")
     kids = session.exec(select(Child).where(Child.parent_id == user.id)).all()
     for k in kids:
+        session.exec(delete(ClassMember).where(ClassMember.child_id == k.id))
+        session.exec(delete(AssignmentResult).where(AssignmentResult.child_id == k.id))
         session.exec(delete(Attempt).where(Attempt.child_id == k.id))
         session.exec(delete(AIUsage).where(AIUsage.child_id == k.id))
         session.delete(k)
     session.exec(delete(Subscription).where(Subscription.user_id == user.id))
+    # a teacher's classes, assignments, results and own questions go too
+    for c in session.exec(select(Classroom).where(Classroom.teacher_id == user.id)).all():
+        for a in session.exec(select(Assignment).where(Assignment.class_id == c.id)).all():
+            session.exec(delete(AssignmentResult).where(AssignmentResult.assignment_id == a.id))
+            session.delete(a)
+        session.exec(delete(ClassMember).where(ClassMember.class_id == c.id))
+        session.delete(c)
+    session.exec(delete(Question).where(Question.owner_id == user.id))
+    user.teacher_status = None
     user.email = f"deleted-{user.id}@deleted.invalid"
     user.display_name = "Deleted"
     user.password_hash = NO_PASSWORD
@@ -168,7 +198,8 @@ def delete_account(body: DeleteAccountIn, user: User = Depends(get_current_user)
 @router.get("/providers")
 def providers() -> dict:
     """Tells the app which sign-in options are switched on (the Google client ID is public by design)."""
-    return {"google_client_id": settings.google_client_id or None}
+    return {"google_client_id": settings.google_client_id or None,
+            "features": {"videos": settings.enable_videos, "cedar": bool(settings.anthropic_api_key)}}
 
 
 def verify_google_token(credential: str) -> dict:
@@ -185,6 +216,7 @@ class GoogleIn(BaseModel):
     credential: str = Field(min_length=20, max_length=4096)
     accepted_terms: bool = False
     utm: dict[str, str] | None = None
+    as_teacher: bool = False
 
 
 @router.post("/google", dependencies=[Depends(rate_limit("google", 20))])
@@ -217,9 +249,11 @@ def google_login(body: GoogleIn, session: Session = Depends(get_session)) -> dic
                                          "tick the parent/guardian box, then tap the Google button again.")
             user = User(email=email, password_hash=NO_PASSWORD, google_sub=sub,
                         display_name=(info.get("name") or email.split("@")[0]).strip()[:80] or "Parent",
+                        teacher_status=teacher_status_for(email, body.as_teacher),
                         **clean_utm(body.utm))
     if email in settings.admin_emails:
         user.is_admin = True
+    user.teacher_status = teacher_status_for(email, body.as_teacher, user.teacher_status)
     session.add(user)
     session.commit()
     session.refresh(user)
@@ -227,3 +261,12 @@ def google_login(body: GoogleIn, session: Session = Depends(get_session)) -> dic
     if note:
         out["note"] = note
     return out
+
+
+@router.post("/request-teacher", dependencies=[Depends(rate_limit("reqteach", 5))])
+def request_teacher(user: User = Depends(get_current_user), session: Session = Depends(get_session)) -> dict:
+    """An existing parent account asks for teacher tools. An admin (the school) approves."""
+    user.teacher_status = teacher_status_for(user.email, True, user.teacher_status)
+    session.add(user)
+    session.commit()
+    return {"teacher_status": user.teacher_status}

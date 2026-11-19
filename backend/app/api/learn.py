@@ -11,7 +11,7 @@ from sqlmodel import Session, select
 from app.config import settings
 from app.database import get_session
 from app.deps import get_current_user, get_own_child, is_premium
-from app.models import Attempt, Child, Question, User, Video
+from app.models import AssignmentResult, Attempt, Child, Question, User, Video
 
 router = APIRouter(prefix="/learn", tags=["learn"])
 
@@ -19,12 +19,15 @@ DAILY_COUNT = 5
 SUBJECT_EMOJI = {
     "letters": "🔤", "numbers": "🔢", "maths": "➕", "colours": "🎨", "shapes": "🔷", "animals": "🐾",
     "nature": "🌳", "body": "🖐️", "english": "📖", "science": "🔬", "nigeria": "🇳🇬", "world": "🌍",
+    "food": "🍎", "vehicles": "🚌", "feelings": "😊", "clothes": "👕", "home": "🏠", "manners": "🙏", "opposites": "↔️",
+    "rhymes": "🎵", "time": "⏰", "weather": "🌦️", "senses": "👃", "health": "💪", "community": "👩‍⚕️", "transport": "🚆",
+    "patterns": "🔁", "safety": "🚦", "plants": "🌱", "money": "💵", "computers": "💻",
 }
-SUBJECT_LABEL = {"maths": "Maths", "nigeria": "Nigeria", "world": "Our World"}
+SUBJECT_LABEL = {"maths": "Maths", "nigeria": "Nigeria", "world": "Our World", "vehicles": "Vehicles", "community": "Helpers", "senses": "Senses", "computers": "Computers"}
 
 
 def _pool(session: Session, level: str, subject: str | None = None) -> list[Question]:
-    stmt = select(Question).where(Question.level == level, Question.approved == True)  # noqa: E712
+    stmt = select(Question).where(Question.level == level, Question.approved == True, Question.owner_id == None)  # noqa: E711,E712
     if subject:
         stmt = stmt.where(Question.subject == subject)
     return list(session.exec(stmt.order_by(Question.id)).all())
@@ -121,6 +124,7 @@ class CheckIn(BaseModel):
     child_id: int
     question_id: int
     answer: str = Field(max_length=200)
+    assignment_id: int | None = None
 
 
 @router.post("/check")
@@ -128,16 +132,22 @@ def check(body: CheckIn, user: User = Depends(get_current_user), session: Sessio
     """Instant feedback after each tap. Records nothing; scoring happens in /submit."""
     child = get_own_child(body.child_id, user, session)
     q = session.get(Question, body.question_id)
-    if q is None or q.level != child.level or not q.approved:
+    if body.assignment_id is not None:
+        from app.api.classroom import assignment_for_child  # lazy: avoids a circular import
+        a = assignment_for_child(session, child, body.assignment_id)
+        if q is None or q.id not in a.question_ids:
+            raise HTTPException(404, "Unknown question.")
+    elif q is None or q.level != child.level or not q.approved or q.owner_id is not None:
         raise HTTPException(404, "Unknown question.")
     return {"correct": body.answer.strip() == q.answer, "answer": q.answer, "explanation": q.explanation}
 
 
 class SubmitIn(BaseModel):
     child_id: int
-    kind: str = Field(pattern="^(daily|practice)$")
+    kind: str = Field(pattern="^(daily|practice|assignment)$")
     subject: str = "mixed"
-    answers: list[AnswerIn] = Field(min_length=1, max_length=10)
+    assignment_id: int | None = None
+    answers: list[AnswerIn] = Field(min_length=1, max_length=30)
 
 
 @router.post("/submit")
@@ -148,7 +158,20 @@ def submit(body: SubmitIn, user: User = Depends(get_current_user), session: Sess
     if len(set(ids)) != len(ids):
         raise HTTPException(400, "Duplicate questions.")
 
-    if body.kind == "daily":
+    assignment = None
+    if body.kind == "assignment":
+        from app.api.classroom import assignment_for_child
+        if body.assignment_id is None:
+            raise HTTPException(400, "Missing assignment.")
+        assignment = assignment_for_child(session, child, body.assignment_id)
+        if session.exec(select(AssignmentResult).where(AssignmentResult.assignment_id == assignment.id,
+                                                       AssignmentResult.child_id == child.id)).first():
+            raise HTTPException(409, "This homework is already handed in. Well done!")
+        if set(ids) != set(assignment.question_ids):
+            raise HTTPException(400, "These are not the homework questions.")
+    elif len(ids) > 10:
+        raise HTTPException(400, "Too many questions.")
+    elif body.kind == "daily":
         if _daily_attempt(session, child, today):
             raise HTTPException(409, "Today's quiz is already done. Come back tomorrow!")
         expected = {q.id for q in _daily_questions(session, child, today)}
@@ -159,7 +182,7 @@ def submit(body: SubmitIn, user: User = Depends(get_current_user), session: Sess
             raise HTTPException(402, "Free practice for today is finished.")
 
     questions = {q.id: q for q in session.exec(select(Question).where(Question.id.in_(ids))).all()}
-    if len(questions) != len(ids) or any(q.level != child.level for q in questions.values()):
+    if len(questions) != len(ids) or (assignment is None and any(q.level != child.level or q.owner_id is not None for q in questions.values())):
         raise HTTPException(400, "Unknown question.")
 
     review, correct = [], 0
@@ -171,8 +194,12 @@ def submit(body: SubmitIn, user: User = Depends(get_current_user), session: Sess
 
     total = len(body.answers)
     stars = correct + (2 if correct == total else 0) + (3 if body.kind == "daily" else 0)
-    session.add(Attempt(child_id=child.id, kind=body.kind, subject=body.subject, day=today,
+    session.add(Attempt(child_id=child.id, kind=body.kind, subject="homework" if assignment else body.subject, day=today,
                         total=total, correct=correct, stars_earned=stars))
+    if assignment:
+        session.add(AssignmentResult(assignment_id=assignment.id, child_id=child.id, correct=correct, total=total, stars=stars,
+                                     answers=[{"question_id": r["question_id"], "correct": r["correct"]} for r in review],
+                                     late=bool(assignment.due_date and today > assignment.due_date)))
     child.stars += stars
     if body.kind == "daily":
         child.streak = child.streak + 1 if child.last_daily == today - timedelta(days=1) else 1
@@ -187,6 +214,8 @@ def submit(body: SubmitIn, user: User = Depends(get_current_user), session: Sess
 @router.get("/videos")
 def videos(child_id: int, user: User = Depends(get_current_user), session: Session = Depends(get_session)) -> dict:
     child = get_own_child(child_id, user, session)
+    if not settings.enable_videos:  # switched off until videos are owned or licensed
+        return {"videos": [], "enabled": False}
     premium = is_premium(session, user.id)
     out = []
     for v in session.exec(select(Video).where(Video.active == True).order_by(Video.id)).all():  # noqa: E712
@@ -196,4 +225,4 @@ def videos(child_id: int, user: User = Depends(get_current_user), session: Sessi
         out.append({"id": v.id, "title": v.title, "category": v.category, "emoji": v.emoji,
                     "premium": v.premium, "locked": locked,
                     "youtube_id": None if locked else v.youtube_id})
-    return {"videos": out}
+    return {"videos": out, "enabled": True}
